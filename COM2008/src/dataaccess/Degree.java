@@ -1,11 +1,11 @@
 /*
 * COM2008 project
 * 
-* last modified: 17/11/20
+* last modified: 18/11/20
 * 
 * @author Abdullah Attique Ahmed
 */
-package main;
+package dataaccess;
 
 public class Degree {
 	
