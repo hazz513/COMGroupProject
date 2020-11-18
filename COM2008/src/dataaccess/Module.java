@@ -7,6 +7,7 @@
 */
 package dataaccess;
 import java.sql.*;
+import java.util.*;
 
 public class Module {
 	
@@ -74,5 +75,48 @@ public class Module {
 			return false;
 		}
 	}
-
+	
+	/*
+	 * get all the module name within a degree
+	 * 
+	 * @return an array 
+	 */
+	public static ArrayList<String> allModInDegree(Degree degree) {	
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			
+			//get all the module in a given degree
+			ArrayList<String> result = new ArrayList<String>()  ;
+			String degName = degree.getCode();
+			degName =  degName.substring(0,degName.length()-3);
+						
+			ResultSet rs =  stmt.executeQuery("SELECT modName FROM Module WHERE modCode LIKE '" 
+			                                    + degName+ "%'");
+			
+			//storing all the result in an arrayList
+			while(rs.next()) {
+				result.add(rs.getString("modName"));
+			}
+			
+			return result ;
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+			ArrayList<String> str = new ArrayList<String>();
+			str.add ("Nothing to show,error occured");
+			return str ;
+		}
+	}
+	
+	public static void main(String[] args) {
+		// test to check if the allModInAdegree method is working (will delete this later)
+		Degree abc = new Degree("COMU00","BSc Computer Science","Computer");
+		ArrayList<String> rest = new ArrayList<String>()  ;
+		rest = allModInDegree(abc);
+		for (String x:rest) {
+			System.out.println(x);
+		}
+	}
 }
