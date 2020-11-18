@@ -74,5 +74,39 @@ public class Module {
 			return false;
 		}
 	}
+	
+	/*
+	 * remove module from database
+	 * 
+	 * @return boolean based on success
+	 */
+	public boolean removeFromDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			// delete module
+			int count = stmt.executeUpdate("DELETE FROM Module WHERE " + 
+										   "modCode = '" + this.getCode() + "';"
+										  );
+			// check that changes were made
+			//System.out.println("changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static void main(String[] args) {
+		//test
+		//Module fp = new Module("COM2108", "Functional Programming");
+		//System.out.println(fp.addToDB());
+		//System.out.println(fp.removeFromDB());
+	}
 
 }

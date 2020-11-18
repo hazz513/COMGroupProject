@@ -90,5 +90,42 @@ public class Approval {
 			return false;
 		}
 	}
+	
+	/*
+	 * remove module from database
+	 * 
+	 * @return boolean based on success
+	 */
+	public boolean removeFromDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			// delete approval
+			int count = stmt.executeUpdate("DELETE FROM Approval WHERE " + 
+										   "degCode = '" + this.degree.getCode() + "' AND " + 
+										   "modCode = '" + this.module.getCode() + "';"
+										  );
+			// check that changes were made
+			//System.out.println("changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static void main(String[] args) {
+		//test
+		//Module fp = new Module("COM2108", "Functional Programming");
+		//Degree se = new Degree("COMP00", "MEng Software Engineering with a Year in Industry", "COM");
+		//Approval fpse = new Approval(se, fp, 1, 10, '2');
+		//System.out.println(fpse.addToDB());
+		//System.out.println(fpse.removeFromDB());
+	}
 
 }

@@ -42,6 +42,27 @@ public class Admin {
 		return true;
 	}
 	
+	/*
+	 * deletes module from database
+	 * 
+	 * @param module - the module object to be deleted
+	 * @return boolean based on success
+	 */
+	private static boolean removeModule(Module module) {
+		return module.removeFromDB();
+	}
+	
+	/*
+	 * deletes approval from database
+	 * 
+	 * @param approval - the approval object to be deleted
+	 * @return boolean based on success
+	 */
+	private static boolean removeApproval(Approval approval) {
+		return approval.removeFromDB();
+	}
+	
+	
 	public static void main(String[] args) {
 		
 	}
