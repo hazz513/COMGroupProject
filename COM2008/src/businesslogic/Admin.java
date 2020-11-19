@@ -9,6 +9,8 @@ package businesslogic;
 
 import dataaccess.Approval;
 import dataaccess.Module;
+import dataaccess.Degree;
+import dataaccess.Authentication;
 
 public class Admin {
 	
@@ -18,8 +20,15 @@ public class Admin {
 	 * @param module - the module object to be inserted
 	 * @return boolean based on success
 	 */
-	private static boolean addModule (Module module) {
-		return module.addToDB();
+	private static boolean addModule (Module[] modules) {
+		for (Module module: modules) {
+			if (module.addToDB()) {				
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/*
@@ -29,11 +38,9 @@ public class Admin {
 	 * @return boolean based on success
 	 */
 	private static boolean addApprovals (Approval[] approvals) {
-		int count = 0;
 		// insert each approval
 		for (Approval approval: approvals) {
 			if (approval.addToDB()) {
-				count++;
 			}
 			else {
 				return false;
@@ -41,7 +48,40 @@ public class Admin {
 		}
 		return true;
 	}
+	private static boolean addDegreeCourses (Degree[] degrees) {
+		
+		for (Degree degree:degrees) {
+			if (degree.addToDB()) {
 	
+			}
+			else {
+			return false;
+		}
+		}
+		return true;
+	}
+	private static String addPassword (Authentication user, String newPass) {
+		String currentpass = user.getPassword();
+		if (newPass != currentpass) {
+			user.setPassword(newPass);
+			user.updatePassToDB();
+			return "Succesful password change";
+		}
+		return "New password is the same, therefore no change has been made";
+		
+	}
+	private static boolean removeDegreeCourses (Degree[] degrees) {
+		for (Degree degree:degrees) {
+			if (degree.removeFromDB()) {
+	
+			}
+			else {
+			return false;
+		}
+		}
+		return true;
+	}
 	public static void main(String[] args) {
+		
 	}
 }

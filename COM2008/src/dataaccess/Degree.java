@@ -7,12 +7,19 @@
 */
 package dataaccess;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
 public class Degree {
 	
 	private String code;
 	private String name;
-	private String leadDep;
 	
+	// database information
+	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
+	private static final String DB_USER_NAME = "team012";
+	private static final String DB_PASSWORD =  "0232ab87";
 	
 	/*
 	 * Constructor
@@ -21,10 +28,9 @@ public class Degree {
 	 * @param name - degree name
 	 * @param leadDep - lead department code
 	 */
-	public Degree(String code, String name, String leadDep) {
+	public Degree(String code, String name) {
 		this.code = code;
 		this.name = name;
-		this.leadDep = leadDep;
 	}
 	
 	// get methods
@@ -34,8 +40,62 @@ public class Degree {
 	public String getName() {
 		return name;
 	}
-	public String getLeadDep() {
-		return leadDep;
+	
+	//set methods
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	// database ------------------------------------------------------------------
+	
+	public boolean addToDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			// insert module
+			int count = stmt.executeUpdate("INSERT INTO Degree VALUES ('" + 
+											this.getCode() + "', '" +
+											this.getName() + "');"
+											);
+			// check that changes were made
+			//System.out.println("changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean removeFromDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			// insert module
+			int count = stmt.executeUpdate("DELETE FROM Degree WHERE degCode = ('" + 
+											this.getCode() + "');"
+											);
+			// check that changes were made
+			//System.out.println("changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
 	}
 }
+
+
 
