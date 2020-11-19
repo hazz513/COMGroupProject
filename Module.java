@@ -17,7 +17,7 @@ public class Module {
 	
 	private String code;
 	private String name;
-	
+
 	/*
 	 * Constructor
 	 * 

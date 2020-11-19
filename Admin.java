@@ -10,6 +10,7 @@ package mycomgpp;
 import mycomgpp.Approval;
 import mycomgpp.Module;
 import mycomgpp.Degree;
+import mycomgpp.Authentication;
 
 public class Admin {
 	
@@ -59,15 +60,26 @@ public class Admin {
 		}
 		return true;
 	}
-	private static String addPassword (User user, String newPass) {
-		String currentpass = user.getPass();
+	private static String addPassword (Authentication user, String newPass) {
+		String currentpass = user.getPassword();
 		if (newPass != currentpass) {
-			user.setPass(newPass);
-			user.addtoDB();
+			user.setPassword(newPass);
+			user.updatePassToDB();
 			return "Succesful password change";
 		}
 		return "New password is the same, therefore no change has been made";
 		
+	}
+	private static boolean removeDegreeCourses (Degree[] degrees) {
+		for (Degree degree:degrees) {
+			if (degree.removeFromDB()) {
+	
+			}
+			else {
+			return false;
+		}
+		}
+		return true;
 	}
 	public static void main(String[] args) {
 		

@@ -6,6 +6,7 @@ import java.sql.*;
 public class User {
 	
 	private String pass;
+	private String username;
 	
 	//database information
 	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
@@ -16,13 +17,17 @@ public class User {
 	 * constructor
 	 * @param password - password
 	 */
-	public User(String pass) {
+	public User(String pass, String username) {
 		this.pass = pass;
+		this.username = username;
 	}
 	
 	//get methods
 	public String getPass() {
 		return pass;
+	}
+	public String getUser() {
+		return username;
 	}
 	
 	//set methods
