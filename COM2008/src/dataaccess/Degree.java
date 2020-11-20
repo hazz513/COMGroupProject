@@ -59,14 +59,14 @@ public class Degree {
 	 */
 	public static String generateDegreeCode(String depCode, String degreeLevel) {
 		// get list of modules with same department code
-		ArrayList<Integer> currentCodes = new ArrayList<Integer>()  ;
+		ArrayList<Integer> currentCodes = new ArrayList<Integer>();
 		
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();
 			
 			//get all the module with same department code
 			ResultSet rs =  stmt.executeQuery("SELECT degCode FROM Degree WHERE degCode LIKE '" 
-			                                    + depCode + degreeLevel + "%'");
+			                                    + depCode + degreeLevel + "%';");
 			
 			//storing all the unique digits from the result in an arrayList
 			while(rs.next()) {
@@ -100,6 +100,66 @@ public class Degree {
 		
 	}
 	
+	/*
+	 * get approvals for all core modules to the degree at specified level
+	 * 
+	 * @param level - the level the cores will be returned
+	 * 
+	 * @return ArrayList of approval which are core
+	 */
+	public ArrayList<Approval> getCores(char level) {
+		ArrayList<Approval> cores = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the approvals which are core for the degree and level
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval WHERE " +
+					 						  "degCode LIKE '" + code + "' AND " +
+											  "core = 1 AND " + 
+					 						  "level = '" + level +"' ;");
+			
+			// build list of approvals
+			while(rs.next()) {
+				Module coreModule = new Module(rs.getString("modCode"), "placeholder");
+				Approval coreApproval = new Approval(this, coreModule, 1, rs.getInt("credits"), rs.getString("level").charAt(0));
+				cores.add(coreApproval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return cores;
+		
+	}
+	
+	/*
+	 * check if a degree exists in the database
+	 * 
+	 * @return true if degree exists, false otherwise
+	 */
+	public boolean exists() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// select degree
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree WHERE " +
+					 						  "degCode LIKE '" + code + "';");
+			
+			// if something was selected return true
+			while(rs.next()) {
+				return true;
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		// tests for code generator
 		/*System.out.println(generateDegreeCode("APS", "P"));
@@ -107,6 +167,16 @@ public class Degree {
 		System.out.println(generateDegreeCode("COM", "U"));
 		System.out.println(generateDegreeCode("COM", "P"));
 		System.out.println(generateDegreeCode("NEW", "U"));*/
+		// test for getCores
+		/*Degree test = new Degree("COMU00", "placeholder", "COM");
+		ArrayList<Approval> cores = test.getCores('2');
+		for (Approval approval: cores) {
+			System.out.println(approval.getModule().getCode());
+		}*/
+		Degree test = new Degree("COMU20", "placeholder", "COM");
+		Degree test2 = new Degree("COMU00", "placeholder", "COM");
+		System.out.println(test.exists());
+		System.out.println(test2.exists());
 	}
 }
 

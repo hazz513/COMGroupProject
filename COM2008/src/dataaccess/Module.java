@@ -148,7 +148,7 @@ public class Module {
 			
 			//get all the module with same department code
 			ResultSet rs =  stmt.executeQuery("SELECT modCode FROM Module WHERE modCode LIKE '" 
-			                                    + depCode + "%'");
+			                                    + depCode + "%';");
 			
 			//storing all the unique digits from the result in an arrayList
 			while(rs.next()) {
