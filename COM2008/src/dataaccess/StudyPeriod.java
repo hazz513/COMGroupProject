@@ -14,12 +14,14 @@ public class StudyPeriod {
 	private String startDate;
 	private String endDate;
 	private Student student;
+	private int storedRegistration;
 	
 	public StudyPeriod(char label, String startDate, String endDate, Student student) {
 		this.label = label;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.student = student;
+		storedRegistration = this.student.getRegistration();
 	}
 	
 	//get methods (May need to create a set for the student object)
@@ -34,6 +36,9 @@ public class StudyPeriod {
 	}
 	public Student getStudent() {
 		return student;
+	}
+	public int getStoredRegistration() {
+		return storedRegistration;
 	}
 	
 	//set methods
@@ -61,7 +66,7 @@ public class StudyPeriod {
 												this.getLabel() + "','" +
 												this.getStartDate() + "','" +
 												this.getEndDate() + "','" +
-												this.getStudent().getRegistration() + "');"
+												this.getStoredRegistration() + "');"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {
@@ -88,7 +93,7 @@ public class StudyPeriod {
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("DELETE FROM StudyPeriod WHERE " + 
 						 						"label = '" + this.getLabel() + "' AND " + 
-						 						"registration = '" + this.student.getRegistration() + "';"
+						 						"registration = '" + this.getStoredRegistration() + "';"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {

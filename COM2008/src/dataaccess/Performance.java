@@ -10,14 +10,12 @@ public class Performance {
 	private static final String DB_USER_NAME = "team012";
 	private static final String DB_PASSWORD =  "0232ab87";
 	
-	private Student student;
 	private StudyPeriod studyPeriod;
 	private Module module;
 	private int grade;
 	private int resitGrade;
 	
-	public Performance(Student student, StudyPeriod studyPeriod, Module module, int grade, int resitGrade) {
-		this.student = student;
+	public Performance(StudyPeriod studyPeriod, Module module, int grade, int resitGrade) {
 		this.studyPeriod = studyPeriod;
 		this.module = module;
 		this.grade = grade;
@@ -25,9 +23,6 @@ public class Performance {
 	}
 	
 	//get methods (May need to create a set for the student object)
-	public Student getStudent() {
-		return student;
-	}
 	public StudyPeriod getStudyPeriod() {
 		return studyPeriod;
 	}
@@ -60,7 +55,7 @@ public class Performance {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("INSERT INTO Performance VALUE ('" + 
-												this.getStudent().getRegistration() + "','" +
+												this.getStudyPeriod().getStoredRegistration() + "','" +
 												this.getStudyPeriod().getLabel() + "','" +
 												this.getModule().getCode() + "','" +
 												this.getGrade() + "','" +
@@ -90,7 +85,7 @@ public class Performance {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("DELETE FROM Performance WHERE " + 
-											   "registration = '" + this.student.getRegistration() + "' AND " + 
+											   "registration = '" + this.studyPeriod.getStoredRegistration() + "' AND " + 
 											   "label = '" + this.studyPeriod.getLabel() + "' AND " + 
 											   "modCode = '" + this.module.getCode() + "';"
 												);
@@ -124,9 +119,9 @@ public class Performance {
 			Module fp = new Module("COM2108", "Functional Programming");
 			//System.out.println(fp.addToDB());
 			
-			Performance please = new Performance(George, Test, fp, 45, 90);
-			//System.out.println(please.addPerformance());
-			System.out.println(please.removePerformance());
+			Performance please = new Performance(Test, fp, 45, 90);
+			System.out.println(please.addPerformance());
+			//System.out.println(please.removePerformance());
 			
 		}
 }
