@@ -14,6 +14,7 @@ public class Authentication {
 	private String password;
 	private int authLevel;
 	//Placeholder Variable to be linked to Student Object
+	private Student student;
 	private int regNum;
 	
 	/*
@@ -23,11 +24,11 @@ public class Authentication {
 	 * @param authLevel = Authorisation level
 	 * @param regNum = Registration Number 
 	 */
-	public Authentication(int userID, String password, int authLevel, int regNum) {
+	public Authentication(int userID, String password, int authLevel, Student student) {
 		this.userID = userID;
 		this.password = password;
 		this.authLevel = authLevel;
-		this.regNum = regNum;
+		this.student = student;
 	}
 	
 	//Get Functions
@@ -41,7 +42,7 @@ public class Authentication {
 		return authLevel;
 	}
 	public int getRegNum() {
-		return regNum;
+		return student.getRegistration();
 	}
 	
 	//Set Function
@@ -115,6 +116,8 @@ public class Authentication {
 		}
 	}
 	
+	
+	
 	/*
 	 * Testing functions. 
 	 * Invalid and won't work until the Table Student is populated
@@ -122,7 +125,10 @@ public class Authentication {
 	 */
 	public static void main(String[] args) {
 		//test
-		//Authentication test = new Authentication(123311, "Hello?", 3, 321241);
+		//Student George = new Student(321241, "Mr", "Ashcroft", "George","george@fake.com");
+		//System.out.println(George.addStudent());
+		//Authentication test = new Authentication(123311, "Hello?", 3, George);
+		//System.out.println(George.removeStudent());
 		//System.out.println(test.addAuthentication());
 		//System.out.println(test.removeAuthentication());
 	}
