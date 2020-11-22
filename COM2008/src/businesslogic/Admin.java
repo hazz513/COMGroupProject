@@ -8,6 +8,7 @@
 package businesslogic;
 
 import dataaccess.Approval;
+import dataaccess.Authentication;
 import dataaccess.Module;
 import dataaccess.Department;
 
@@ -56,6 +57,16 @@ public class Admin {
 	}
 	
 	/*
+	 * Inserts and creates a new login account
+	 * 
+	 * @param authentiaction - Instance of an account to be inserted
+	 * @return boolean based on success
+	 */
+	private static boolean addAccounts(Authentication authentication) {
+		return authentication.addAuthentication();
+	}
+	
+	/*
 	 * deletes module from database
 	 * 
 	 * @param module - the module object to be deleted
@@ -76,7 +87,7 @@ public class Admin {
 	}
 	
 	/*
-	 * Removes a department to the database
+	 * Removes a department from the database
 	 * 
 	 * @param department - the department to remove
 	 * @return boolean based on success
@@ -84,6 +95,17 @@ public class Admin {
 	private static boolean removeDepartment(Department department) {
 		return department.removeDepartment();
 	}
+	
+	/*
+	 * Removes an account from the databse
+	 * 
+	 *  @param authentication - the user account to remove
+	 *  @return boolean based on success
+	 */
+	private static boolean removeAccounts(Authentication authentication) {
+		return authentication.removeAuthentication();
+	}
+	
 	
 	
 	
