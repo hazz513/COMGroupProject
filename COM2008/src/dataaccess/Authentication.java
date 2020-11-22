@@ -140,7 +140,24 @@ public class Authentication {
 		}
 	}
 	
-	
+	public boolean updatePassToDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			int count = stmt.executeUpdate("UPDATE Authentication SET password= '" + this.getPassword() + 
+					"'WHERE userID= '" + this.getUserID() + "';"
+					);
+			switch(count) {
+			case 0:
+				return false;
+			default:
+				return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
 	
 	/*
 	 * Testing functions. 

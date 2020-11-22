@@ -48,6 +48,16 @@ public class Degree {
 	public String getLeadDep() {
 		return leadDep;
 	}
+	//set methods
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setLeadDep(String leadDep) {
+		this.leadDep = leadDep;
+	}
 	
 	/*
 	 * generate unique degree code
@@ -159,6 +169,53 @@ public class Degree {
 		}
 		return false;
 	}
+	
+	public boolean addToDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			// insert module
+			int count = stmt.executeUpdate("INSERT INTO Degree VALUES ('" + 
+											this.getCode() + "', '" +
+											this.getName() + "', '" +
+											this.getLeadDep() + "');"
+											);
+			// check that changes were made
+			//System.out.println("changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean removeFromDB() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			// insert module
+			int count = stmt.executeUpdate("DELETE FROM Degree WHERE degCode = ('" + 
+											this.getCode() + "');"
+											);
+			// check that changes were made
+			//System.out.println("changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		// tests for code generator
