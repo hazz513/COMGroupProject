@@ -97,8 +97,8 @@ public class Authentication {
 	public boolean removeAuthentication() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 			Statement stmt = con.createStatement();
-			int count = stmt.executeUpdate("DELETE FROM Authentication WHERE " + 
-											"userID = '" + this.getUserID() + "');"
+			int count = stmt.executeUpdate("DELETE FROM Authentication WHERE userID='"  
+											+ this.getUserID() + "';"
 											);
 			System.out.println("Changes made: " + count);
 			switch (count) {
@@ -123,8 +123,8 @@ public class Authentication {
 	public boolean updatePassToDB() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();
-			int count = stmt.executeUpdate("UPDATE password SET = ('" + this.getPassword() + 
-					"WHERE userID = '" + this.getUserID() + "';"
+			int count = stmt.executeUpdate("UPDATE Authentication SET password= '" + this.getPassword() + 
+					"'WHERE userID= '" + this.getUserID() + "';"
 					);
 			switch(count) {
 			case 0:
@@ -140,7 +140,7 @@ public class Authentication {
 	}
 	public static void main(String[] args) {
 		//test
-		//Authentication test = new Authentication(123311, "Hello?", 3, 321241);
+		//Authentication test = new Authentication(1, "anthony", 3, 1234567);
 		//System.out.println(test.addAuthentication());
 		//System.out.println(test.removeAuthentication());
 	}

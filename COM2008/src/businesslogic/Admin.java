@@ -1,9 +1,9 @@
 /*
 * COM2008 project
 * 
-* last modified: 18/11/20
+* last modified: 22/11/20
 * 
-* @author Abdullah Attique Ahmed
+* @author Harry Wang
 */
 package businesslogic;
 
@@ -11,6 +11,11 @@ import dataaccess.Approval;
 import dataaccess.Module;
 import dataaccess.Degree;
 import dataaccess.Authentication;
+import dataaccess.Department;
+import dataaccess.Partner;
+import dataaccess.Performance;
+import dataaccess.Student;
+import dataaccess.StudyPeriod;
 
 public class Admin {
 	
@@ -31,6 +36,10 @@ public class Admin {
 		return true;
 	}
 	
+	private static boolean removeModule(Module module) {
+		return module.removeFromDB();
+	}
+	
 	/*
 	 * inserts approvals into database
 	 * 
@@ -48,6 +57,11 @@ public class Admin {
 		}
 		return true;
 	}
+	
+	private static boolean removeApproval(Approval approval) {
+		return approval.removeFromDB();
+	}
+	
 	private static boolean addDegreeCourses (Degree[] degrees) {
 		
 		for (Degree degree:degrees) {
@@ -60,16 +74,7 @@ public class Admin {
 		}
 		return true;
 	}
-	private static String addPassword (Authentication user, String newPass) {
-		String currentpass = user.getPassword();
-		if (newPass != currentpass) {
-			user.setPassword(newPass);
-			user.updatePassToDB();
-			return "Succesful password change";
-		}
-		return "New password is the same, therefore no change has been made";
-		
-	}
+
 	private static boolean removeDegreeCourses (Degree[] degrees) {
 		for (Degree degree:degrees) {
 			if (degree.removeFromDB()) {
@@ -81,7 +86,25 @@ public class Admin {
 		}
 		return true;
 	}
-	public static void main(String[] args) {
+	
+	private static String changePassword (Authentication user, String newPass) {
+		String currentpass = user.getPassword();
+		if (newPass != currentpass) {
+			user.setPassword(newPass);
+			user.updatePassToDB();
+			return "Succesful password change";
+		}
+		return "New password is the same, therefore no change has been made";
 		
+	}
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+		Authentication test = new Authentication(1, "anthony", 3, 1234567);
+		System.out.println(changePassword(test,"anthony"));
 	}
 }

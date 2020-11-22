@@ -15,6 +15,7 @@ public class Degree {
 	
 	private String code;
 	private String name;
+	private String leadDep;
 	
 	// database information
 	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
@@ -28,9 +29,10 @@ public class Degree {
 	 * @param name - degree name
 	 * @param leadDep - lead department code
 	 */
-	public Degree(String code, String name) {
+	public Degree(String code, String name, String leadDep) {
 		this.code = code;
 		this.name = name;
+		this.leadDep = leadDep;
 	}
 	
 	// get methods
@@ -40,6 +42,9 @@ public class Degree {
 	public String getName() {
 		return name;
 	}
+	public String getLeadDep() {
+		return leadDep;
+	}
 	
 	//set methods
 	public void setCode(String code) {
@@ -47,6 +52,9 @@ public class Degree {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public void setLeadDep(String leadDep) {
+		this.leadDep = leadDep;
 	}
 	
 	// database ------------------------------------------------------------------
@@ -57,7 +65,8 @@ public class Degree {
 			// insert module
 			int count = stmt.executeUpdate("INSERT INTO Degree VALUES ('" + 
 											this.getCode() + "', '" +
-											this.getName() + "');"
+											this.getName() + "', '" +
+											this.getLeadDep() + "');"
 											);
 			// check that changes were made
 			//System.out.println("changes made: " + count);
