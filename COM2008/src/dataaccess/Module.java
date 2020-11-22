@@ -102,28 +102,37 @@ public class Module {
 			return false;
 		}
 	}
-	
-	public static ArrayList<String> allModInDegree(Degree degree) {	
+	/*
+	 * get all module in a degree according to the level
+	 * 
+	 * @param approval
+	 * 
+	 * @return an arrayList of all the module in a degree level wise
+	 */
+	public static ArrayList<String> allModInDegree(Approval approval) {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();
-			
-			
+
+
 			//get all the module in a given degree
 			ArrayList<String> result = new ArrayList<String>()  ;
-			String degName = degree.getCode();
-			degName =  degName.substring(0,degName.length()-3);
-						
-			ResultSet rs =  stmt.executeQuery("SELECT modName FROM Module WHERE modCode LIKE '" 
-			                                    + degName+ "%'");
-			
+			String degCode = approval.getDegree().getCode();
+			//String modCode = approval.getModule().getCode();
+
+			//String degCode1 =  degCode.substring(0,degCode.length()-3);
+
+			ResultSet rs =  stmt.executeQuery("SELECT Module.modCode, Module.modName FROM Module INNER JOIN "
+											  +" Approval WHERE Module.modCode = Approval.modCode AND "
+											  + "Approval.degCode ='"+ degCode + "'");
+
 			//storing all the result in an arrayList
 			while(rs.next()) {
-				result.add(rs.getString("modName"));
+				result.add(rs.getString("modCode")+" "+rs.getString("modName"));
 			}
-			
+
 			return result ;
 		}
-		
+
 		catch (Exception ex) {
 			ex.printStackTrace();
 			ArrayList<String> str = new ArrayList<String>();
@@ -189,11 +198,15 @@ public class Module {
 		//System.out.println(fp.removeFromDB());
 		
 		// test to check if the allModInAdegree method is working (will delete this later)
-		/*Degree abc = new Degree("COMU00","BSc Computer Science","Computer");
+		/*Degree abc = new Degree("COMP00","BSc Computer Science","Computer");
+		Module pqr = new Module("COM1008","Functional");
+		Approval xyz = new Approval (abc,pqr,2,120,'1');
 		ArrayList<String> rest = new ArrayList<String>()  ;
-		rest = allModInDegree(abc);
+		rest = allModInDegree(xyz);
 		for (String x:rest) {
-			System.out.println(x);*/
+			System.out.println(x);
+		}*/
+		
 		//test
 		//System.out.println(generateModuleCode("COM"));
 	}
