@@ -1,4 +1,4 @@
-package dataaccess;
+	package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ public class Authentication {
 	private static final String DB_USER_NAME = "team012";
 	private static final String DB_PASSWORD =  "0232ab87";
 	
-	private int userID;
+	private String userID;
 	private String password;
 	private int authLevel;
 	//Placeholder Variable to be linked to Student Object
@@ -24,15 +24,39 @@ public class Authentication {
 	 * @param authLevel = Authorisation level
 	 * @param regNum = Registration Number 
 	 */
-	public Authentication(int userID, String password, int authLevel, Student student) {
+	public Authentication(String userID, String password, int authLevel, Student student) {
 		this.userID = userID;
 		this.password = password;
 		this.authLevel = authLevel;
 		this.student = student;
 	}
 	
+	/*
+	 * New Student Constructor
+	 * @param student = Instance of a student
+	 * return = returns a boolean 
+	 */
+	public Authentication(Student student) {
+		String name = student.getForename();
+		String lastName = student.getSurname();
+		String registration = Integer.toString(student.getRegistration());
+		
+		String userID = name.substring(0,1)+lastName.substring(0,1)+registration.substring(registration.length() -4,registration.length());
+		System.out.printf("The generated username for the student is: ", userID);
+		this.userID = userID;
+		
+		String passEnd = Integer.toString((int)Math.random()*9001 + 1000);
+		String password = name.substring(0,3)+lastName.substring(0,3)+passEnd;
+		System.out.printf("The generated password for the student is: ", password);
+		this.password = password;
+		
+		this.authLevel = 1;
+		this.student = student;
+	}
+	
+	
 	//Get Functions
-	public int getUserID() {
+	public String getUserID() {
 		return userID;
 	}
 	public String getPassword() {
@@ -46,7 +70,7 @@ public class Authentication {
 	}
 	
 	//Set Function
-	public void setUserID(int userID) {
+	public void setUserID(String userID) {
 		this.userID = userID;
 	}
 	public void setPassword(String password) {
@@ -127,9 +151,15 @@ public class Authentication {
 		//test
 		//Student George = new Student(321241, "Mr", "Ashcroft", "George","george@fake.com");
 		//System.out.println(George.addStudent());
+		
+		//Authentication initialStudent = new Authentication(George);
 		//Authentication test = new Authentication(123311, "Hello?", 3, George);
+		
 		//System.out.println(George.removeStudent());
 		//System.out.println(test.addAuthentication());
 		//System.out.println(test.removeAuthentication());
+		
+		//System.out.println(initialStudent.addAuthentication());
+		//System.out.println(initialStudent.removeAuthentication());
 	}
 }
