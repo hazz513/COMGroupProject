@@ -11,13 +11,13 @@ public class Performance {
 	private static final String DB_PASSWORD =  "0232ab87";
 	
 	private StudyPeriod studyPeriod;
-	private Module module;
+	private Approval approval;
 	private int grade;
 	private int resitGrade;
 	
-	public Performance(StudyPeriod studyPeriod, Module module, int grade, int resitGrade) {
+	public Performance(StudyPeriod studyPeriod, Approval approval, int grade, int resitGrade) {
 		this.studyPeriod = studyPeriod;
-		this.module = module;
+		this.approval = approval;
 		this.grade = grade;
 		this.resitGrade = resitGrade;
 	}
@@ -26,8 +26,8 @@ public class Performance {
 	public StudyPeriod getStudyPeriod() {
 		return studyPeriod;
 	}
-	public Module getModule() {
-		return module;
+	public Approval getApproval() {
+		return approval;
 	}
 	public int getGrade() {
 		return grade;
@@ -57,7 +57,8 @@ public class Performance {
 				int count = stmt.executeUpdate("INSERT INTO Performance VALUE ('" + 
 												this.getStudyPeriod().getStoredRegistration() + "','" +
 												this.getStudyPeriod().getLabel() + "','" +
-												this.getModule().getCode() + "','" +
+												this.getApproval().getModule().getCode() + "','" +
+												this.getApproval().getDegree().getCode() + "','" +
 												this.getGrade() + "','" +
 												this.getResitGrade() + "');"
 												);
@@ -87,7 +88,8 @@ public class Performance {
 				int count = stmt.executeUpdate("DELETE FROM Performance WHERE " + 
 											   "registration = '" + this.studyPeriod.getStoredRegistration() + "' AND " + 
 											   "label = '" + this.studyPeriod.getLabel() + "' AND " + 
-											   "modCode = '" + this.module.getCode() + "';"
+											   "modCode = '" + this.getApproval().getModule().getCode() + "' AND " + 
+											   "degCode = '" + this.getApproval().getDegree().getCode() + "';"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {
@@ -103,6 +105,7 @@ public class Performance {
 				return false;
 			}
 		}
+		
 		/*
 		 * Testing functions. 
 		 * Invalid and won't work until the Table Student is populated
@@ -111,15 +114,23 @@ public class Performance {
 		public static void main(String[] args) {
 			//test
 			Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
-			//System.out.println(George.addStudent());
+			System.out.println(George.addStudent());
 			
 			StudyPeriod Test = new StudyPeriod('a', "2020-11-19","2021-11-19", George);
-			//System.out.println(Test.addStudyPeriod());
+			System.out.println(Test.addStudyPeriod());
 			
 			Module fp = new Module("COM2108", "Functional Programming");
-			//System.out.println(fp.addToDB());
+			System.out.println(fp.addToDB());
 			
-			Performance please = new Performance(Test, fp, 45, 90);
+			Degree se = new Degree("COMP00", "MEng Software Engineering with a Year in Industry", "COM");
+			System.out.println(se.addToDB());
+			
+			Approval fpse = new Approval(se, fp, 1, 10, '2');
+			System.out.println(fpse.addToDB());
+
+			
+			
+			Performance please = new Performance(Test, fpse, 45, 90);
 			System.out.println(please.addPerformance());
 			//System.out.println(please.removePerformance());
 			
