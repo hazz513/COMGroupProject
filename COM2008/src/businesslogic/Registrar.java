@@ -33,7 +33,7 @@ public class Registrar {
 		// get all core modules and add them
 		ArrayList<Approval> cores = degree.getCores('1');
 		for (Approval approval: cores) {
-			Performance performance = new Performance(initial, approval.getModule(), 0, 0);
+			Performance performance = new Performance(initial, approval, 0, 0);
 			if (!performance.addPerformance()) {
 				return false;
 			}
@@ -63,9 +63,9 @@ public class Registrar {
 	
 	public static void main(String[] args) {
 		//test
-		//Student test = new Student(1234567, "dr", "Robert", "Bob", "B.Rob@whatever.com");
-		//Degree testDeg = new Degree("COMU00", "placeholder", "COM");
-		//System.out.println(registerStudent(test, "2020-11-20", "2021-11-21", testDeg));
+		Student test = new Student(1234567, "dr", "Robert", "Bob", "B.Rob@whatever.com");
+		Degree testDeg = new Degree("COMU00", "placeholder", "COM");
+		System.out.println(registerStudent(test, "2020-11-20", "2021-11-21", testDeg));
 		
 	}
 
