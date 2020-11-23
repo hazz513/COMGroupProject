@@ -131,8 +131,7 @@ public class Degree {
 			
 			// build list of approvals
 			while(rs.next()) {
-				Module coreModule = new Module(rs.getString("modCode"), "placeholder");
-				Approval coreApproval = new Approval(this, coreModule, 1, rs.getInt("credits"), rs.getString("level").charAt(0));
+				Approval coreApproval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
 				cores.add(coreApproval);
 			}
 		}
@@ -216,6 +215,38 @@ public class Degree {
 		}
 	}
 	
+	/*
+	 * get a degree from database
+	 * 
+	 * @param degCode - degree code of degree
+	 * 
+	 * @return degree matching code
+	 */
+	public static Degree retrieveFromDB(String degCode) {
+		ArrayList<Degree> degrees = new ArrayList<Degree>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree WHERE " + 
+					 						  "degCode = '" + degCode +"' ;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				Degree degree = new Degree(rs.getString("degCode"), rs.getString("degName"), rs.getString("leadDep"));
+				degrees.add(degree);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) degree
+		return degrees.get(0);
+	}
+	
 	
 	public static void main(String[] args) {
 		// tests for code generator
@@ -225,15 +256,17 @@ public class Degree {
 		System.out.println(generateDegreeCode("COM", "P"));
 		System.out.println(generateDegreeCode("NEW", "U"));*/
 		// test for getCores
-		/*Degree test = new Degree("COMU00", "placeholder", "COM");
-		ArrayList<Approval> cores = test.getCores('2');
+		Degree test = new Degree("COMU00", "placeholder", "COM");
+		ArrayList<Approval> cores = test.getCores('1');
 		for (Approval approval: cores) {
 			System.out.println(approval.getModule().getCode());
-		}*/
-		Degree test = new Degree("COMU20", "placeholder", "COM");
+		}
+		/*Degree test = new Degree("COMU20", "placeholder", "COM");
 		Degree test2 = new Degree("COMU00", "placeholder", "COM");
 		System.out.println(test.exists());
-		System.out.println(test2.exists());
+		System.out.println(test2.exists());*/
+		//Degree degree = retrieveFromDB("COMP00");
+		//System.out.println(degree.getName());
 	}
 }
 

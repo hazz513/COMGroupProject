@@ -191,6 +191,38 @@ public class Module {
 		
 	}
 	
+	/*
+	 * get a module from database
+	 * 
+	 * @param modCode - module code of a module
+	 * 
+	 * @return module matching code
+	 */
+	public static Module retrieveFromDB(String modCode) {
+		ArrayList<Module> modules = new ArrayList<Module>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the modules matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Module WHERE " + 
+					 						  "modCode = '" + modCode +"' ;");
+			
+			// build list of modules
+			while(rs.next()) {
+				Module module = new Module(rs.getString("modCode"), rs.getString("modName"));
+				modules.add(module);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) from list
+		return modules.get(0);
+	}
+	
 	public static void main(String[] args) {
 		//test
 		//Module fp = new Module("COM2108", "Functional Programming");
@@ -209,6 +241,7 @@ public class Module {
 		
 		//test
 		//System.out.println(generateModuleCode("COM"));
+		System.out.println(retrieveFromDB("COM0000").getName());
 	}
 
 }
