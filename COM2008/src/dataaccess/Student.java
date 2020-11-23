@@ -2,7 +2,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Student {
 	//Database Information
@@ -119,6 +121,39 @@ public class Student {
 			return false;
 		}
 	}
+	
+	/*
+	 * get a student from database
+	 * 
+	 * @param registration - registration number of student
+	 * 
+	 * @return student matching registration
+	 */
+	public static Student retrieveFromDB(int registration) {
+		ArrayList<Student> students = new ArrayList<Student>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Student WHERE " + 
+					 						  "registration = '" + registration +"' ;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"), rs.getString("forename"), rs.getString("email"));
+				students.add(student);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) degree
+		return students.get(0);
+	}
+	
 	/*
 	 * Testing method 
 	 */
