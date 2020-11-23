@@ -131,8 +131,7 @@ public class Degree {
 			
 			// build list of approvals
 			while(rs.next()) {
-				Module coreModule = new Module(rs.getString("modCode"), "placeholder");
-				Approval coreApproval = new Approval(this, coreModule, 1, rs.getInt("credits"), rs.getString("level").charAt(0));
+				Approval coreApproval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
 				cores.add(coreApproval);
 			}
 		}
@@ -257,17 +256,17 @@ public class Degree {
 		System.out.println(generateDegreeCode("COM", "P"));
 		System.out.println(generateDegreeCode("NEW", "U"));*/
 		// test for getCores
-		/*Degree test = new Degree("COMU00", "placeholder", "COM");
-		ArrayList<Approval> cores = test.getCores('2');
+		Degree test = new Degree("COMU00", "placeholder", "COM");
+		ArrayList<Approval> cores = test.getCores('1');
 		for (Approval approval: cores) {
 			System.out.println(approval.getModule().getCode());
-		}*/
+		}
 		/*Degree test = new Degree("COMU20", "placeholder", "COM");
 		Degree test2 = new Degree("COMU00", "placeholder", "COM");
 		System.out.println(test.exists());
 		System.out.println(test2.exists());*/
-		Degree degree = retrieveFromDB("COMP00");
-		System.out.println(degree.getName());
+		//Degree degree = retrieveFromDB("COMP00");
+		//System.out.println(degree.getName());
 	}
 }
 
