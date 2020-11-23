@@ -9,7 +9,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Approval {
 	
@@ -119,6 +121,43 @@ public class Approval {
 		}
 	}
 	
+	/*
+	 * get an approval from database
+	 * 
+	 * @param degCode - degree code of degree
+	 * @param modCode - module code of degree
+	 * 
+	 * @return approval matching codes
+	 */
+	public static Approval retrieveFromDB(String degCode, String modCode) {
+		ArrayList<Approval> approvals = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the approvals mathcing codes
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval WHERE " +
+					 						  "degCode LIKE '" + degCode + "' AND " +
+					 						  "modCode LIKE '" + modCode +"' ;");
+			
+			// build list of approvals
+			while(rs.next()) {
+				Module module = Module.retrieveFromDB(rs.getString("modCode"));
+				Degree degree = Degree.retrieveFromDB(rs.getString("degCode"));
+				
+				Approval coreApproval = new Approval(degree, module, rs.getInt("core"), rs.getInt("credits"), rs.getString("level").charAt(0));
+				approvals.add(coreApproval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) approval
+		return approvals.get(0);
+	}
+	
 	public static void main(String[] args) {
 		//test
 		//Module fp = new Module("COM2108", "Functional Programming");
@@ -126,6 +165,7 @@ public class Approval {
 		//Approval fpse = new Approval(se, fp, 1, 10, '2');
 		//System.out.println(fpse.addToDB());
 		//System.out.println(fpse.removeFromDB());
+		System.out.println(retrieveFromDB("COMU00", "COM0000").getLevel());
 	}
 
 }

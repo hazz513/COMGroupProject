@@ -2,7 +2,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class StudyPeriod {
 	//Database Information
@@ -108,6 +110,32 @@ public class StudyPeriod {
 				ex.printStackTrace();
 				return false;
 			}
+		}
+		
+		public ArrayList<Performance> getPerformances() {
+			ArrayList<Performance> performances = new ArrayList<Performance>();
+			
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				
+				// get all the approvals which are core for the degree and level
+				ResultSet rs =  stmt.executeQuery("SELECT * FROM Performance WHERE " +
+						 						  "registration = '" + this.storedRegistration + "' AND " +
+												  "label = '" + this.label + "' ;");
+				
+				// build list of approvals
+				while(rs.next()) {
+					Approval approval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
+					Performance performance = new Performance(this, approval, rs.getInt("grade"), rs.getInt("resitGrade"));
+					performances.add(performance);
+				}
+			}
+			
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			
+			return performances;
 		}
 		
 		/*

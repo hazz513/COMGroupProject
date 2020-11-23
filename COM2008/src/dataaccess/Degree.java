@@ -216,6 +216,38 @@ public class Degree {
 		}
 	}
 	
+	/*
+	 * get a degree from database
+	 * 
+	 * @param degCode - degree code of degree
+	 * 
+	 * @return degree matching code
+	 */
+	public static Degree retrieveFromDB(String degCode) {
+		ArrayList<Degree> degrees = new ArrayList<Degree>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree WHERE " + 
+					 						  "degCode = '" + degCode +"' ;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				Degree degree = new Degree(rs.getString("degCode"), rs.getString("degName"), rs.getString("leadDep"));
+				degrees.add(degree);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) degree
+		return degrees.get(0);
+	}
+	
 	
 	public static void main(String[] args) {
 		// tests for code generator
@@ -230,10 +262,12 @@ public class Degree {
 		for (Approval approval: cores) {
 			System.out.println(approval.getModule().getCode());
 		}*/
-		Degree test = new Degree("COMU20", "placeholder", "COM");
+		/*Degree test = new Degree("COMU20", "placeholder", "COM");
 		Degree test2 = new Degree("COMU00", "placeholder", "COM");
 		System.out.println(test.exists());
-		System.out.println(test2.exists());
+		System.out.println(test2.exists());*/
+		Degree degree = retrieveFromDB("COMP00");
+		System.out.println(degree.getName());
 	}
 }
 
