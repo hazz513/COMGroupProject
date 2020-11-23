@@ -112,18 +112,56 @@ public class StudyPeriod {
 			}
 		}
 		
+		/*
+		 * get a degree from database
+		 * 
+		 * @param degCode - degree code of degree
+		 * 
+		 * @return degree matching code
+		 */
+		public static StudyPeriod retrieveFromDB(char label, int registration) {
+			ArrayList<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+			
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				
+				// get all the degrees matching code
+				ResultSet rs =  stmt.executeQuery("SELECT * FROM StudyPeriod WHERE " + 
+						 						  "label = '" + label + "' AND " +
+												  "registration = '" + registration + "';");
+				
+				// build list of degrees
+				while(rs.next()) {
+					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")));
+					periods.add(period);
+				}
+			}
+			
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			
+			// return first(and only) degree
+			return periods.get(0);
+		}
+		
+		/*
+		 * get performances associated with the study period
+		 * 
+		 * @return list of performances
+		 */
 		public ArrayList<Performance> getPerformances() {
 			ArrayList<Performance> performances = new ArrayList<Performance>();
 			
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 				Statement stmt = con.createStatement();
 				
-				// get all the approvals which are core for the degree and level
+				// get all the performances associated with period
 				ResultSet rs =  stmt.executeQuery("SELECT * FROM Performance WHERE " +
 						 						  "registration = '" + this.storedRegistration + "' AND " +
 												  "label = '" + this.label + "' ;");
 				
-				// build list of approvals
+				// build list of performances
 				while(rs.next()) {
 					Approval approval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
 					Performance performance = new Performance(this, approval, rs.getInt("grade"), rs.getInt("resitGrade"));
@@ -136,6 +174,16 @@ public class StudyPeriod {
 			}
 			
 			return performances;
+		}
+		
+		/*
+		 * get the study level associated with the study period
+		 * 
+		 * @return char representing level
+		 */
+		public char getLevel() {
+			ArrayList<Performance> performances = this.getPerformances();
+			return (performances.get(0).getApproval().getLevel());
 		}
 		
 		/*

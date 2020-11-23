@@ -3,6 +3,7 @@ package dataaccess;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Performance {
 	//Database Information
@@ -13,12 +14,16 @@ public class Performance {
 	private StudyPeriod studyPeriod;
 	private Approval approval;
 	private int grade;
-	private int resitGrade;
+	private Integer resitGrade;
 	
-	public Performance(StudyPeriod studyPeriod, Approval approval, int grade, int resitGrade) {
+	public Performance(StudyPeriod studyPeriod, Approval approval, int grade) {
 		this.studyPeriod = studyPeriod;
 		this.approval = approval;
 		this.grade = grade;
+	}
+	
+	public Performance(StudyPeriod studyPeriod, Approval approval, int grade, Integer resitGrade) {
+		this(studyPeriod, approval, grade);
 		this.resitGrade = resitGrade;
 	}
 	
@@ -32,7 +37,7 @@ public class Performance {
 	public int getGrade() {
 		return grade;
 	}
-	public int getResitGrade() {
+	public Integer getResitGrade() {
 		return resitGrade;
 	}
 	
@@ -40,7 +45,7 @@ public class Performance {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
-	public void setResitGrade(int resitGrade) {
+	public void setResitGrade(Integer resitGrade) {
 		this.resitGrade = resitGrade;
 	}
 	
@@ -104,6 +109,15 @@ public class Performance {
 				ex.printStackTrace();
 				return false;
 			}
+		}
+		
+		/*
+		 * get the study level associated with the performance
+		 * 
+		 * @return char representing level
+		 */
+		public char getLevel() {
+			return (this.getApproval().getLevel());
 		}
 		
 		/*
