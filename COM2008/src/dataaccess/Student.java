@@ -155,6 +155,50 @@ public class Student {
 	}
 	
 	/*
+	 * get periods associated with the student
+	 * 
+	 * @return list of periods
+	 */
+	public ArrayList<StudyPeriod> getPeriods() {
+		ArrayList<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the periods associated with student
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM StudyPeriod WHERE " +
+					 						  "registration = '" + this.registration + "' ;");
+			
+			// build list of periods
+			while(rs.next()) {
+				StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), this);
+				periods.add(period);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return periods;
+	}
+	
+	public boolean canRepeat(char level) {
+		ArrayList<StudyPeriod> periods = this.getPeriods();
+		boolean containsLevel = false;
+		for (StudyPeriod period: periods) {
+			char periodLevel = period.getLevel();
+			if (containsLevel && periodLevel == level) {
+				return false;
+			}
+			else if (periodLevel == level) {
+				containsLevel = true;
+			}
+		}
+		return true;
+	}
+	
+	/*
 	 * Testing method 
 	 */
 	public static void main(String[] args) {
