@@ -247,6 +247,67 @@ public class Degree {
 		return degrees.get(0);
 	}
 	
+	/*
+	 * get all approvals for degree
+	 * 
+	 * @return ArrayList of approval
+	 */
+	public ArrayList<Approval> getApprovals() {
+		ArrayList<Approval> approvals = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the approvals
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval WHERE " +
+					 						  "degCode = '" + this.code + "';");
+			
+			// build list of approvals
+			while(rs.next()) {
+				Approval approval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
+				approvals.add(approval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return approvals;
+	}
+	
+	/*
+	 * get the levels for degree
+	 * 
+	 * @return ArrayList of levels
+	 */
+	public ArrayList<Character> getLevels() {
+		ArrayList<Character> levels = new ArrayList<Character>();
+		ArrayList<Approval> approvals = this.getApprovals();
+		for (Approval approval: approvals) {
+			// if level has not already been added then add it
+			if (!levels.contains(approval.getLevel())) {
+				levels.add(approval.getLevel());
+			}
+		}
+		return levels;
+	}
+	
+	/*
+	 * get the highest level for degree
+	 * 
+	 * @return char representing level
+	 */
+	public char finalLevel() {
+		ArrayList<Character> levels = this.getLevels();
+		char highest = '0';
+		for (char level: levels) {
+			if (level < 'A' && level > highest) {
+				highest = level;
+			}
+		}
+		return highest;
+	}
 	
 	public static void main(String[] args) {
 		// tests for code generator

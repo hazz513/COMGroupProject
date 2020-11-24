@@ -14,15 +14,16 @@ public class Performance {
 	private StudyPeriod studyPeriod;
 	private Approval approval;
 	private int grade;
-	private Integer resitGrade;
+	private int resitGrade;
 	
 	public Performance(StudyPeriod studyPeriod, Approval approval, int grade) {
 		this.studyPeriod = studyPeriod;
 		this.approval = approval;
 		this.grade = grade;
+		this.resitGrade = 0;
 	}
 	
-	public Performance(StudyPeriod studyPeriod, Approval approval, int grade, Integer resitGrade) {
+	public Performance(StudyPeriod studyPeriod, Approval approval, int grade, int resitGrade) {
 		this(studyPeriod, approval, grade);
 		this.resitGrade = resitGrade;
 	}
@@ -45,7 +46,7 @@ public class Performance {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
-	public void setResitGrade(Integer resitGrade) {
+	public void setResitGrade(int resitGrade) {
 		this.resitGrade = resitGrade;
 	}
 	
@@ -118,6 +119,13 @@ public class Performance {
 		 */
 		public char getLevel() {
 			return (this.getApproval().getLevel());
+		}
+		
+		public boolean canResit() {
+			if (this.resitGrade <= 0) {
+				return true;
+			}
+			return false;
 		}
 		
 		/*
