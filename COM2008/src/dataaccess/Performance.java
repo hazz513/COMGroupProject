@@ -1,9 +1,8 @@
 package dataaccess;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.util.ArrayList;
+
+import java.sql.*;
+import java.util.*;
 
 public class Performance {
 	//Database Information
@@ -128,13 +127,14 @@ public class Performance {
 			return false;
 		}
 		
+		
 		/*
 		 * Testing functions. 
 		 * Invalid and won't work until the Table Student is populated
 		 * FK is needed
 		 */
 		public static void main(String[] args) {
-			//test
+			/*//test
 			Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
 			System.out.println(George.addStudent());
 			
@@ -149,12 +149,15 @@ public class Performance {
 			
 			Approval fpse = new Approval(se, fp, 1, 10, '2');
 			System.out.println(fpse.addToDB());
+			
 
 			
 			
 			Performance please = new Performance(Test, fpse, 45, 90);
 			System.out.println(please.addPerformance());
+			*/
 			//System.out.println(please.removePerformance());
+			
 			
 		}
 }

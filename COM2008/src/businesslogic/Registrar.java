@@ -61,12 +61,44 @@ public class Registrar {
 		return true;
 	}
 	
+	/*
+	 * check if the sum of all module credit of a student sums to correct total
+	 * 
+	 * @param StudyPeriod
+	 * 
+	 * returns a integer, positive if there are less than allowed limit of credit taken,negative if more than and zero when it's correct
+	 */
+	public static int creditChecker(StudyPeriod studyPeriod) {
+		ArrayList<Performance> list = studyPeriod.getPerformances();
+		int totalCredit = 100000;
+		String degreeType = list.get(0).getApproval().getDegree().getCode();
+		
+		if (degreeType.charAt(3)=='U')
+			totalCredit = 120;
+		else
+			totalCredit = 160;
+		
+		
+		for(Performance i: list) {
+			totalCredit -= i.getApproval().getCredits();	
+		}
+		
+		return totalCredit ;
+		
+	}
+	
 	public static void main(String[] args) {
-		//test
+		/*//test
 		Student test = new Student(1234567, "dr", "Robert", "Bob", "B.Rob@whatever.com");
 		Degree testDeg = new Degree("COMU00", "placeholder", "COM");
 		System.out.println(registerStudent(test, "2020-11-20", "2021-11-21", testDeg));
+		*/
 		
+		
+		//test for creditChecker method
+		StudyPeriod s = StudyPeriod.retrieveFromDB('A',9876543);
+		System.out.println(creditChecker(s));
+			
 	}
 
 }
