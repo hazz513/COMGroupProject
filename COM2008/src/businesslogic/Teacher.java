@@ -1,6 +1,6 @@
 package businesslogic;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import dataaccess.*;
 
@@ -17,8 +17,169 @@ public class Teacher {
 		GRADUATE_BACHELOR,
 		GRADUATE_MASTER,
 		GRADUATE_PGDIP,
-		GRADUATE_PGCERT,	
+		GRADUATE_PGCERT	
 	}
+	
+	enum DegreeClass {
+		FIRST_CLASS,
+		UPPER_SECOND,
+		LOWER_SECOND,
+		THIRD_CLASS,
+		PASS,
+		DISTINCTION,
+		MERIT,
+		FAIL,
+		INVALID
+	}
+	
+	/*
+	 * get the degree class for a graduating student, returns invalid otherwise
+	 * 
+	 * @param student - the subjected student
+	 * @param progression - the progression type, expects a bachelors or masters
+	 * 
+	 * @return the degree class obtained
+	 */
+	public static DegreeClass getDegreeClass(Student student, Progression progression) {
+		ArrayList<Double> grades = compileGrades(student);
+		if (grades.size() == 4 && progression == Progression.GRADUATE_BACHELOR) {
+			grades.remove(3);
+		}
+		double meanGrade = degreeMeanGrade(grades);
+		
+		if (grades.size() == 2 || grades.size() > 4 || grades.size() < 1) {
+			return DegreeClass.INVALID;
+		}
+		
+		if (progression == Progression.GRADUATE_BACHELOR) {
+			if (meanGrade < 39.5) {
+				return DegreeClass.FAIL;
+			}
+			else if (meanGrade < 44.5) {
+				return DegreeClass.PASS;
+			}
+			else if (meanGrade < 49.5) {
+				return DegreeClass.THIRD_CLASS;
+			}
+			else if (meanGrade < 59.5) {
+				return DegreeClass.LOWER_SECOND;
+			}
+			else if (meanGrade < 69.5) {
+				return DegreeClass.UPPER_SECOND;
+			}
+			else {
+				return DegreeClass.FIRST_CLASS;
+			}
+		}
+		else if (progression == Progression.GRADUATE_MASTER) {
+			if (meanGrade < 49.5) {
+				return DegreeClass.FAIL;
+			}
+			else if (meanGrade < 59.5) {
+				if (grades.size() == 1)  {
+					return DegreeClass.PASS;
+				}
+				return DegreeClass.LOWER_SECOND;
+			}
+			else if (meanGrade < 69.5) {
+				if (grades.size() == 1)  {
+					return DegreeClass.MERIT;
+				}
+				return DegreeClass.UPPER_SECOND;
+			}
+			else {
+				if (grades.size() == 1)  {
+					return DegreeClass.DISTINCTION;
+				}
+				return DegreeClass.FIRST_CLASS;
+			}
+		}
+		
+		else {
+			return DegreeClass.INVALID;
+		}
+	}
+	
+	/*
+	 * get the weighted mean grade for the entire course for a student
+	 * return standard mean unless there are 3 or 4 levels 
+	 * 
+	 * @param grades - list of grades, 1 per level, ordered by level
+	 * 
+	 * @return the the mean grade
+	 */
+	public static double degreeMeanGrade(ArrayList<Double> grades) {
+		// get mean grades for each
+		double sum = 0;
+		switch(grades.size()) {
+			case 3:
+				// mean for bachelors
+				// third year is given double weighting
+				sum = grades.get(1) + 2*grades.get(2);
+				return sum/3;
+			case 4:
+				// mean for masters
+				// third and fourth year are given double weighting
+				sum = grades.get(1) + 2*grades.get(2) +2*grades.get(3);
+				return sum/5;
+			default:
+				// standard mean
+				// to be used for 1 year postgrad
+				for (double grade: grades) {
+					sum += grade;
+				}
+				return sum/grades.size();	
+		}
+	}
+	
+	/*
+	 * compile mean grades for each level into ordered list
+	 * 
+	 * @param student - the student for which grades are needed
+	 * 
+	 * @return list of grades for each level in order
+	 */
+	public static ArrayList<Double> compileGrades(Student student) {
+		// get all levels excluding year in industry
+		ArrayList<StudyPeriod> periods = student.getPeriods();
+		periods.sort(new StudyPeriodComparator());
+		ArrayList<Double> grades = new ArrayList<Double>();
+		ArrayList<Character> levels = new ArrayList<Character>();
+		// for each period
+		for (int i = 0; i < periods.size(); i++) {
+			char level = periods.get(i).getLevel();
+			// remove placement
+			if (level == 'P') {
+				periods.remove(i);
+				i--;
+			}
+			// add grade(one per level) to list, replace previous entry if needed
+			else { 
+				double grade = meanGrade(periods.get(i));
+				if (!levels.contains(level)){
+					//System.out.println("adding: " + level);
+					levels.add(level);
+					grades.add(grade);
+				}	
+				else {
+					//System.out.println("repeating: " + level);
+					grades.set(levels.indexOf(level), grade);
+				}		
+			}
+					
+		}
+		return grades;
+	}
+	
+	// a comparator for studyperiod allowing it to be easily sorted based on label
+	static class StudyPeriodComparator implements Comparator<StudyPeriod> { 
+		// compares the label of the period
+        @Override
+        public int compare(StudyPeriod a, StudyPeriod b) { 
+            // for comparison 
+            return a.getLabel() - b.getLabel();
+        }    
+    } 
 	
 	/*
 	 * check if student progresses, fails, graduate etc 
@@ -268,10 +429,13 @@ public class Teacher {
 	public static void main(String[] args) {
 		//System.out.println(meanGrade(StudyPeriod.retrieveFromDB('A', 1234567)));
 		// test grading
-		StudyPeriod period = StudyPeriod.retrieveFromDB('C', 1234567);
-		System.out.println(progression(period));
+		//StudyPeriod period = StudyPeriod.retrieveFromDB('C', 1234567);
+		//System.out.println(progression(period));
 		//Degree degree = Degree.retrieveFromDB("COMU00");
 		//System.out.println(degree.finalLevel());
+		//Student student = Student.retrieveFromDB(1241214);
+		//double test = degreeMeanGrade(compileGrades(student));
+		//System.out.println(getDegreeClass(student, Progression.GRADUATE_MASTER));
 	}
 
 }
