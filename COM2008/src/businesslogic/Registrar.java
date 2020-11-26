@@ -7,10 +7,9 @@
 */
 package businesslogic;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import dataaccess.*;
-import dataaccess.Module;
 
 public class Registrar {
 	
@@ -86,6 +85,52 @@ public class Registrar {
 		return totalCredit ;
 		
 	}
+	/*
+	 * checks that student registrations are complete and correct
+	 * 
+	 * @param StudyPeriod
+	 * 
+	 * returns a boolean, true when everything is correct and false otherwise
+	 */
+	public static boolean checkStudentReg(StudyPeriod studyPeriod) {
+		Degree degree = new Degree(studyPeriod.getPerformances().get(0).getApproval().getDegree().getCode(),"xyz","YYY");
+		ArrayList<Approval> actualCoreMod = degree.getCores(studyPeriod.getLevel());
+		ArrayList<Approval>  chosenCoreMod = new ArrayList<Approval>();
+		ArrayList<Performance> performance = studyPeriod.getPerformances();
+		
+		for(Performance i: performance) {
+			chosenCoreMod.add(i.getApproval());
+		}
+		
+		ArrayList<String> actualModCode = new ArrayList<String>();
+		ArrayList<String> chosenModCode = new ArrayList<String>();
+		
+		//adding the module codes to the both the arrayList
+		for (Approval i: actualCoreMod) {
+			actualModCode.add(i.getModule().getCode());
+		}
+		
+		for (Approval i: chosenCoreMod) {
+			chosenModCode.add(i.getModule().getCode());
+		}
+		
+		//sorting the array right now helps in comparing them
+		//Collections.sort(actualModCode);
+		//Collections.sort(chosenModCode);
+		
+		
+		if (chosenCoreMod.size()==actualCoreMod.size() && creditChecker(studyPeriod)==0 && 
+			actualModCode.containsAll(chosenModCode) && chosenModCode.containsAll(actualModCode) ) {
+			return true;
+		}	
+		else
+			return false;
+		
+
+		//int c= 0;
+		//chosenCoreMod.containsAll(actualCoreMod) && actualCoreMod.containsAll(chosenCoreMod)
+		//return c;
+	}
 	
 	public static void main(String[] args) {
 		/*//test
@@ -94,11 +139,9 @@ public class Registrar {
 		System.out.println(registerStudent(test, "2020-11-20", "2021-11-21", testDeg));
 		*/
 		
-		
-		//test for creditChecker method
+		//test for creditChecker or checkStudentReg method
 		StudyPeriod s = StudyPeriod.retrieveFromDB('A',9876543);
-		System.out.println(creditChecker(s));
-			
+		System.out.println(checkStudentReg(s));
 	}
 
 }
