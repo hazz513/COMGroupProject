@@ -193,7 +193,6 @@ public class Teacher {
 		Degree degree = performances.get(0).getApproval().getDegree();
 		Student student = Student.retrieveFromDB(performances.get(0).getStudyPeriod().getStoredRegistration());
 		char level = performances.get(0).getLevel();
-		
 		// check for special conditions for postgrad
 		if (degree.getCode().charAt(3) == 'P') {
 			System.out.println("special rules");
@@ -447,6 +446,7 @@ public class Teacher {
 		else if (progressMethod == Progression.REPEAT) {}
 		else {
 			//Invalid input (I.E Resit is an option)
+			System.out.println("Student can do a resit");
 			return false;
 		}
 		

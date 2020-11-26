@@ -46,6 +46,7 @@ public class Authentication {
 		this.userID = userID;
 		
 		String passEnd = Integer.toString((int)Math.random()*9001 + 1000);
+		//Fix Randomizer
 		String password = name.substring(0,3)+lastName.substring(0,3)+passEnd;
 		System.out.printf("The generated password for the student is: ", password);
 		this.password = password;

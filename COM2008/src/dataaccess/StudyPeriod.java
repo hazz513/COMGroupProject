@@ -140,8 +140,6 @@ public class StudyPeriod {
 			catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			System.out.println("Size of Periods from retrieveFromDB ");
-			System.out.println(periods.size());
 			// return first(and only) degree
 			return periods.get(0);
 		}

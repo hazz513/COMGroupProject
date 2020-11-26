@@ -185,6 +185,7 @@ public class Student {
 	
 	public boolean canRepeat(char level) {
 		ArrayList<StudyPeriod> periods = this.getPeriods();
+		
 		boolean containsLevel = false;
 		for (StudyPeriod period: periods) {
 			char periodLevel = period.getLevel();
