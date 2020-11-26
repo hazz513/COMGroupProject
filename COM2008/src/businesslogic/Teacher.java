@@ -425,12 +425,59 @@ public class Teacher {
 		return Math.max(performance.getGrade(), cappedResit);
 	}
 	
+	/*
+	 * Checks if the student is eligible to be advanced and advances them if necessary
+	 * @param student - A student to be checked
+	 * 
+	 * @return a boolean defendant on result
+	 */
+	public static boolean progressStudent(StudyPeriod studyPeriod,String startDate, String endDate) {
+		Progression progressMethod = progression(studyPeriod);
+		char newLabel = studyPeriod.getLabel();
+		newLabel+=1;
+		ArrayList<Performance> pastPerformances = studyPeriod.getPerformances();
+		Degree degree = pastPerformances.get(0).getApproval().getDegree();
+		
+		char level = studyPeriod.getLevel();
+		
+		
+		if (progressMethod == Progression.PROGRESS) {
+			level+=1;
+		}
+		else if (progressMethod == Progression.REPEAT) {}
+		else {
+			//Invalid input (I.E Resit is an option)
+			return false;
+		}
+		
+		StudyPeriod newStudyPeriod = new StudyPeriod(newLabel, startDate, endDate, studyPeriod.getStudent());
+		System.out.println(newStudyPeriod.addStudyPeriod());
+		
+		ArrayList<Approval> coreModules = degree.getCores(level);
+		
+		for (Approval approvals:coreModules) {
+			Performance newPerformances = new Performance(newStudyPeriod, approvals, 0,0);
+			if (!newPerformances.addPerformance()) {
+				return false;
+				
+			}
+		}
+		return true;
+	}
+	
 	
 	public static void main(String[] args) {
 		//System.out.println(meanGrade(StudyPeriod.retrieveFromDB('A', 1234567)));
 		// test grading
-		//StudyPeriod period = StudyPeriod.retrieveFromDB('C', 1234567);
+		
+		
+		//StudyPeriod period = StudyPeriod.retrieveFromDB('A', 1234567);
 		//System.out.println(progression(period));
+		
+		StudyPeriod periodProgressTest = StudyPeriod.retrieveFromDB('A', 1234567);
+		
+		System.out.println(progressStudent(periodProgressTest,"0000-00-00","0000-00-01"));
+		
 		//Degree degree = Degree.retrieveFromDB("COMU00");
 		//System.out.println(degree.finalLevel());
 		//Student student = Student.retrieveFromDB(1241214);

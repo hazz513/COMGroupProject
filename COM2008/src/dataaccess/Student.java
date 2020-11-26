@@ -188,6 +188,7 @@ public class Student {
 		boolean containsLevel = false;
 		for (StudyPeriod period: periods) {
 			char periodLevel = period.getLevel();
+			
 			if (containsLevel && periodLevel == level) {
 				return false;
 			}
