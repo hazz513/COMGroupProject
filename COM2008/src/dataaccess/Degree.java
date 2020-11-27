@@ -149,6 +149,45 @@ public class Degree {
 	}
 	
 	/*
+	 * get an array of non-core modules from the database
+	 * 
+	 * @param degCode - degree code of degree
+	 * @param modCode - module code of degree
+	 * @param core - non-core is 0 and core modules are 1
+	 * 
+	 * @return ncmodules
+	 */
+	
+	public ArrayList<Approval> getNonCores(char level) {
+		ArrayList<Approval> nonCores = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the approvals which are core for the degree and level
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval WHERE " +
+					 						  "degCode LIKE '" + code + "' AND " +
+											  "core = 0 AND " + 
+					 						  "level = '" + level +"' ;");
+			
+			// build list of approvals
+			while(rs.next()) {
+				Approval coreApproval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
+				nonCores.add(coreApproval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return nonCores;
+		
+	}
+	
+	
+	
+	/*
 	 * check if a degree exists in the database
 	 * 
 	 * @return true if degree exists, false otherwise

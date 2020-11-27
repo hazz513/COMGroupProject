@@ -140,6 +140,11 @@ public class StudyPeriod {
 			catch (Exception ex) {
 				ex.printStackTrace();
 			}
+<<<<<<< Updated upstream
+=======
+			System.out.println("Size of Periods from retrieveFromDB ");
+			System.out.println(periods.size());
+>>>>>>> Stashed changes
 			// return first(and only) degree
 			return periods.get(0);
 		}
@@ -179,6 +184,11 @@ public class StudyPeriod {
 		public char getLevel() {
 			ArrayList<Performance> performances = this.getPerformances();
 			return (performances.get(0).getApproval().getLevel());
+		}
+		
+		public Degree getDeg() {
+			ArrayList<Performance> performances = this.getPerformances();
+			return (performances.get(0).getApproval().getDegree());
 		}
 		
 		/*

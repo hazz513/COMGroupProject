@@ -43,7 +43,13 @@ public class Registrar {
 	
 	// useless atm
 	// add optional modules 
-	public static boolean addOptModules() {
+	public static boolean checkOptModules(int reg) {
+		StudyPeriod period = StudyPeriod.retrieveFromDB('A', reg);
+		Degree studeg = period.getDeg();
+		
+		//studeg.getNonCores(level);
+		
+		//IndexDB.regToDegree(reg);
 		return true;
 	}
 	
@@ -60,6 +66,7 @@ public class Registrar {
 		return true;
 	}
 	
+<<<<<<< Updated upstream
 	/*
 	 * check if the sum of all module credit of a student sums to correct total
 	 * 
@@ -142,6 +149,19 @@ public class Registrar {
 		//test for creditChecker or checkStudentReg method
 		StudyPeriod s = StudyPeriod.retrieveFromDB('A',9876543);
 		System.out.println(checkStudentReg(s));
+=======
+	
+	
+	
+	
+	public static void main(String[] args) {
+		//test
+		//Student test = new Student(1234567, "dr", "Robert", "Bob", "B.Rob@whatever.com");
+		//Degree testDeg = new Degree("COMU00", "placeholder", "COM");
+		//System.out.println(registerStudent(test, "2020-11-20", "2021-11-21", testDeg));
+		checkOptModules(1234567);
+		System.out.println("Test");
+>>>>>>> Stashed changes
 	}
 
 }
