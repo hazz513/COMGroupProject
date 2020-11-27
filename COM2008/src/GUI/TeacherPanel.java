@@ -13,14 +13,18 @@ public class TeacherPanel extends JPanel implements ActionListener{
 	
 	public TeacherPanel(Frame frame) {
 		this.frame = frame;
+		initialize();
 		
-		setLayout(new GridLayout(0, 1));
-		
-		add(new JButton("this is the teacher panel"));
+		TeacherMenuPanel sideMenu = new TeacherMenuPanel(frame, this);
+		add(sideMenu, BorderLayout.WEST);
+	}
+	
+	public void initialize() {
+		setLayout(new BorderLayout());
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
