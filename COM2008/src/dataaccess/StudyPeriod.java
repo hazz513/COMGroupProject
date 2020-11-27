@@ -2,7 +2,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class StudyPeriod {
 	//Database Information
@@ -14,12 +16,14 @@ public class StudyPeriod {
 	private String startDate;
 	private String endDate;
 	private Student student;
+	private int storedRegistration;
 	
 	public StudyPeriod(char label, String startDate, String endDate, Student student) {
 		this.label = label;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.student = student;
+		storedRegistration = this.student.getRegistration();
 	}
 	
 	//get methods (May need to create a set for the student object)
@@ -34,6 +38,9 @@ public class StudyPeriod {
 	}
 	public Student getStudent() {
 		return student;
+	}
+	public int getStoredRegistration() {
+		return storedRegistration;
 	}
 	
 	//set methods
@@ -61,7 +68,7 @@ public class StudyPeriod {
 												this.getLabel() + "','" +
 												this.getStartDate() + "','" +
 												this.getEndDate() + "','" +
-												this.getStudent().getRegistration() + "');"
+												this.getStoredRegistration() + "');"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {
@@ -88,7 +95,7 @@ public class StudyPeriod {
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("DELETE FROM StudyPeriod WHERE " + 
 						 						"label = '" + this.getLabel() + "' AND " + 
-						 						"registration = '" + this.student.getRegistration() + "';"
+						 						"registration = '" + this.getStoredRegistration() + "';"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {
@@ -103,6 +110,75 @@ public class StudyPeriod {
 				ex.printStackTrace();
 				return false;
 			}
+		}
+		
+		/*
+		 * get a degree from database
+		 * 
+		 * @param degCode - degree code of degree
+		 * 
+		 * @return degree matching code
+		 */
+		public static StudyPeriod retrieveFromDB(char label, int registration) {
+			ArrayList<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+	
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				
+				// get all the degrees matching code
+				ResultSet rs =  stmt.executeQuery("SELECT * FROM StudyPeriod WHERE " + 
+						 						  "label = '" + label + "' AND " +
+												  "registration = '" + registration + "';");
+				// build list of degrees
+				while(rs.next()) {
+					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")));
+					periods.add(period);
+				}
+			}
+			
+			
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			// return first(and only) degree
+			return periods.get(0);
+		}
+		
+		/*
+		 * get performances associated with the study period
+		 * 
+		 * @return list of performances
+		 */
+		public ArrayList<Performance> getPerformances() {
+			ArrayList<Performance> performances = new ArrayList<Performance>();
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				// get all the performances associated with period
+				ResultSet rs =  stmt.executeQuery("SELECT * FROM Performance WHERE " +
+						 						  "registration = '" + this.storedRegistration + "' AND " +
+												  "label = '" + this.label + "' ;");
+				
+				while(rs.next()) {
+					Approval approval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
+					Performance performance = new Performance(this, approval, rs.getInt("grade"), rs.getInt("resitGrade"));
+					performances.add(performance);
+				}
+			}
+			
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			return performances;
+		}
+		
+		/*
+		 * get the study level associated with the study period
+		 * 
+		 * @return char representing level
+		 */
+		public char getLevel() {
+			ArrayList<Performance> performances = this.getPerformances();
+			return (performances.get(0).getApproval().getLevel());
 		}
 		
 		/*

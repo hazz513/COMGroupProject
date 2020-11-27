@@ -10,10 +10,11 @@ public class Authentication {
 	private static final String DB_USER_NAME = "team012";
 	private static final String DB_PASSWORD =  "0232ab87";
 	
-	private int userID;
+	private String userID;
 	private String password;
 	private int authLevel;
 	//Placeholder Variable to be linked to Student Object
+	private Student student;
 	private int regNum;
 	
 	/*
@@ -23,15 +24,40 @@ public class Authentication {
 	 * @param authLevel = Authorisation level
 	 * @param regNum = Registration Number 
 	 */
-	public Authentication(int userID, String password, int authLevel, int regNum) {
+	public Authentication(String userID, String password, int authLevel, Student student) {
 		this.userID = userID;
 		this.password = password;
 		this.authLevel = authLevel;
-		this.regNum = regNum;
+		this.student = student;
 	}
 	
+	/*
+	 * New Student Constructor
+	 * @param student = Instance of a student
+	 * return = returns a boolean 
+	 */
+	public Authentication(Student student) {
+		String name = student.getForename();
+		String lastName = student.getSurname();
+		String registration = Integer.toString(student.getRegistration());
+		
+		String userID = name.substring(0,1)+lastName.substring(0,1)+registration.substring(registration.length() -4,registration.length());
+		System.out.printf("The generated username for the student is: ", userID);
+		this.userID = userID;
+		
+		String passEnd = Integer.toString((int)Math.random()*9001 + 1000);
+		//Fix Randomizer
+		String password = name.substring(0,3)+lastName.substring(0,3)+passEnd;
+		System.out.printf("The generated password for the student is: ", password);
+		this.password = password;
+		
+		this.authLevel = 1;
+		this.student = student;
+	}
+	
+	
 	//Get Functions
-	public int getUserID() {
+	public String getUserID() {
 		return userID;
 	}
 	public String getPassword() {
@@ -41,11 +67,11 @@ public class Authentication {
 		return authLevel;
 	}
 	public int getRegNum() {
-		return regNum;
+		return student.getRegistration();
 	}
 	
 	//Set Function
-	public void setUserID(int userID) {
+	public void setUserID(String userID) {
 		this.userID = userID;
 	}
 	public void setPassword(String password) {
@@ -97,8 +123,8 @@ public class Authentication {
 	public boolean removeAuthentication() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 			Statement stmt = con.createStatement();
-			int count = stmt.executeUpdate("DELETE FROM Authentication WHERE userID='"  
-											+ this.getUserID() + "';"
+			int count = stmt.executeUpdate("DELETE FROM Authentication WHERE " + 
+											"userID = '" + this.getUserID() + "';"
 											);
 			System.out.println("Changes made: " + count);
 			switch (count) {
@@ -115,11 +141,6 @@ public class Authentication {
 		}
 	}
 	
-	/*
-	 * Testing functions. 
-	 * Invalid and won't work until the Table Student is populated
-	 * FK is needed
-	 */
 	public boolean updatePassToDB() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();

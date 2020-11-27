@@ -1,8 +1,8 @@
 package dataaccess;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+
+import java.sql.*;
+import java.util.*;
 
 public class Performance {
 	//Database Information
@@ -10,29 +10,29 @@ public class Performance {
 	private static final String DB_USER_NAME = "team012";
 	private static final String DB_PASSWORD =  "0232ab87";
 	
-	private Student student;
 	private StudyPeriod studyPeriod;
-	private Module module;
+	private Approval approval;
 	private int grade;
 	private int resitGrade;
 	
-	public Performance(Student student, StudyPeriod studyPeriod, Module module, int grade, int resitGrade) {
-		this.student = student;
+	public Performance(StudyPeriod studyPeriod, Approval approval, int grade) {
 		this.studyPeriod = studyPeriod;
-		this.module = module;
+		this.approval = approval;
 		this.grade = grade;
+		this.resitGrade = 0;
+	}
+	
+	public Performance(StudyPeriod studyPeriod, Approval approval, int grade, int resitGrade) {
+		this(studyPeriod, approval, grade);
 		this.resitGrade = resitGrade;
 	}
 	
 	//get methods (May need to create a set for the student object)
-	public Student getStudent() {
-		return student;
-	}
 	public StudyPeriod getStudyPeriod() {
 		return studyPeriod;
 	}
-	public Module getModule() {
-		return module;
+	public Approval getApproval() {
+		return approval;
 	}
 	public int getGrade() {
 		return grade;
@@ -60,9 +60,10 @@ public class Performance {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("INSERT INTO Performance VALUE ('" + 
-												this.getStudent().getRegistration() + "','" +
+												this.getStudyPeriod().getStoredRegistration() + "','" +
 												this.getStudyPeriod().getLabel() + "','" +
-												this.getModule().getCode() + "','" +
+												this.getApproval().getModule().getCode() + "','" +
+												this.getApproval().getDegree().getCode() + "','" +
 												this.getGrade() + "','" +
 												this.getResitGrade() + "');"
 												);
@@ -90,9 +91,10 @@ public class Performance {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("DELETE FROM Performance WHERE " + 
-											   "registration = '" + this.student.getRegistration() + "' AND " + 
+											   "registration = '" + this.studyPeriod.getStoredRegistration() + "' AND " + 
 											   "label = '" + this.studyPeriod.getLabel() + "' AND " + 
-											   "modCode = '" + this.module.getCode() + "';"
+											   "modCode = '" + this.getApproval().getModule().getCode() + "' AND " + 
+											   "degCode = '" + this.getApproval().getDegree().getCode() + "';"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {
@@ -108,6 +110,24 @@ public class Performance {
 				return false;
 			}
 		}
+		
+		/*
+		 * get the study level associated with the performance
+		 * 
+		 * @return char representing level
+		 */
+		public char getLevel() {
+			return (this.getApproval().getLevel());
+		}
+		
+		public boolean canResit() {
+			if (this.resitGrade <= 0) {
+				return true;
+			}
+			return false;
+		}
+		
+		
 		/*
 		 * Testing functions. 
 		 * Invalid and won't work until the Table Student is populated

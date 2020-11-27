@@ -9,9 +9,16 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Degree {
+	
+	// database information
+	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
+	private static final String DB_USER_NAME = "team012";
+	private static final String DB_PASSWORD =  "0232ab87";
 	
 	private String code;
 	private String name;
@@ -45,7 +52,6 @@ public class Degree {
 	public String getLeadDep() {
 		return leadDep;
 	}
-	
 	//set methods
 	public void setCode(String code) {
 		this.code = code;
@@ -57,7 +63,115 @@ public class Degree {
 		this.leadDep = leadDep;
 	}
 	
-	// database ------------------------------------------------------------------
+	/*
+	 * generate unique degree code
+	 * 
+	 * @param depCode - three letter department code
+	 * @param degreeLevel - single letter, U for undergrad, P for postgrad
+	 * 
+	 * @return module code string
+	 */
+	public static String generateDegreeCode(String depCode, String degreeLevel) {
+		// get list of modules with same department code
+		ArrayList<Integer> currentCodes = new ArrayList<Integer>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			//get all the module with same department code
+			ResultSet rs =  stmt.executeQuery("SELECT degCode FROM Degree WHERE degCode LIKE '" 
+			                                    + depCode + degreeLevel + "%';");
+			
+			//storing all the unique digits from the result in an arrayList
+			while(rs.next()) {
+				currentCodes.add(Integer.parseInt(rs.getString("degCode").substring(4)));
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+			//ArrayList<String> str = new ArrayList<String>();
+			//str.add ("Nothing to show,error occured");
+			//return ("COM11111");
+		}
+	
+		// generate list of numbers new one should be unique against
+		System.out.print(currentCodes);
+		
+		// generate unique number
+		int newNum = 0;
+		while (currentCodes.contains(newNum)) {
+			newNum ++;
+		}
+		
+		//convert to correct number of digits
+		String newNumFormatted = Integer.toString(newNum);
+		for(int i = 2-newNumFormatted.length(); i > 0; i--) {
+			newNumFormatted = "0" + newNumFormatted;
+		}
+		// return complete module code
+		return (depCode + degreeLevel + newNumFormatted);
+		
+	}
+	
+	/*
+	 * get approvals for all core modules to the degree at specified level
+	 * 
+	 * @param level - the level the cores will be returned
+	 * 
+	 * @return ArrayList of approval which are core
+	 */
+	public ArrayList<Approval> getCores(char level) {
+		ArrayList<Approval> cores = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the approvals which are core for the degree and level
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval WHERE " +
+					 						  "degCode LIKE '" + code + "' AND " +
+											  "core = 1 AND " + 
+					 						  "level = '" + level +"' ;");
+			
+			// build list of approvals
+			while(rs.next()) {
+				Approval coreApproval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
+				cores.add(coreApproval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return cores;
+		
+	}
+	
+	/*
+	 * check if a degree exists in the database
+	 * 
+	 * @return true if degree exists, false otherwise
+	 */
+	public boolean exists() {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// select degree
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree WHERE " +
+					 						  "degCode LIKE '" + code + "';");
+			
+			// if something was selected return true
+			while(rs.next()) {
+				return true;
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 	
 	public boolean addToDB() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
@@ -103,6 +217,121 @@ public class Degree {
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	
+	/*
+	 * get a degree from database
+	 * 
+	 * @param degCode - degree code of degree
+	 * 
+	 * @return degree matching code
+	 */
+	public static Degree retrieveFromDB(String degCode) {
+		ArrayList<Degree> degrees = new ArrayList<Degree>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree WHERE " + 
+					 						  "degCode = '" + degCode +"' ;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				Degree degree = new Degree(rs.getString("degCode"), rs.getString("degName"), rs.getString("leadDep"));
+				degrees.add(degree);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) degree
+		return degrees.get(0);
+	}
+	
+	/*
+	 * get all approvals for degree
+	 * 
+	 * @return ArrayList of approval
+	 */
+	public ArrayList<Approval> getApprovals() {
+		ArrayList<Approval> approvals = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the approvals
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval WHERE " +
+					 						  "degCode = '" + this.code + "';");
+			
+			// build list of approvals
+			while(rs.next()) {
+				Approval approval = Approval.retrieveFromDB(rs.getString("degCode"), rs.getString("modCode"));
+				approvals.add(approval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return approvals;
+	}
+	
+	/*
+	 * get the levels for degree
+	 * 
+	 * @return ArrayList of levels
+	 */
+	public ArrayList<Character> getLevels() {
+		ArrayList<Character> levels = new ArrayList<Character>();
+		ArrayList<Approval> approvals = this.getApprovals();
+		for (Approval approval: approvals) {
+			// if level has not already been added then add it
+			if (!levels.contains(approval.getLevel())) {
+				levels.add(approval.getLevel());
+			}
+		}
+		return levels;
+	}
+	
+	/*
+	 * get the highest level for degree
+	 * 
+	 * @return char representing level
+	 */
+	public char finalLevel() {
+		ArrayList<Character> levels = this.getLevels();
+		char highest = '0';
+		for (char level: levels) {
+			if (level < 'A' && level > highest) {
+				highest = level;
+			}
+		}
+		return highest;
+	}
+	
+	public static void main(String[] args) {
+		// tests for code generator
+		/*System.out.println(generateDegreeCode("APS", "P"));
+		System.out.println(generateDegreeCode("APS", "U"));
+		System.out.println(generateDegreeCode("COM", "U"));
+		System.out.println(generateDegreeCode("COM", "P"));
+		System.out.println(generateDegreeCode("NEW", "U"));*/
+		// test for getCores
+		Degree test = new Degree("COMU00", "placeholder", "COM");
+		ArrayList<Approval> cores = test.getCores('1');
+		for (Approval approval: cores) {
+			System.out.println(approval.getModule().getCode());
+		}
+		/*Degree test = new Degree("COMU20", "placeholder", "COM");
+		Degree test2 = new Degree("COMU00", "placeholder", "COM");
+		System.out.println(test.exists());
+		System.out.println(test2.exists());*/
+		//Degree degree = retrieveFromDB("COMP00");
+		//System.out.println(degree.getName());
 	}
 }
 

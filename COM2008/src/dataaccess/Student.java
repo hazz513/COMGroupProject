@@ -2,7 +2,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Student {
 	//Database Information
@@ -119,14 +121,93 @@ public class Student {
 			return false;
 		}
 	}
+	
+	/*
+	 * get a student from database
+	 * 
+	 * @param registration - registration number of student
+	 * 
+	 * @return student matching registration
+	 */
+	public static Student retrieveFromDB(int registration) {
+		ArrayList<Student> students = new ArrayList<Student>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Student WHERE " + 
+					 						  "registration = '" + registration +"' ;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"), rs.getString("forename"), rs.getString("email"));
+				students.add(student);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) degree
+		return students.get(0);
+	}
+	
+	/*
+	 * get periods associated with the student
+	 * 
+	 * @return list of periods
+	 */
+	public ArrayList<StudyPeriod> getPeriods() {
+		ArrayList<StudyPeriod> periods = new ArrayList<StudyPeriod>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the periods associated with student
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM StudyPeriod WHERE " +
+					 						  "registration = '" + this.registration + "' ;");
+			
+			// build list of periods
+			while(rs.next()) {
+				StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), this);
+				periods.add(period);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return periods;
+	}
+	
+	public boolean canRepeat(char level) {
+		ArrayList<StudyPeriod> periods = this.getPeriods();
+		
+		boolean containsLevel = false;
+		for (StudyPeriod period: periods) {
+			char periodLevel = period.getLevel();
+			
+			if (containsLevel && periodLevel == level) {
+				return false;
+			}
+			else if (periodLevel == level) {
+				containsLevel = true;
+			}
+		}
+		return true;
+	}
+	
 	/*
 	 * Testing method 
 	 */
 	public static void main(String[] args) {
 		//test Method
-		Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
-		System.out.println(George.addStudent());
-		System.out.println(George.removeStudent());
+		//Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
+		//System.out.println(George.addStudent());
+		//System.out.println(George.removeStudent());
 	}
 	
 }
