@@ -75,7 +75,14 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		else if (command.equals("view student status")) {
 			resetTeacherPanel();
 			// add task panel
-			teacherPanel.add(new AllStudentStatPanel(frame), BorderLayout.CENTER);
+			AllStudentStatPanel panel = new AllStudentStatPanel(frame);
+			// create scrollable pane with panel
+			JScrollPane scrollPane = new JScrollPane(panel);
+			// make pane vertically scrollable
+			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			// add pane to frame
+			teacherPanel.add(scrollPane, BorderLayout.CENTER);
+			//teacherPanel.add(panel, BorderLayout.CENTER);
 			// re display
 			frame.revalidate();
 			frame.repaint();
