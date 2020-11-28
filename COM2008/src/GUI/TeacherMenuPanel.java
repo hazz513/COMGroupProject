@@ -72,6 +72,14 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
+		else if (command.equals("view student status")) {
+			resetTeacherPanel();
+			// add task panel
+			teacherPanel.add(new AllStudentStatPanel(frame), BorderLayout.CENTER);
+			// re display
+			frame.revalidate();
+			frame.repaint();
+		}
 	}
 	
 	public void resetTeacherPanel() {

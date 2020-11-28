@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class CheckDegreePanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 2198856093172424855L;
+	
 	Frame frame;
 	
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
