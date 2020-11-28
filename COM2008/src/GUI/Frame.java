@@ -18,7 +18,7 @@ public class Frame extends JFrame{
 		// open the login panel by default
 		Container contentPane = getContentPane();
 		LoginPanel loginPanel = new LoginPanel(this);
-		contentPane.add(loginPanel);
+		contentPane.add(loginPanel, BorderLayout.CENTER);
 		// exit program on closing window
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
