@@ -33,7 +33,12 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 			studentSelection.addItem(student);
 		}
 		
+		// limit height
+		studentSelection.setMaximumSize(new Dimension(100000, (int)viewStatus.getMaximumSize().getHeight()));
+		
+		// alignment
 		studentSelection.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
 		
 		// create button to initiate process
 		viewStatus.addActionListener(this);
@@ -62,12 +67,24 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 			// get all study periods
 			ArrayList<StudyPeriod> periods = student.getPeriods();
 			
-			add(new JLabel("Degree: " + periods.get(0).getPerformances().get(0).getApproval().getDegree().getName()));
+			if (periods.size() > 0) {
+				Degree degree = periods.get(0).getPerformances().get(0).getApproval().getDegree();
+				add(new JLabel("Degree: " + degree.getName()));
+			}
+			else {
+				add(new JLabel("No study periods found"));
+			}
+			
+			
 			// display info for each period
 			for (StudyPeriod period: periods) {
 				ArrayList<Performance> performances = period.getPerformances();
 				add(new JLabel("---| Period: " + period.getLabel() + ", Level: " + performances.get(0).getLevel()));
-				add(new JLabel("-------| Grade Average: " + period.getMeanGrade()));
+				// if period has progression calculated, display it and mean grade
+				if (period.getProgression() != null) {
+					add(new JLabel("-------| Grade Average: " + period.getMeanGrade()));
+					add(new JLabel("-------| Progression: " + period.getProgression()));
+				}
 				for (Performance performance: performances) {
 					add(new JLabel("-------| Module: " + performance.getApproval().getModule().getName()));
 					add(new JLabel("-----------| Grade: " + performance.getGrade()));

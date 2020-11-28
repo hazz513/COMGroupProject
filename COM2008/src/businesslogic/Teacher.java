@@ -12,6 +12,7 @@ public class Teacher {
 	private static final int LEVEL_4_PASS = 50;
 	
 	public enum Progression {
+		INVALID,
 		FAIL,
 		RESIT,
 		REPEAT,
@@ -23,6 +24,7 @@ public class Teacher {
 	}
 	
 	public enum DegreeClass {
+		INVALID,
 		FIRST_CLASS,
 		UPPER_SECOND,
 		LOWER_SECOND,
@@ -30,8 +32,7 @@ public class Teacher {
 		PASS,
 		DISTINCTION,
 		MERIT,
-		FAIL,
-		INVALID
+		FAIL	
 	}
 	
 	/*
@@ -210,14 +211,14 @@ public class Teacher {
 				if (level == '4') {
 					return Progression.GRADUATE_MASTER;
 				}
-				else {
+				else if (level == '3'){
 					return Progression.GRADUATE_BACHELOR;
 				}
 			}
+			
 			// progress otherwise
-			else {
-				return Progression.PROGRESS;
-			}
+			return Progression.PROGRESS;
+			
 		}
 		// if didnt pass
 		else {

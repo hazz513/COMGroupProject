@@ -30,7 +30,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		JButton modifyGrades = new JButton("add/update grades");
 		modifyGrades.addActionListener(this);
 				
-		JButton checkProgression = new JButton("check progression");
+		JButton checkProgression = new JButton("calculate progression");
 		checkProgression.addActionListener(this);
 				
 		JButton calculateDegree = new JButton("calculate degree class");
@@ -56,7 +56,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		if (command.equals("logout")) {
 			frame.loadLogin();
 		}
-		else if (command.equals("check progression")) {
+		else if (command.equals("calculate progression")) {
 			resetTeacherPanel();
 			// add task panel
 			teacherPanel.add(new CheckProgressionPanel(frame), BorderLayout.CENTER);
