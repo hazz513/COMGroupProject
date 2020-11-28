@@ -4,7 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import GUI.Frame;
-import dataaccess.Student;
+import businesslogic.Teacher;
+import businesslogic.Teacher.StudyPeriodComparator;
+import dataaccess.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,26 +17,62 @@ public class CheckProgressionPanel  extends JPanel implements ActionListener{
 	
 	Frame frame;
 	
+	JComboBox<Student> studentSelection = new JComboBox<Student>();
+	
 	public CheckProgressionPanel(Frame frame) {
 		// set vertical layout
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// create dropdown menu to select student
 		ArrayList<Student> students = Student.getAllFromDB();
-		JComboBox<Student> studentSelection = new JComboBox<Student>();
 		for (Student student: students) {
 			studentSelection.addItem(student);
 		}
 		// add dropdown
 		add(studentSelection);
-		add(new JButton("wont do anything yet"));
 		
+		JButton getProgression = new JButton("check progression");
+		getProgression.addActionListener(this);
+		
+		add(getProgression);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent event) {
+		String command = event.getActionCommand();
 		
+		int progress = JOptionPane.NO_OPTION;
+		
+		// on button click
+		if (command.equals("check progression")) {
+			// assign student from dropdown
+			Student student = (Student)studentSelection.getSelectedItem();
+			// default popup message
+			String message = "No study period found.";
+			
+			// get highest period
+			ArrayList<StudyPeriod> periods = student.getPeriods();
+			
+			// if there are study periods to check then check the latest one
+			if (periods.size() > 0) {
+				periods.sort(new Teacher.StudyPeriodComparator());
+				StudyPeriod period = periods.get(periods.size()-1);
+				// get the progression for it
+				Teacher.Progression progression = Teacher.progression(period);
+				message = ("the progression status is: " + progression + ", would you like to apply this?");
+				// output to use and ask for further action
+				progress = JOptionPane.showConfirmDialog(null, message, "Progress Student", JOptionPane.YES_NO_OPTION);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, message);
+			}
+			
+			// if user chooses to proceed with progression
+			if (progress == JOptionPane.YES_OPTION) {
+				JOptionPane.showMessageDialog(null, "not implemented yet");
+			}
+			
+		}
 	}
 
 }

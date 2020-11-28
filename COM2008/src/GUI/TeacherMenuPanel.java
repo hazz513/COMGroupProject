@@ -69,7 +69,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		// clearPanel
 		teacherPanel.removeAll();
 		// re-initialize teacher panel
-		teacherPanel.initialize();
+		teacherPanel.initialize(); 
 		// re-add side menu
 		teacherPanel.add(this, BorderLayout.WEST);
 	}
