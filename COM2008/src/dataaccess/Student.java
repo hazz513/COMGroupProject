@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import businesslogic.Teacher;
+
 public class Student {
 	//Database Information
 	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
@@ -171,7 +173,18 @@ public class Student {
 			
 			// build list of periods
 			while(rs.next()) {
-				StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), this);
+				StudyPeriod period;
+				// if a valid progression is present, include it and mean grade
+				if (rs.getInt("progression") > 0 && rs.getInt("progression") <= 8) {
+					//System.out.println("found progression" + rs.getInt("progression"));
+					period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
+											 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")),
+											 rs.getFloat("meanGrade"), Teacher.Progression.values()[(rs.getInt("progression"))]);
+				}
+				else {
+					period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
+						 					 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")));
+				}
 				periods.add(period);
 			}
 		}

@@ -30,7 +30,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		JButton modifyGrades = new JButton("add/update grades");
 		modifyGrades.addActionListener(this);
 				
-		JButton checkProgression = new JButton("check progression");
+		JButton checkProgression = new JButton("calculate progression");
 		checkProgression.addActionListener(this);
 				
 		JButton calculateDegree = new JButton("calculate degree class");
@@ -56,7 +56,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		if (command.equals("logout")) {
 			frame.loadLogin();
 		}
-		else if (command.equals("check progression")) {
+		else if (command.equals("calculate progression")) {
 			resetTeacherPanel();
 			// add task panel
 			teacherPanel.add(new CheckProgressionPanel(frame), BorderLayout.CENTER);
@@ -75,7 +75,14 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		else if (command.equals("view student status")) {
 			resetTeacherPanel();
 			// add task panel
-			teacherPanel.add(new AllStudentStatPanel(frame), BorderLayout.CENTER);
+			AllStudentStatPanel panel = new AllStudentStatPanel(frame);
+			// create scrollable pane with panel
+			JScrollPane scrollPane = new JScrollPane(panel);
+			// make pane vertically scrollable
+			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			// add pane to frame
+			teacherPanel.add(scrollPane, BorderLayout.CENTER);
+			//teacherPanel.add(panel, BorderLayout.CENTER);
 			// re display
 			frame.revalidate();
 			frame.repaint();

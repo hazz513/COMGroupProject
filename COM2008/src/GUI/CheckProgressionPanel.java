@@ -19,6 +19,9 @@ public class CheckProgressionPanel  extends JPanel implements ActionListener{
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
 	
 	public CheckProgressionPanel(Frame frame) {
+		this.frame = frame;
+		// styling and title
+		setBorder(BorderFactory.createTitledBorder("Calculate Student's Progression Status"));
 		// set vertical layout
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -61,6 +64,10 @@ public class CheckProgressionPanel  extends JPanel implements ActionListener{
 				// get the progression for it
 				Teacher.Progression progression = Teacher.progression(period);
 				message = ("the progression status is: " + progression);
+				
+				// add results to database
+				period.addMeanGrade(Teacher.meanGrade(period));
+				period.addProgression(progression);
 				// if a new study period is to be made then ask to proceed
 				if (progression == Teacher.Progression.PROGRESS || progression == Teacher.Progression.REPEAT) {
 					progress = JOptionPane.showConfirmDialog(null, message + ", would you like to apply this?", "Progress Student", JOptionPane.YES_NO_OPTION);

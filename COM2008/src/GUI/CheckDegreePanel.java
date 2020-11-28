@@ -19,6 +19,10 @@ public class CheckDegreePanel extends JPanel implements ActionListener{
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
 	
 	public CheckDegreePanel(Frame frame) {
+		this.frame = frame;
+		// styling and title
+		setBorder(BorderFactory.createTitledBorder("Calculate Student's Degree Class"));
+		
 		// set vertical layout
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		

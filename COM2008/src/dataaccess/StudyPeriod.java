@@ -147,10 +147,20 @@ public class StudyPeriod {
 												  "registration = '" + registration + "';");
 				// build list of degrees
 				while(rs.next()) {
-					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
-														 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")),
-														 rs.getFloat("meanGrade"), Teacher.Progression.valueOf(rs.getString("progression")));
+					StudyPeriod period;
+					// if a valid progression is present, include it and mean grade
+					if (rs.getInt("progression") > 0 && rs.getInt("progression") <= 8) {
+						//System.out.println("found progression" + rs.getInt("progression"));
+						period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
+												 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")),
+												 rs.getFloat("meanGrade"), Teacher.Progression.values()[(rs.getInt("progression"))]);
+					}
+					else {
+						period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
+							 					 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")));
+					}
 					periods.add(period);
+					
 				}
 			}
 			
@@ -236,7 +246,7 @@ public class StudyPeriod {
 		public boolean addProgression(Teacher.Progression progression) {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 				Statement stmt = con.createStatement();
-				int count = stmt.executeUpdate("UPDATE StudyPeriod SET progression = '" + progression.toString() + 
+				int count = stmt.executeUpdate("UPDATE StudyPeriod SET progression = '" + progression.ordinal() + 
 						"'WHERE registration = '" + this.storedRegistration + "' AND " +
 						" label = '" + this.label + "';"
 						);
