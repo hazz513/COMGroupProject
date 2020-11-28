@@ -40,6 +40,17 @@ public class Frame extends JFrame{
 		repaint();
 	}
 	
+	public void loadLogin() {
+		Container contentPane = getContentPane();
+		contentPane.removeAll();
+		
+		LoginPanel loginPanel = new LoginPanel(this);
+		contentPane.add(loginPanel);
+		
+		revalidate();
+		repaint();
+	}
+	
 	public static void main(String[] args) {
 		new Frame("the system");
 	}

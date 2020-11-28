@@ -9,7 +9,7 @@ public class Teacher {
 	private static final int DEFAULT_PASS = 40;
 	private static final int LEVEL_4_PASS = 50;
 	
-	enum Progression {
+	public enum Progression {
 		FAIL,
 		RESIT,
 		REPEAT,
@@ -20,7 +20,7 @@ public class Teacher {
 		GRADUATE_PGCERT	
 	}
 	
-	enum DegreeClass {
+	public enum DegreeClass {
 		FIRST_CLASS,
 		UPPER_SECOND,
 		LOWER_SECOND,
@@ -172,7 +172,7 @@ public class Teacher {
 	}
 	
 	// a comparator for studyperiod allowing it to be easily sorted based on label
-	static class StudyPeriodComparator implements Comparator<StudyPeriod> { 
+	public static class StudyPeriodComparator implements Comparator<StudyPeriod> { 
 		// compares the label of the period
         @Override
         public int compare(StudyPeriod a, StudyPeriod b) { 

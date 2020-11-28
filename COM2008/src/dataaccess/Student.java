@@ -200,6 +200,35 @@ public class Student {
 		return true;
 	}
 	
+	public static ArrayList<Student> getAllFromDB() {
+		ArrayList<Student> students = new ArrayList<Student>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Student;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"), rs.getString("forename"), rs.getString("email"));
+				students.add(student);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return first(and only) degree
+		return students;
+	}
+	
+	public String toString() {
+		return (this.title + ". " + this.forename + " " +
+				this.surname + ", " + this.registration);
+	}
+	
 	/*
 	 * Testing method 
 	 */
