@@ -18,9 +18,16 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 	
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
 	
+	// create scroll bar
+	JScrollPane scrollPane = new JScrollPane();
+	
 	public AllStudentStatPanel(Frame frame) {
+		this.frame = frame;
+		// styling and title
+		setBorder(BorderFactory.createTitledBorder("Check Student Status"));
+
 		// set vertical layout
-		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// create dropdown menu to select student
 		ArrayList<Student> students = Student.getAllFromDB();
@@ -28,14 +35,20 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 			studentSelection.addItem(student);
 		}
 		
-		// add dropdown to panel
-		add(studentSelection);
+		studentSelection.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		// add button to initiate process
+		// create button to initiate process
 		JButton viewStatus = new JButton("view status");
 		viewStatus.addActionListener(this);
+		// create scroll bar
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
+		// add dropdown to panel
+		add(studentSelection);
+		// add button to panel
 		add(viewStatus);
+		// add scroll bar
+		//add(scrollPane);
 	}
 
 	@Override
@@ -43,14 +56,31 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 		String command = event.getActionCommand();
 		
 		if (command.equals("view status")) {
+			
 			// get selected student
 			Student student = (Student)studentSelection.getSelectedItem();
 			// get all study periods
 			ArrayList<StudyPeriod> periods = student.getPeriods();
+			
+			add(new JLabel("Degree: " + periods.get(0).getPerformances().get(0).getApproval().getDegree().getName()));
 			// display info for each period
 			for (StudyPeriod period: periods) {
-				
+				ArrayList<Performance> performances = period.getPerformances();
+				add(new JLabel("---| Period: " + period.getLabel() + ", Level: " + performances.get(0).getLevel()));
+				add(new JLabel("-------| Grade Average: " + period.getMeanGrade()));
+				//System.out.println("Period: " + period.getLabel());
+				for (Performance performance: performances) {
+					add(new JLabel("-------| Module: " + performance.getApproval().getModule().getName()));
+					add(new JLabel("-----------| Grade: " + performance.getGrade()));
+					if (performance.getResitGrade() != 0) {
+						add(new JLabel("-----------| Resit Grade: " + performance.getResitGrade()));
+					}
+					//System.out.println("Module: " + performance.getApproval().getModule().getName());
+				}
 			}
+			
+			frame.revalidate();
+			frame.repaint();
 		}
 		
 	}
