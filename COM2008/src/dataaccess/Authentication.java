@@ -2,7 +2,9 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Authentication {
 	//Database Information
@@ -42,13 +44,16 @@ public class Authentication {
 		String registration = Integer.toString(student.getRegistration());
 		
 		String userID = name.substring(0,1)+lastName.substring(0,1)+registration.substring(registration.length() -4,registration.length());
-		System.out.printf("The generated username for the student is: ", userID);
+		System.out.println("The generated username for the student is: " + userID);
 		this.userID = userID;
+		int max = 9999;
+		int min = 1000;
 		
-		String passEnd = Integer.toString((int)Math.random()*9001 + 1000);
+		int random_int = (int)(Math.random() * (max - min + 1) + min);
+		String passEnd = Integer.toString(random_int);
 		//Fix Randomizer
 		String password = name.substring(0,3)+lastName.substring(0,3)+passEnd;
-		System.out.printf("The generated password for the student is: ", password);
+		System.out.println("The generated password for the student is: " + password);
 		this.password = password;
 		
 		this.authLevel = 1;
@@ -160,6 +165,37 @@ public class Authentication {
 		}
 	}
 	
+	public static int checkPassword(String userID, String password) {
+		ArrayList<Authentication> accounts = new ArrayList<Authentication>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Authentication WHERE " + 
+					 						  "userID = '" + userID + "' AND " +
+											  "password = '" + password + "';");
+			// build list of degrees
+			while(rs.next()) {
+				Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), Student.retrieveFromDB(rs.getInt("regNum")));
+				accounts.add(account);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		if (accounts.size() == 0) {
+			System.out.println("Incorrect UserID or Password");
+			return 0;
+		}
+		else {
+			System.out.println("Match found");
+			return accounts.get(0).getAuthLevel();
+		}
+	}
+	
 	/*
 	 * Testing functions. 
 	 * Invalid and won't work until the Table Student is populated
@@ -167,13 +203,15 @@ public class Authentication {
 	 */
 	public static void main(String[] args) {
 		//test
-		//Student George = new Student(321241, "Mr", "Ashcroft", "George","george@fake.com");
+		Student George = new Student(321242, "Mr", "pass", "rand","fake@email.com");
 		//System.out.println(George.addStudent());
+		//System.out.println(George.removeStudent());
 		
 		//Authentication initialStudent = new Authentication(George);
 		//Authentication test = new Authentication(123311, "Hello?", 3, George);
 		
-		//System.out.println(George.removeStudent());
+		//int test = checkPassword("rp1241", "ranpas1000");
+		//System.out.println(test);
 		//System.out.println(test.addAuthentication());
 		//System.out.println(test.removeAuthentication());
 		
