@@ -54,6 +54,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 			}
 			else if (authLevel == 2) {
 				JOptionPane.showMessageDialog(null, "Correct Teacher Login");
+				frame.loadTeacher();
 			}
 			else if (authLevel == 3) {
 				JOptionPane.showMessageDialog(null, "Correct Registrar Login");
