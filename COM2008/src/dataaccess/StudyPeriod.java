@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import businesslogic.Teacher;
+
 public class StudyPeriod {
 	//Database Information
 	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
@@ -16,6 +18,8 @@ public class StudyPeriod {
 	private String startDate;
 	private String endDate;
 	private Student student;
+	private double meanGrade;
+	private Teacher.Progression progression;
 	private int storedRegistration;
 	
 	public StudyPeriod(char label, String startDate, String endDate, Student student) {
@@ -24,6 +28,12 @@ public class StudyPeriod {
 		this.endDate = endDate;
 		this.student = student;
 		storedRegistration = this.student.getRegistration();
+		this.meanGrade = 0;
+	}
+	public StudyPeriod(char label, String startDate, String endDate, Student student, double meanGrade, Teacher.Progression progression) {
+		this(label, startDate, endDate, student);
+		this.meanGrade = meanGrade;
+		this.progression = progression;
 	}
 	
 	//get methods (May need to create a set for the student object)
@@ -41,6 +51,12 @@ public class StudyPeriod {
 	}
 	public int getStoredRegistration() {
 		return storedRegistration;
+	}
+	public double getMeanGrade() {
+		return meanGrade;
+	}
+	public Teacher.Progression getProgression() {
+		return progression;
 	}
 	
 	//set methods
@@ -131,7 +147,9 @@ public class StudyPeriod {
 												  "registration = '" + registration + "';");
 				// build list of degrees
 				while(rs.next()) {
-					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")));
+					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
+														 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")),
+														 rs.getFloat("meanGrade"), Teacher.Progression.valueOf(rs.getString("progression")));
 					periods.add(period);
 				}
 			}
@@ -179,6 +197,60 @@ public class StudyPeriod {
 		public char getLevel() {
 			ArrayList<Performance> performances = this.getPerformances();
 			return (performances.get(0).getApproval().getLevel());
+		}
+		
+		/*
+		 * set mean grade
+		 * 
+		 * @param grade -  the mean grade
+		 * 
+		 * @return boolean based one success
+		 */
+		public boolean addMeanGrade(double grade) {
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				int count = stmt.executeUpdate("UPDATE StudyPeriod SET meanGrade = '" + grade + 
+						"'WHERE registration = '" + this.storedRegistration + "' AND " +
+						" label = '" + this.label + "';"
+						);
+				switch(count) {
+				case 0:
+					return false;
+				default:
+					return true;
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			}
+		}
+		
+		/*
+		 * set progression
+		 * 
+		 * @param progression - the progression
+		 * 
+		 * @return boolean based one success
+		 */
+		public boolean addProgression(Teacher.Progression progression) {
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				int count = stmt.executeUpdate("UPDATE StudyPeriod SET progression = '" + progression.toString() + 
+						"'WHERE registration = '" + this.storedRegistration + "' AND " +
+						" label = '" + this.label + "';"
+						);
+				switch(count) {
+				case 0:
+					return false;
+				default:
+					return true;
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			}
 		}
 		
 		/*
