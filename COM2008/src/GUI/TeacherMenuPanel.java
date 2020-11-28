@@ -51,7 +51,8 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
-		
+		// open relevant panel for each selection
+		// first re-initialize frame too erase previous panel
 		if (command.equals("logout")) {
 			frame.loadLogin();
 		}

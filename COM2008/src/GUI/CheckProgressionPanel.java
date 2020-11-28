@@ -5,7 +5,6 @@ import javax.swing.*;
 
 import GUI.Frame;
 import businesslogic.Teacher;
-import businesslogic.Teacher.StudyPeriodComparator;
 import dataaccess.*;
 
 import java.awt.event.ActionEvent;
@@ -28,9 +27,11 @@ public class CheckProgressionPanel  extends JPanel implements ActionListener{
 		for (Student student: students) {
 			studentSelection.addItem(student);
 		}
-		// add dropdown
+		
+		// add dropdown to panel
 		add(studentSelection);
 		
+		// add button to initiate process
 		JButton getProgression = new JButton("check progression");
 		getProgression.addActionListener(this);
 		

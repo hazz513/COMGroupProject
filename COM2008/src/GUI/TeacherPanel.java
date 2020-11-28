@@ -12,9 +12,10 @@ public class TeacherPanel extends JPanel implements ActionListener{
 	Frame frame;
 	
 	public TeacherPanel(Frame frame) {
+		// initialize panel
 		this.frame = frame;
 		initialize();
-		
+		// add side menu
 		TeacherMenuPanel sideMenu = new TeacherMenuPanel(frame, this);
 		add(sideMenu, BorderLayout.WEST);
 	}
