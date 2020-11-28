@@ -32,6 +32,16 @@ public class Authentication {
 		this.authLevel = authLevel;
 		this.student = student;
 	}
+	public Authentication(String userID, String password, int authLevel, int regNum) {
+		this.userID = userID;
+		this.password = password;
+		this.authLevel = authLevel;
+		this.regNum = regNum;
+	}
+	public Authentication(String userID, String password) {
+		this.userID = userID;
+		this.password = password;
+	}
 	
 	/*
 	 * New Student Constructor
@@ -165,7 +175,7 @@ public class Authentication {
 		}
 	}
 	
-	public static int checkPassword(String userID, String password) {
+	public int checkPassword(String userID, String password) {
 		ArrayList<Authentication> accounts = new ArrayList<Authentication>();
 		
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
@@ -177,8 +187,15 @@ public class Authentication {
 											  "password = '" + password + "';");
 			// build list of degrees
 			while(rs.next()) {
-				Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), Student.retrieveFromDB(rs.getInt("regNum")));
-				accounts.add(account);
+				if (rs.getInt("regNum") != 0) {
+					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), Student.retrieveFromDB(rs.getInt("regNum")));
+					accounts.add(account);
+				}
+				else {
+					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), 0000000);
+					accounts.add(account);
+				}
+				
 			}
 		}
 		
