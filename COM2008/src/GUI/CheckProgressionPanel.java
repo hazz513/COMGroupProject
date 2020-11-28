@@ -60,19 +60,40 @@ public class CheckProgressionPanel  extends JPanel implements ActionListener{
 				StudyPeriod period = periods.get(periods.size()-1);
 				// get the progression for it
 				Teacher.Progression progression = Teacher.progression(period);
-				message = ("the progression status is: " + progression + ", would you like to apply this?");
-				// output to use and ask for further action
-				progress = JOptionPane.showConfirmDialog(null, message, "Progress Student", JOptionPane.YES_NO_OPTION);
+				message = ("the progression status is: " + progression);
+				// if a new study period is to be made then ask to proceed
+				if (progression == Teacher.Progression.PROGRESS || progression == Teacher.Progression.REPEAT) {
+					progress = JOptionPane.showConfirmDialog(null, message + ", would you like to apply this?", "Progress Student", JOptionPane.YES_NO_OPTION);
+			
+					// if user chooses to proceed with progression
+					if (progress == JOptionPane.YES_OPTION) {
+						// generate new start and end dates for nextperiod
+						String newStartDate = period.getStartDate();
+						String newEndDate = period.getEndDate();
+						if (progression == Teacher.Progression.PROGRESS) {
+							String newStartYear = Integer.toString(Integer.parseInt(period.getStartDate().substring(0,4))+1);
+							String newEndYear = Integer.toString(Integer.parseInt(period.getEndDate().substring(0,4))+1);
+							newStartDate = newStartYear + period.getStartDate().substring(4);
+							newEndDate = newEndYear + period.getEndDate().substring(4);
+						}
+						// create new study period
+						boolean success = Teacher.progressStudent(period, newStartDate, newEndDate);
+						// message based on successful completion
+						if (success) {
+							JOptionPane.showMessageDialog(null, "Next study period generated");
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "A problem occurred in generating the next study period, The student may not have permission to progress");
+						}
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, message);
+				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null, message);
 			}
-			
-			// if user chooses to proceed with progression
-			if (progress == JOptionPane.YES_OPTION) {
-				JOptionPane.showMessageDialog(null, "not implemented yet");
-			}
-			
 		}
 	}
 
