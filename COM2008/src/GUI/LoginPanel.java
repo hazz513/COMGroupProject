@@ -66,7 +66,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 			}
 		}
 		else if (command.equals("Launch Teacher")) {
-			
+			frame.loadTeacher();
 		}
 	}
 	
