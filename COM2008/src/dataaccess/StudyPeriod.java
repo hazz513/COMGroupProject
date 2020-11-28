@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import businesslogic.Teacher;
+
 public class StudyPeriod {
 	//Database Information
 	private static final String DB = "jdbc:mysql://stusql.dcs.shef.ac.uk/team012";
@@ -16,6 +18,8 @@ public class StudyPeriod {
 	private String startDate;
 	private String endDate;
 	private Student student;
+	private double meanGrade;
+	private Teacher.Progression progression;
 	private int storedRegistration;
 	
 	public StudyPeriod(char label, String startDate, String endDate, Student student) {
@@ -24,6 +28,12 @@ public class StudyPeriod {
 		this.endDate = endDate;
 		this.student = student;
 		storedRegistration = this.student.getRegistration();
+		this.meanGrade = 0;
+	}
+	public StudyPeriod(char label, String startDate, String endDate, Student student, double meanGrade, Teacher.Progression progression) {
+		this(label, startDate, endDate, student);
+		this.meanGrade = meanGrade;
+		this.progression = progression;
 	}
 	
 	//get methods (May need to create a set for the student object)
@@ -41,6 +51,12 @@ public class StudyPeriod {
 	}
 	public int getStoredRegistration() {
 		return storedRegistration;
+	}
+	public double getMeanGrade() {
+		return meanGrade;
+	}
+	public Teacher.Progression getProgression() {
+		return progression;
 	}
 	
 	//set methods
@@ -131,7 +147,9 @@ public class StudyPeriod {
 												  "registration = '" + registration + "';");
 				// build list of degrees
 				while(rs.next()) {
-					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"), rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")));
+					StudyPeriod period = new StudyPeriod(rs.getString("label").charAt(0), rs.getString("startDate"),
+														 rs.getString("endDate"), Student.retrieveFromDB(rs.getInt("registration")),
+														 rs.getFloat("meanGrade"), Teacher.Progression.valueOf(rs.getString("progression")));
 					periods.add(period);
 				}
 			}

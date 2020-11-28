@@ -40,7 +40,18 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
+		String command = event.getActionCommand();
+		
+		if (command.equals("view status")) {
+			// get selected student
+			Student student = (Student)studentSelection.getSelectedItem();
+			// get all study periods
+			ArrayList<StudyPeriod> periods = student.getPeriods();
+			// display info for each period
+			for (StudyPeriod period: periods) {
+				
+			}
+		}
 		
 	}
 
