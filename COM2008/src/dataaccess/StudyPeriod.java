@@ -200,6 +200,60 @@ public class StudyPeriod {
 		}
 		
 		/*
+		 * set mean grade
+		 * 
+		 * @param grade -  the mean grade
+		 * 
+		 * @return boolean based one success
+		 */
+		public boolean addMeanGrade(double grade) {
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				int count = stmt.executeUpdate("UPDATE StudyPeriod SET meanGrade = '" + grade + 
+						"'WHERE registration = '" + this.storedRegistration + "' AND " +
+						" label = '" + this.label + "';"
+						);
+				switch(count) {
+				case 0:
+					return false;
+				default:
+					return true;
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			}
+		}
+		
+		/*
+		 * set progression
+		 * 
+		 * @param progression - the progression
+		 * 
+		 * @return boolean based one success
+		 */
+		public boolean addProgression(Teacher.Progression progression) {
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+				Statement stmt = con.createStatement();
+				int count = stmt.executeUpdate("UPDATE StudyPeriod SET progression = '" + progression.toString() + 
+						"'WHERE registration = '" + this.storedRegistration + "' AND " +
+						" label = '" + this.label + "';"
+						);
+				switch(count) {
+				case 0:
+					return false;
+				default:
+					return true;
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			}
+		}
+		
+		/*
 		 * Testing functions. 
 		 * Invalid and won't work until the Table Student is populated
 		 * FK is needed
