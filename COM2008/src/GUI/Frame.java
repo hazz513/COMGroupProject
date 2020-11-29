@@ -18,7 +18,6 @@ public class Frame extends JFrame{
 		// open the login panel by default
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
-		
 		LoginPanel loginPanel = new LoginPanel(this);
 		contentPane.add(loginPanel, BorderLayout.CENTER);
 		// exit program on closing window
@@ -34,7 +33,7 @@ public class Frame extends JFrame{
 	public void loadTeacher() {
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
-		
+		contentPane.setLayout(new GridLayout(0,1));
 		TeacherPanel teacherPanel = new TeacherPanel(this);
 		contentPane.add(teacherPanel);
 		
@@ -46,6 +45,7 @@ public class Frame extends JFrame{
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
 		
+		contentPane.setLayout(new FlowLayout());
 		LoginPanel loginPanel = new LoginPanel(this);
 		contentPane.add(loginPanel);
 		
