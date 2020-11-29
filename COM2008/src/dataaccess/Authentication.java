@@ -183,6 +183,8 @@ public class Authentication {
 	public List<Integer> checkPassword(String userID, String password) {
 		ArrayList<Authentication> accounts = new ArrayList<Authentication>();
 		List<Integer> storedInfo = new ArrayList<Integer>();
+		System.out.println(userID);
+		System.out.println(password);
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();
 			
@@ -193,11 +195,14 @@ public class Authentication {
 			// build list of degrees
 			while(rs.next()) {
 				if (rs.getInt("regNum") != 0) {
+					System.out.println("if 1");
 					Student student = Student.retrieveFromDB(rs.getInt("regNum"));
+					System.out.println("if 1");
 					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), student.getRegistration());
 					accounts.add(account);
 				}
 				else {
+					System.out.println("if 2");
 					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), 0000000);
 					accounts.add(account);
 				}

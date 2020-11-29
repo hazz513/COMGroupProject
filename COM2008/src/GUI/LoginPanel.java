@@ -26,7 +26,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 	
 	public LoginPanel(Frame frame) {
 		this.frame = frame;
-		setLayout(new GridLayout(0, 1));
+		setLayout(new GridLayout(0, 2));
 		init();
 	}
 	
