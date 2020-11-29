@@ -51,6 +51,16 @@ public class Frame extends JFrame{
 		repaint();
 	}
 	
+	public void loadStudent(int registration) {
+		Container contentPane = getContentPane();
+		contentPane.removeAll();
+		
+		StudentPanel studentPanel = new StudentPanel(this,registration);
+		contentPane.add(studentPanel);
+		revalidate();
+		repaint();
+	}
+	
 	public static void main(String[] args) {
 		new Frame("the system");
 	}

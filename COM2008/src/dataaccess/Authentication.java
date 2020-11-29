@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Authentication {
 	//Database Information
@@ -84,6 +85,10 @@ public class Authentication {
 	public int getRegNum() {
 		return student.getRegistration();
 	}
+	public int getReg() {
+		return regNum;
+	}
+	
 	
 	//Set Function
 	public void setUserID(String userID) {
@@ -175,9 +180,9 @@ public class Authentication {
 		}
 	}
 	
-	public int checkPassword(String userID, String password) {
+	public List<Integer> checkPassword(String userID, String password) {
 		ArrayList<Authentication> accounts = new ArrayList<Authentication>();
-		
+		List<Integer> storedInfo = new ArrayList<Integer>();
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();
 			
@@ -188,7 +193,8 @@ public class Authentication {
 			// build list of degrees
 			while(rs.next()) {
 				if (rs.getInt("regNum") != 0) {
-					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), Student.retrieveFromDB(rs.getInt("regNum")));
+					Student student = Student.retrieveFromDB(rs.getInt("regNum"));
+					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), student.getRegistration());
 					accounts.add(account);
 				}
 				else {
@@ -205,13 +211,19 @@ public class Authentication {
 		
 		if (accounts.size() == 0) {
 			System.out.println("Incorrect UserID or Password");
-			return 0;
+			storedInfo.add(0);
+			storedInfo.add(000000);
+			return storedInfo;
+			
 		}
 		else {
 			System.out.println("Match found");
-			return accounts.get(0).getAuthLevel();
+			storedInfo.add(accounts.get(0).getAuthLevel());
+			storedInfo.add(accounts.get(0).getReg());
+			return storedInfo;
 		}
 	}
+	
 	
 	/*
 	 * Testing functions. 
@@ -220,7 +232,7 @@ public class Authentication {
 	 */
 	public static void main(String[] args) {
 		//test
-		Student George = new Student(321242, "Mr", "pass", "rand","fake@email.com");
+		//Student George = new Student(321242, "Mr", "pass", "rand","fake@email.com");
 		//System.out.println(George.addStudent());
 		//System.out.println(George.removeStudent());
 		
