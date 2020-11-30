@@ -10,6 +10,7 @@ package businesslogic;
 import java.util.*;
 
 import dataaccess.*;
+import dataaccess.Module;
 
 public class Registrar {
 	
@@ -41,10 +42,63 @@ public class Registrar {
 		return true;
 	}
 	
-	// useless atm
-	// add optional modules 
-	public static boolean addOptModules() {
-		return true;
+	/* This gathers all optional modules and returns an ArrayList of Approvals 
+	*for input into the addNonCoreModules Function
+	*
+	*@param Performance this is used to work out what level of degree the need
+	*modules for
+	*/
+	public static ArrayList<Approval> gatherOptModules(Performance performance) {
+		Approval approval = performance.getApproval();
+		char lvl = approval.getLevel();
+		Degree degree = approval.getDegree();
+		ArrayList<Approval> nonCoreList = new ArrayList<Approval>(degree.getNonCores(lvl));
+		return nonCoreList;
+	}
+		
+	/* Adds modules to a student's performance table
+	 * 
+	*@param ArrayList<Approval> nonCoreFinaList - a nudge towards the inputted list being the final list
+	*-possibly edited from the nonCoreList that is outputted by ArrayList as the student chooses his/her modules
+	*
+	*@param Performance used to fill parameters for the new performance created.
+	*
+	*Returns number of completed edits
+	*/
+	public static int addNonCoreModules(ArrayList<Approval> nonCoreFinalList, Performance performance) {
+		int numOfEdit = 0;
+		for (int i=0;i<nonCoreFinalList.size();i++){
+		StudyPeriod tempStudyPeriod = performance.getStudyPeriod();
+		Approval tempApproval = nonCoreFinalList.get(i);
+		Performance tempPerf = new Performance(tempStudyPeriod,tempApproval,0,0);
+		tempPerf.addPerformance();
+		numOfEdit++;
+		}
+		
+		return numOfEdit;
+	}
+		
+	/* This function is used to return an ArrayList of the modules which can then be used to write out
+	 * an ArrayList<String> later down the line if desired (to show the user what modules can be selected)
+	 * 
+	*@param ArrayList<Approval> nonCoreFinaList - a nudge towards the inputted list being the final list
+	*-possibly edited from the nonCoreList that is outputted by ArrayList as the student chooses his/her modules
+	*
+	*@param Performance used to fill parameters for the new performance created.
+	*
+	*Returns ArrayList of all Non-Core modules available
+	*/
+	
+	
+	public static ArrayList<Module> OptModulesDetails(ArrayList<Approval> nonCoreList, Performance performance) {
+		ArrayList<Module> modList = new ArrayList<Module>();
+		Approval approval = performance.getApproval();
+		Degree degree = approval.getDegree();
+		for (int i=0;i<nonCoreList.size();i++){
+			modList.add(nonCoreList.get(i).getModule());
+		}
+		System.out.println("The Non-Core Modules for the Degree " + degree.getCode() + " are:");
+		return modList;
 	}
 	
 	// useless atm
@@ -60,6 +114,23 @@ public class Registrar {
 		return true;
 	}
 	
+	/*Creates a ArrayList of String to show user
+	 * 
+	 */
+	
+	public static ArrayList<String> modStringListing (ArrayList<Module> modList){
+		ArrayList<String> modStringList = new ArrayList<String>();
+		for (int i=0; i<modList.size();i++){
+			String modCode = modList.get(i).getCode();
+			System.out.println(modCode);
+			modStringList.add(modCode);
+		}
+		
+		return modStringList;
+	}
+
+
+
 	/*
 	 * check if the sum of all module credit of a student sums to correct total
 	 * 
@@ -140,8 +211,18 @@ public class Registrar {
 		*/
 		
 		//test for creditChecker or checkStudentReg method
-		StudyPeriod s = StudyPeriod.retrieveFromDB('A',9876543);
-		System.out.println(checkStudentReg(s));
+		//StudyPeriod s = StudyPeriod.retrieveFromDB('A',9876543);
+		//System.out.println(checkStudentReg(s));
+		
+		Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
+		StudyPeriod Test = new StudyPeriod('A', "2020-11-19","2021-11-19", George);
+		Module fp = new Module("COM2108", "Functional Programming");
+		Degree se = new Degree("COMP00", "MEng Software Engineering with a Year in Industry", "COM");			
+		Approval fpse = new Approval(se, fp, 1, 10, '2');
+		Performance please = new Performance(Test, fpse, 45, 90);
+		ArrayList<String> listOfNonCoreModules = modStringListing(OptModulesDetails(gatherOptModules(please),please));
+		int changes = addNonCoreModules(gatherOptModules(please),please);
+		System.out.println(changes + " edits have been made.");
 	}
 
 }
