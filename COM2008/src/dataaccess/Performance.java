@@ -67,7 +67,7 @@ public class Performance {
 												this.getGrade() + "','" +
 												this.getResitGrade() + "');"
 												);
-				System.out.println("Changes made: " + count);
+				//System.out.println("Changes made: " + count);
 				switch (count) {
 					case 0:
 						return false;
@@ -96,7 +96,7 @@ public class Performance {
 											   "modCode = '" + this.getApproval().getModule().getCode() + "' AND " + 
 											   "degCode = '" + this.getApproval().getDegree().getCode() + "';"
 												);
-				System.out.println("Changes made: " + count);
+				//System.out.println("Changes made: " + count);
 				switch (count) {
 					case 0:
 						return false;
@@ -125,6 +125,56 @@ public class Performance {
 				return true;
 			}
 			return false;
+		}
+		/*
+		 * Updates Grade in Performance
+		 * 
+		 * @Return a Boolean function 
+		 */
+		public boolean updateGrades() {
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
+				Statement stmt = con.createStatement();
+				int count = stmt.executeUpdate("UPDATE Performance SET grade= '" + this.getGrade() + 
+						"'WHERE registration= '" + this.studyPeriod.getStudent().getRegistration() + "';"
+												);
+				System.out.println("Changes made: " + count);
+				switch (count) {
+					case 0:
+						return false;
+					default:
+						return true;
+					
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			}
+		}
+		/*
+		 * Updates Resit Grade in Performance
+		 * 
+		 * @Return a Boolean function 
+		 */
+		public boolean updateResitGrades() {
+			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
+				Statement stmt = con.createStatement();
+				int count = stmt.executeUpdate("UPDATE Performance SET resitGrade= '" + this.getResitGrade() + 
+						"'WHERE registration= '" + this.studyPeriod.getStudent().getRegistration() + "';"
+												);
+				System.out.println("Changes made: " + count);
+				switch (count) {
+					case 0:
+						return false;
+					default:
+						return true;
+					
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			}
 		}
 		
 		

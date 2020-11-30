@@ -3,6 +3,9 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 import businesslogic.Teacher;
 import dataaccess.*;
@@ -19,13 +22,12 @@ public class LoginPanel extends JPanel implements ActionListener{
 	private JLabel passLabel = new JLabel("Password: ");
 	
 	private JButton loginButton = new JButton("login");
-	private JButton teacher = new JButton("launch Teacher");
+	private JButton teacher = new JButton("Launch Teacher");
+	private JButton registrar = new JButton("Launch Registrar");
 	
 	public LoginPanel(Frame frame) {
 		this.frame = frame;
-		setLayout(new GridLayout(0, 1));
-		
-
+		setLayout(new GridLayout(0, 2));
 		init();
 	}
 	
@@ -43,23 +45,27 @@ public class LoginPanel extends JPanel implements ActionListener{
 			String password = passwordField.getText();
 			
 			Authentication login = new Authentication(username,password);
-			int authLevel = login.checkPassword(username,password);
-			System.out.println(authLevel);
+			List<Integer> storedInfo = new ArrayList<Integer>();
+			storedInfo = login.checkPassword(username,password);
+			System.out.println(storedInfo.get(0));
+			System.out.println(storedInfo.get(1));
 			
-			if (authLevel == 0) {
+			if (storedInfo.get(0) == 0) {
 				JOptionPane.showMessageDialog(null, "Incorrect Login Details");
 			}
-			else if (authLevel == 1) {
+			else if (storedInfo.get(0) == 1) {
 				JOptionPane.showMessageDialog(null, "Correct Student Login");
+				frame.loadStudent(storedInfo.get(1));
 			}
-			else if (authLevel == 2) {
+			else if (storedInfo.get(0) == 2) {
 				JOptionPane.showMessageDialog(null, "Correct Teacher Login");
 				frame.loadTeacher();
 			}
-			else if (authLevel == 3) {
+			else if (storedInfo.get(0) == 3) {
 				JOptionPane.showMessageDialog(null, "Correct Registrar Login");
+				frame.loadRegistrar();
 			}
-			else if (authLevel == 4) {
+			else if (storedInfo.get(0) == 4) {
 				JOptionPane.showMessageDialog(null, "Correct Administrator Login");
 			}
 			else {
@@ -68,6 +74,9 @@ public class LoginPanel extends JPanel implements ActionListener{
 		}
 		else if (command.equals("Launch Teacher")) {
 			frame.loadTeacher();
+		}
+		else if (command.equals("Launch Registrar")) {
+			frame.loadRegistrar();
 		}
 	}
 	
@@ -82,5 +91,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 		loginButton.addActionListener(this);
 		add(teacher);
 		teacher.addActionListener(this);
+		add(registrar);
+		registrar.addActionListener(this);
 	}
 }

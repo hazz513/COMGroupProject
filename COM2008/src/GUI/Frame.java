@@ -13,10 +13,11 @@ public class Frame extends JFrame{
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
 		// make it a half size window centered by default
-		setSize(screenSize.width/2, screenSize.height/2);
+		setSize(screenSize.width/3, screenSize.height/2);
 		setLocation(screenSize.width/4, screenSize.height/4);
 		// open the login panel by default
 		Container contentPane = getContentPane();
+		contentPane.setLayout(new FlowLayout());
 		LoginPanel loginPanel = new LoginPanel(this);
 		contentPane.add(loginPanel, BorderLayout.CENTER);
 		// exit program on closing window
@@ -32,7 +33,7 @@ public class Frame extends JFrame{
 	public void loadTeacher() {
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
-		
+		contentPane.setLayout(new GridLayout(0,1));
 		TeacherPanel teacherPanel = new TeacherPanel(this);
 		contentPane.add(teacherPanel);
 		
@@ -44,8 +45,32 @@ public class Frame extends JFrame{
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
 		
+		contentPane.setLayout(new FlowLayout());
 		LoginPanel loginPanel = new LoginPanel(this);
 		contentPane.add(loginPanel);
+		
+		revalidate();
+		repaint();
+	}
+	
+	public void loadStudent(int registration) {
+		Container contentPane = getContentPane();
+		contentPane.removeAll();
+		
+		StudentPanel studentPanel = new StudentPanel(this,registration);
+		contentPane.add(studentPanel);
+		revalidate();
+		repaint();
+	}
+	/*
+	 * changes the interface to a registrar
+	 */
+	public void loadRegistrar() {
+		Container contentPane = getContentPane();
+		contentPane.removeAll();
+		contentPane.setLayout(new GridLayout(0,1));
+		RegistrarPanel registrarPanel = new RegistrarPanel(this); 
+		contentPane.add(registrarPanel);
 		
 		revalidate();
 		repaint();
