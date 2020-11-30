@@ -62,7 +62,9 @@ public class Frame extends JFrame{
 		revalidate();
 		repaint();
 	}
-	
+	/*
+	 * changes the interface to a registrar
+	 */
 	public void loadRegistrar() {
 		Container contentPane = getContentPane();
 		contentPane.removeAll();

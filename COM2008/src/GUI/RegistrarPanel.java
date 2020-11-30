@@ -3,7 +3,6 @@ package GUI;
 import java.awt.*;
 import javax.swing.*;
 
-import GUI.Frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,12 +14,16 @@ public class RegistrarPanel extends JPanel implements ActionListener{
 	Frame frame;
 	
 	public RegistrarPanel (Frame frame) {
+		//initialise panel
 		this.frame = frame;
 		initialize();
+		//add side menu 
+		RegistrarMenuPanel sideMenu = new RegistrarMenuPanel(frame, this);
+		add(sideMenu, BorderLayout.WEST);
 		
 	}
 
-	private void initialize() {
+	public void initialize() {
 		setLayout(new BorderLayout());
 	}
 

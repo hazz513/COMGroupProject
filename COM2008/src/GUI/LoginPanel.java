@@ -63,6 +63,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 			}
 			else if (storedInfo.get(0) == 3) {
 				JOptionPane.showMessageDialog(null, "Correct Registrar Login");
+				frame.loadRegistrar();
 			}
 			else if (storedInfo.get(0) == 4) {
 				JOptionPane.showMessageDialog(null, "Correct Administrator Login");
