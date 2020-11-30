@@ -30,6 +30,7 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 		// create dropdown menu to select student
 		ArrayList<Student> students = Student.getAllFromDB();
 		for (Student student: students) {
+			System.out.println(student);
 			studentSelection.addItem(student);
 		}
 		

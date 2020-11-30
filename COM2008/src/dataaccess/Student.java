@@ -222,7 +222,7 @@ public class Student {
 			// get all the degrees matching code
 			ResultSet rs =  stmt.executeQuery("SELECT * FROM Student;");
 			
-			// build list of degrees
+			// build list of students
 			while(rs.next()) {
 				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"), rs.getString("forename"), rs.getString("email"));
 				students.add(student);
@@ -233,7 +233,7 @@ public class Student {
 			ex.printStackTrace();
 		}
 		
-		// return first(and only) degree
+		// return List of students
 		return students;
 	}
 	

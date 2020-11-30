@@ -2,8 +2,10 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +41,16 @@ public class Authentication {
 		this.authLevel = authLevel;
 		this.regNum = regNum;
 	}
+	public Authentication(String userID, String password, int authLevel) {
+		this.userID = userID;
+		this.password = password;
+		this.authLevel = authLevel;
+	}
 	public Authentication(String userID, String password) {
 		this.userID = userID;
 		this.password = password;
 	}
+	
 	
 	/*
 	 * New Student Constructor
@@ -104,6 +112,11 @@ public class Authentication {
 		this.regNum = regNum;
 	}
 	
+	public String toString() {
+		return (this.userID + ". " + this.password + ", " +
+				this.authLevel);
+	}
+	
 	//Database ----------------------------------------------------------------------------
 	
 	/*
@@ -118,7 +131,7 @@ public class Authentication {
 											this.getUserID() + "','" +
 											this.getPassword() + "','" +
 											this.getAuthLevel() + "','" +
-											this.getRegNum() + "');"
+											this.getReg() + "');"
 											);
 			System.out.println("Changes made: " + count);
 			switch (count) {
@@ -133,6 +146,67 @@ public class Authentication {
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	public boolean addAuthenticationNoReg () {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
+			String sql = "INSERT INTO Authentication VALUES (?,?,?,null)";
+			
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, this.getUserID());
+			stmt.setString(2, this.getPassword());
+			stmt.setInt(3, this.getAuthLevel());
+			
+			
+			int count = stmt.executeUpdate();
+			System.out.println("Changes made: " + count);
+			switch (count) {
+				case 0:
+					return false;
+				default:
+					return true;
+				
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	/*
+	 * Retrieve full list of users
+	 * 
+	 * @Return a Boolean function
+	 */
+	public static ArrayList<Authentication> getAllFromDB() {
+		ArrayList<Authentication> accounts = new ArrayList<Authentication>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Authentication;");
+			
+			// build list of degrees
+			while(rs.next()) {
+				if (rs.getInt("regNum") != 0) {
+					Student student = Student.retrieveFromDB(rs.getInt("regNum"));
+					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), student.getRegistration());
+					accounts.add(account);
+				}
+				else {
+					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), 0000000);
+					accounts.add(account);
+				}
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// returnArray of accounts
+		return accounts;
 	}
 	
 	/*
@@ -161,6 +235,11 @@ public class Authentication {
 		}
 	}
 	
+	/*
+	 * Updates a password to the FB
+	 * Takes an appended password and updates the DB if it has changed
+	 * @return a Boolean Function
+	 */
 	public boolean updatePassToDB() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
 			Statement stmt = con.createStatement();
@@ -180,6 +259,11 @@ public class Authentication {
 		}
 	}
 	
+	/*
+	 * Checks Database for an existing ID & Password Pair
+	 * @return returns a list of integers 
+	 * The first being the authorisation level the second the Registration Number
+	 */
 	public List<Integer> checkPassword(String userID, String password) {
 		ArrayList<Authentication> accounts = new ArrayList<Authentication>();
 		List<Integer> storedInfo = new ArrayList<Integer>();
@@ -195,14 +279,11 @@ public class Authentication {
 			// build list of degrees
 			while(rs.next()) {
 				if (rs.getInt("regNum") != 0) {
-					System.out.println("if 1");
 					Student student = Student.retrieveFromDB(rs.getInt("regNum"));
-					System.out.println("if 1");
 					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), student.getRegistration());
 					accounts.add(account);
 				}
 				else {
-					System.out.println("if 2");
 					Authentication account = new Authentication(rs.getString("userID"), rs.getString("password"), rs.getInt("authLevel"), 0000000);
 					accounts.add(account);
 				}
