@@ -63,6 +63,17 @@ public class Frame extends JFrame{
 		repaint();
 	}
 	
+	public void loadRegistrar() {
+		Container contentPane = getContentPane();
+		contentPane.removeAll();
+		contentPane.setLayout(new GridLayout(0,1));
+		RegistrarPanel registrarPanel = new RegistrarPanel(this); 
+		contentPane.add(registrarPanel);
+		
+		revalidate();
+		repaint();
+	}
+	
 	public static void main(String[] args) {
 		new Frame("the system");
 	}

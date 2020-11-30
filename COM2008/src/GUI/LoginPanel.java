@@ -23,6 +23,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 	
 	private JButton loginButton = new JButton("login");
 	private JButton teacher = new JButton("Launch Teacher");
+	private JButton registrar = new JButton("Launch Registrar");
 	
 	public LoginPanel(Frame frame) {
 		this.frame = frame;
@@ -73,6 +74,9 @@ public class LoginPanel extends JPanel implements ActionListener{
 		else if (command.equals("Launch Teacher")) {
 			frame.loadTeacher();
 		}
+		else if (command.equals("Launch Registrar")) {
+			frame.loadRegistrar();
+		}
 	}
 	
 	public void init() {
@@ -86,5 +90,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 		loginButton.addActionListener(this);
 		add(teacher);
 		teacher.addActionListener(this);
+		add(registrar);
+		registrar.addActionListener(this);
 	}
 }
