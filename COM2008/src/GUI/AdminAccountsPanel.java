@@ -162,7 +162,7 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 			String pass = password.getText();
 			String authS = authLevel.getText();
 			String registS = registration.getText();
-			if ((checkSize(10,userID.length())) && (checkSize(11,pass.length())) && (checkSize(1,authS.length())) && ((checkSize(11,registS.length()) || (registS.isEmpty())))){
+			if ((checkSize(10,userID.length())) && (checkSize(11,pass.length())) && ((checkSize(1,authS.length())) && (checkInt(authS))) && ((checkSize(11,registS.length()) || (registS.isEmpty())) && (checkInt(registS)))){
 				if (!registS.isEmpty()) {
 					int regist = Integer.parseInt(registration.getText());
 					int auth = Integer.parseInt(authLevel.getText());
@@ -188,13 +188,14 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 				}	
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Invalid character length");
+				JOptionPane.showMessageDialog(null, "Invalid character length or Character Type");
 			}
 		}
 	}
 	
 	/*
 	 * Checks inputs and responds if they are valid
+	 * @return = boolean
 	 */
 	public boolean checkSize(int max, int length) {
 		if ((length > max ) || (length == 0)) {
@@ -203,6 +204,27 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 		else {
 			return true;
 		}
+	}
+	/*
+	 * Checks if the string is an integer of varying length
+	 * @return = boolean
+	 */
+	public boolean checkInt(String toCheck) {
+	    int length = toCheck.length();
+		int i = 0;
+	    if (toCheck.charAt(0) == '-') {
+	        if (length == 1) {
+	            return false;
+	        }
+	        i = 1;
+	    }
+	    for (; i < length; i++) {
+	        char c = toCheck.charAt(i);
+	        if (c < '0' || c > '9') {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 	
 }
