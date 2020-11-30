@@ -40,7 +40,9 @@ public class Frame extends JFrame{
 		revalidate();
 		repaint();
 	}
-	
+	/*
+	 * changes the interface to the Login
+	 */
 	public void loadLogin() {
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
@@ -52,13 +54,26 @@ public class Frame extends JFrame{
 		revalidate();
 		repaint();
 	}
-	
+	/*
+	 * changes the interface to the student view
+	 */
 	public void loadStudent(int registration) {
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
 		
 		StudentPanel studentPanel = new StudentPanel(this,registration);
 		contentPane.add(studentPanel);
+		revalidate();
+		repaint();
+	}
+	
+	public void loadAdmin() {
+		Container contentPane = getContentPane();
+		contentPane.removeAll();
+		contentPane.setLayout(new GridLayout(0,1));
+		AdminPanel adminPanel = new AdminPanel(this);
+		contentPane.add(adminPanel);
+		
 		revalidate();
 		repaint();
 	}
