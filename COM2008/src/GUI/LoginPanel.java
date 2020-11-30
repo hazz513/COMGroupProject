@@ -67,6 +67,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 			}
 			else if (storedInfo.get(0) == 4) {
 				JOptionPane.showMessageDialog(null, "Correct Administrator Login");
+				frame.loadAdmin();
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Invalid Authroization Level");

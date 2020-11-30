@@ -21,7 +21,7 @@ public class Admin {
 	 * @param module - the module object to be inserted
 	 * @return boolean based on success
 	 */
-	private static boolean addModule (Module[] modules) {
+	public static boolean addModule (Module[] modules) {
 		for (Module module: modules) {
 			if (module.addToDB()) {				
 			}
@@ -40,7 +40,7 @@ public class Admin {
 	 * @param approvals - the array of approval objects to be inserted
 	 * @return boolean based on success
 	 */
-	private static boolean addApprovals (Approval[] approvals) {
+	public static boolean addApprovals (Approval[] approvals) {
 		// insert each approval
 		for (Approval approval: approvals) {
 			if (approval.addToDB()) {
@@ -58,7 +58,7 @@ public class Admin {
 	 * @return boolean based on success
 	 */
 	
-	private static boolean addDegreeCourses (Degree[] degrees) {
+	public static boolean addDegreeCourses (Degree[] degrees) {
 		
 		for (Degree degree:degrees) {
 			if (degree.addToDB()) {
@@ -82,7 +82,7 @@ public class Admin {
 	 * @param module - the module object to be inserted
 	 * @return boolean based on success
 	 */
-	private static boolean addDepartment(Department department) {
+	public static boolean addDepartment(Department department) {
 		return department.addDepartment();
 	}
 	
@@ -92,8 +92,12 @@ public class Admin {
 	 * @param authentiaction - Instance of an account to be inserted
 	 * @return boolean based on success
 	 */
-	private static boolean addAccounts(Authentication authentication) {
+	public static boolean addAccounts(Authentication authentication) {
 		return authentication.addAuthentication();
+	}
+	
+	public static boolean addAccountsNoReg(Authentication authentication) {
+		return authentication.addAuthenticationNoReg();
 	}
 	
 	/*
@@ -102,7 +106,7 @@ public class Admin {
 	 * @param module - the module object to be deleted
 	 * @return boolean based on success
 	 */
-	private static boolean removeModule(Module module) {
+	public static boolean removeModule(Module module) {
 		return module.removeFromDB();
 	}
 	
@@ -112,7 +116,7 @@ public class Admin {
 	 * @param approval - the approval object to be deleted
 	 * @return boolean based on success
 	 */
-	private static boolean removeApproval(Approval approval) {
+	public static boolean removeApproval(Approval approval) {
 		return approval.removeFromDB();
 	}
 	
@@ -122,7 +126,7 @@ public class Admin {
 	 * @param department - the department to remove
 	 * @return boolean based on success
 	 */
-	private static boolean removeDepartment(Department department) {
+	public static boolean removeDepartment(Department department) {
 		return department.removeDepartment();
 	}
 	
@@ -132,7 +136,7 @@ public class Admin {
 	 *  @param authentication - the user account to remove
 	 *  @return boolean based on success
 	 */
-	private static boolean removeAccounts(Authentication authentication) {
+	public static boolean removeAccounts(Authentication authentication) {
 		return authentication.removeAuthentication();
 	}
 	
@@ -143,7 +147,7 @@ public class Admin {
 	 *  @return boolean based on success
 	 */
 	
-	private static boolean removeDegreeCourses (Degree[] degrees) {
+	public static boolean removeDegreeCourses (Degree[] degrees) {
 		for (Degree degree:degrees) {
 			if (degree.removeFromDB()) {
 	
@@ -167,7 +171,7 @@ public class Admin {
 	
 	
 	
-	private static String changePassword (Authentication user, String newPass) {
+	public static String changePassword (Authentication user, String newPass) {
 		String currentpass = user.getPassword();
 		if (newPass != currentpass) {
 			user.setPassword(newPass);
