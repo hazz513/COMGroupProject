@@ -66,7 +66,7 @@ public class CheckProgressionPanel  extends JPanel implements ActionListener{
 				message = ("the progression status is: " + progression);
 				
 				// add results to database
-				period.addMeanGrade(Teacher.meanGrade(period));
+				period.addMeanGrade(Teacher.meanGrade(period.getPerformances()));
 				period.addProgression(progression);
 				// if a new study period is to be made then ask to proceed
 				if (progression == Teacher.Progression.PROGRESS || progression == Teacher.Progression.REPEAT) {
