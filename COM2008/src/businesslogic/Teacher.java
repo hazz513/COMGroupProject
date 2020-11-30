@@ -150,7 +150,8 @@ public class Teacher {
 		ArrayList<Character> levels = new ArrayList<Character>();
 		// for each period
 		for (int i = 0; i < periods.size(); i++) {
-			char level = periods.get(i).getLevel();
+			ArrayList<Performance> performances = periods.get(i).getPerformances();
+			char level = performances.get(0).getLevel();
 			// remove placement
 			if (level == 'P') {
 				periods.remove(i);
@@ -158,7 +159,7 @@ public class Teacher {
 			}
 			// add grade(one per level) to list, replace previous entry if needed
 			else { 
-				double grade = meanGrade(periods.get(i));
+				double grade = meanGrade(performances);
 				if (!levels.contains(level)){
 					//System.out.println("adding: " + level);
 					levels.add(level);
@@ -205,7 +206,7 @@ public class Teacher {
 		
 		// check if average met
 		// check if all modules passed and if conceded pass is valid
-		if (passedEachModule(performances) && passedMean(period)) {
+		if (passedEachModule(performances) && passedMean(performances)) {
 			// graduate if final year
 			if (isFinalYear(period)) {
 				if (level == '4') {
@@ -286,7 +287,7 @@ public class Teacher {
 			}
 		}
 		
-		if (acquiredCredits >= 120 && passedMean(performances.get(0).getStudyPeriod())) {
+		if (acquiredCredits >= 120 && passedMean(performances)) {
 			if (dissertationPassed) {
 				return Progression.GRADUATE_MASTER;
 			}
@@ -322,10 +323,10 @@ public class Teacher {
 	 * 
 	 * @return true passing, false otherwise
 	 */
-	public static boolean passedMean(StudyPeriod period) {
-		int mean = meanGrade(period);
+	public static boolean passedMean(ArrayList<Performance> performances) {
+		int mean = meanGrade(performances);
 		// use appropriate level threshold
-		if (period.getLevel() == '4') {
+		if (performances.get(0).getLevel() == '4') {
 			if (mean < LEVEL_4_PASS) {
 				return false;
 			}
@@ -387,9 +388,7 @@ public class Teacher {
 	 * 
 	 * @return the mean value
 	 */
-	public static int meanGrade(StudyPeriod period) {
-		// get all performances
-		ArrayList<Performance> performances = period.getPerformances();
+	public static int meanGrade(ArrayList<Performance> performances) {
 		// get grades for all performances
 		int weightedSum = 0;
 		int weightedDivisor = 0;
