@@ -12,6 +12,7 @@ import dataaccess.Authentication;
 import dataaccess.Degree;
 import dataaccess.Module;
 import dataaccess.Department;
+import dataaccess.Partner;
 
 public class Admin {
 	
@@ -84,8 +85,24 @@ public class Admin {
 		return authentication.addAuthentication();
 	}
 	
+	/*
+	 * Inserts and creates a new login account with a Registration number
+	 * 
+	 * @param authentiaction - Instance of an account to be inserted
+	 * @return boolean based on success
+	 */
 	public static boolean addAccountsNoReg(Authentication authentication) {
 		return authentication.addAuthenticationNoReg();
+	}
+	
+	/*
+	 * Inserts a partner into the Database
+	 * 
+	 * @param partner- the partner to form
+	 * @return boolean based on success
+	 */
+	public static boolean addPartner (Partner partner) {
+		return partner.addPartner();
 	}
 	
 	/*
@@ -137,6 +154,16 @@ public class Admin {
 	
 	public static boolean removeDegree (Degree degree) {
 		return degree.removeFromDB();
+	}
+	
+	/*
+	 * Removes a link from the database
+	 * 
+	 * @param Partner - the partner to remove
+	 * @return boolean based on success
+	 */
+	public static boolean removePartner (Partner partner) {
+		return partner.removePartner();
 	}
 	
 	

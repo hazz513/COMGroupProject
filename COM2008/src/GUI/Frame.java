@@ -14,7 +14,7 @@ public class Frame extends JFrame{
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
 		// make it a half size window centered by default
-		setSize(screenSize.width/3, screenSize.height/2);
+		setSize(screenSize.width/2, screenSize.height/2);
 		setLocation(screenSize.width/4, screenSize.height/4);
 		// open the login panel by default
 		Container contentPane = getContentPane();

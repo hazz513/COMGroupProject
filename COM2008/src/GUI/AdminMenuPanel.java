@@ -39,8 +39,13 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 		JButton departments = new JButton("add/remove departments");
 		departments.addActionListener(this);
 		
+		JButton links = new JButton("add/remove Degree & Deptartment Links");
+		links.addActionListener(this);
+		
 		JButton accounts = new JButton("add/remove accounts");
 		accounts.addActionListener(this);
+		
+		
 		
 		// add buttons to panel
 		add(logout);
@@ -48,6 +53,7 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 		add(approvals);
 		add(degrees);
 		add(departments);
+		add(links);
 		add(accounts);
 	}
 
@@ -92,7 +98,15 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
-		*/
+				*/
+		else if (command.equals("add/remove Degree & Deptartment Links")) {
+			resetAdminPanel();
+			// add task panel
+			adminPanel.add(new AdminPartnerPanel(frame));
+			frame.revalidate();
+			frame.repaint();
+		}
+
 		else if (command.equals("add/remove departments")) {
 			resetAdminPanel();
 			// add task panel
