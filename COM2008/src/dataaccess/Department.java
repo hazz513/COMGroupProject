@@ -2,7 +2,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 
@@ -39,6 +41,11 @@ public class Department {
 	}
 	public void setDepName(String depName) {
 		this.depName = depName;
+	}
+	
+	//To String Function
+	public String toString() {
+		return (this.depCode + ". " + this.depName);
 	}
 	
 	//Database ----------------------------------------------------------------------------
@@ -92,6 +99,30 @@ public class Department {
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static ArrayList<Department> getAllFromDB() {
+		ArrayList<Department> departments = new ArrayList<Department>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Department;");
+			
+			// build list of students
+			while(rs.next()) {
+				Department department = new Department(rs.getString("depCode"), rs.getString("depName"));
+				departments.add(department);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return List of students
+		return departments;
 	}
 	
 	public static void main(String[] args) {

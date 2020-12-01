@@ -51,7 +51,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 	 * Construct UI for adding an account
 	 */
 	public void addAccount() {
-		System.out.println("Anything");
 		removeAll();
 		setLayout(new FlowLayout());
 		add(userLabel);
