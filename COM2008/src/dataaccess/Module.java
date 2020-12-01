@@ -46,6 +46,11 @@ public class Module {
 		this.name = name;
 	}
 	
+	//To String Function
+		public String toString() {
+			return (this.code + ", " + this.name);
+		}
+	
 	// database ---------------------------------------------------------------------------
 	
 	/*
@@ -139,6 +144,33 @@ public class Module {
 			str.add ("Nothing to show,error occured");
 			return str ;
 		}
+	}
+	/*
+	 * Retrieve all Modules from the DB
+	 * @return a list of all the Modules
+	 */
+	public static ArrayList<Module> getAllFromDB() {
+		ArrayList<Module> modules = new ArrayList<Module>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Module;");
+			
+			// build list of students
+			while(rs.next()) {
+				Module module = new Module(rs.getString("modCode"), rs.getString("modName"));
+				modules.add(module);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return List of departments
+		return modules;
 	}
 	
 	/*

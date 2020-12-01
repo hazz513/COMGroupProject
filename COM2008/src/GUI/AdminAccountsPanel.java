@@ -153,7 +153,7 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 			Admin.removeAccounts(toRemove);
 			JOptionPane.showMessageDialog(null, "The user has been Removed");
 			removeOption.removeAllItems();
-			initializePanel();
+			removeAccount();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
@@ -169,7 +169,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 						Authentication newUser = new Authentication(userID,pass,auth,regist);
 						if (Admin.addAccounts(newUser)){
 							JOptionPane.showMessageDialog(null, "The new user has been added");
-							initializePanel();
 						}
 						else {
 							JOptionPane.showMessageDialog(null, "An error has occurred");
@@ -185,7 +184,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 					Authentication newUser = new Authentication(userID,pass,auth);
 					if (Admin.addAccountsNoReg(newUser)){
 						JOptionPane.showMessageDialog(null, "The new user has been added");
-						initializePanel();
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "An error has occurred");

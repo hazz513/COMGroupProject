@@ -32,6 +32,15 @@ public class Admin {
 		}
 		return true;
 	}
+	/*
+	 * Inserts a Single module into the data base
+	 * 
+	 * @Param Module - the module to add
+	 * @return boolean based on success
+	 */
+	public static boolean addSingleModule (Module modules) {
+		return modules.addToDB();
+	}
 	
 	
 	

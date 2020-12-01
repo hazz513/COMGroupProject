@@ -145,7 +145,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 			Admin.removeDepartment(toRemove);
 			JOptionPane.showMessageDialog(null, "The user has been Removed");
 			removeOption.removeAllItems();
-			initializePanel();
+			removeAccount();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
@@ -155,7 +155,6 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 				Department Dep = new Department(code,name);
 				if (Admin.addDepartment(Dep)){
 					JOptionPane.showMessageDialog(null, "The new user has been added");
-					initializePanel();
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "An error has occurred");

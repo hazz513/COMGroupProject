@@ -24,25 +24,25 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 	public void initialize() {
 		setLayout(new GridLayout(0, 1));
 		// initialise buttons
-		JButton logout = new JButton("logout");
+		JButton logout = new JButton("Logout");
 		logout.addActionListener(this);
 				
-		JButton modules = new JButton("add/remove modules");
+		JButton modules = new JButton("Add/Remove Modules");
 		modules.addActionListener(this);
 				
-		JButton approvals = new JButton("add/remove approvals");
+		JButton approvals = new JButton("Add/Remove Approvals");
 		approvals.addActionListener(this);
 				
-		JButton degrees = new JButton("add/remove degree courses");
+		JButton degrees = new JButton("Add/Remove Degree Courses");
 		degrees.addActionListener(this);
 				
-		JButton departments = new JButton("add/remove departments");
+		JButton departments = new JButton("Add/Remove Departments");
 		departments.addActionListener(this);
 		
-		JButton links = new JButton("add/remove Degree & Deptartment Links");
+		JButton links = new JButton("Add/Remove Degree & Deptartment Links");
 		links.addActionListener(this);
 		
-		JButton accounts = new JButton("add/remove accounts");
+		JButton accounts = new JButton("Add/Remove Accounts");
 		accounts.addActionListener(this);
 		
 		
@@ -83,23 +83,15 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
-		else if (command.equals("add/remove degree courses")) {
+		*/
+		else if (command.equals("Add/Remove Modules")) {
 			resetAdminPanel();
 			// add task panel
-			adminPanel.add(new AdminDegreesPanel(frame));
-			// create scrollable pane with panel
-			JScrollPane scrollPane = new JScrollPane(panel);
-			// make pane vertically scrollable
-			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-			// add pane to frame
-			adminPanel.add(scrollPane, BorderLayout.CENTER);
-			//teacherPanel.add(panel, BorderLayout.CENTER);
-			// re display
+			adminPanel.add(new AdminModulesPanel(frame));
 			frame.revalidate();
 			frame.repaint();
 		}
-				*/
-		else if (command.equals("add/remove Degree & Deptartment Links")) {
+		else if (command.equals("Add/Remove Degree & Deptartment Links")) {
 			resetAdminPanel();
 			// add task panel
 			adminPanel.add(new AdminPartnerPanel(frame));
@@ -107,7 +99,7 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 			frame.repaint();
 		}
 
-		else if (command.equals("add/remove departments")) {
+		else if (command.equals("Add/Remove Departments")) {
 			resetAdminPanel();
 			// add task panel
 			adminPanel.add(new AdminDepartmentsPanel(frame));
@@ -115,14 +107,14 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 			frame.repaint();
 		}
 		
-		else if (command.equals("add/remove accounts")) {
+		else if (command.equals("Add/Remove Accounts")) {
 			resetAdminPanel();
 			// add task panel
 			adminPanel.add(new AdminAccountsPanel(frame));
 			frame.revalidate();
 			frame.repaint();
 		}
-		else if (command.equals("add/remove degree courses")) {
+		else if (command.equals("Add/Remove Degree Courses")) {
 			resetAdminPanel();
 			//add task panel
 			adminPanel.add(new AdminDegreesPanel(frame));

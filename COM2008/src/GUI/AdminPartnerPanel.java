@@ -155,7 +155,7 @@ public class AdminPartnerPanel  extends JPanel implements ActionListener{
 			Admin.removePartner(toRemove);
 			JOptionPane.showMessageDialog(null, "The two are no longer Linked");
 			removeOption.removeAllItems();
-			initializePanel();
+			removeAccount();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
@@ -165,7 +165,7 @@ public class AdminPartnerPanel  extends JPanel implements ActionListener{
 			Admin.addPartner(toAdd);
 			JOptionPane.showMessageDialog(null, "The two are now Linked");
 			removeOption.removeAllItems();
-			initializePanel();
+			addAccount();
 		}
 	}
 	
