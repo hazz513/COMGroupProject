@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import businesslogic.Teacher;
+import java.util.concurrent.ThreadLocalRandom;
+import java.lang.Math;
 
 public class Student {
 	//Database Information
@@ -157,6 +159,66 @@ public class Student {
 	}
 	
 	/*
+	 * generates registration number for students
+	 * 
+	 * @return an integer
+	 */
+	public static int regNumGenerator() {
+		ThreadLocalRandom random = ThreadLocalRandom.current();
+		long l= random.nextLong(10_000_000_000L, 100_000_000_000L);
+		
+		int i = (int)l;
+		
+		return Math.abs(i);
+	}
+	
+	/*
+	 * generates email for new student
+	 * 
+	 * @return a string
+	 */
+	public static String emailGenerator(String surname, String forename) {
+		String sur = surname;
+		String fore = forename;
+		String at = "@";
+		String com = ".com";
+		//int n = (int)(Math.random()*100);
+		String email = "";
+		
+		//ArrayList<Student> students = new ArrayList<Student>();
+		int count = 0;
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Student WHERE " + 
+					 						  "surname = '" + sur +"' AND forename ='"+ fore +"'");
+			
+			while(rs.next()) {
+				count++ ;
+			}
+			
+			if (count==0) {
+				email = fore.charAt(0)+"."+sur+"1"+at+"fake"+com ;
+			}
+			else {
+				email = fore.charAt(0)+"."+sur+Integer.toString(count+1)+at+"fake"+com ;
+			}
+			
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		//String num = Integer.toString(n);
+		
+		
+		
+		return email ;
+		
+	}
+	
+	/*
 	 * get periods associated with the student
 	 * 
 	 * @return list of periods
@@ -250,6 +312,7 @@ public class Student {
 		//Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
 		//System.out.println(George.addStudent());
 		//System.out.println(George.removeStudent());
+		//System.out.println(emailGenerator("jane","doe"));
 	}
 	
 }

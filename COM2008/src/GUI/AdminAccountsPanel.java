@@ -51,7 +51,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 	 * Construct UI for adding an account
 	 */
 	public void addAccount() {
-		System.out.println("Anything");
 		removeAll();
 		setLayout(new FlowLayout());
 		add(userLabel);
@@ -162,18 +161,24 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 			String pass = password.getText();
 			String authS = authLevel.getText();
 			String registS = registration.getText();
-			if ((checkSize(10,userID.length())) && (checkSize(11,pass.length())) && ((checkSize(1,authS.length())) && (checkInt(authS))) && ((checkSize(11,registS.length()) || (registS.isEmpty())) && (checkInt(registS)))){
+			if ((checkSize(10,userID.length())) && (checkSize(11,pass.length())) && ((checkSize(1,authS.length())) && (checkInt(authS))) && ((checkSize(11,registS.length()) || (registS.isEmpty())))){
 				if (!registS.isEmpty()) {
-					int regist = Integer.parseInt(registration.getText());
-					int auth = Integer.parseInt(authLevel.getText());
-					Authentication newUser = new Authentication(userID,pass,auth,regist);
-					if (Admin.addAccounts(newUser)){
-						JOptionPane.showMessageDialog(null, "The new user has been added");
-						initializePanel();
+					if (checkInt(registS)) {
+						int regist = Integer.parseInt(registration.getText());
+						int auth = Integer.parseInt(authLevel.getText());
+						Authentication newUser = new Authentication(userID,pass,auth,regist);
+						if (Admin.addAccounts(newUser)){
+							JOptionPane.showMessageDialog(null, "The new user has been added");
+							initializePanel();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "An error has occurred");
+						}
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "An error has occurred");
 					}
+					
 				}
 				else if ((registS.isEmpty()) && (!authS.isEmpty())){
 					int auth = Integer.parseInt(authLevel.getText());
@@ -210,21 +215,20 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 	 * @return = boolean
 	 */
 	public boolean checkInt(String toCheck) {
-	    int length = toCheck.length();
-		int i = 0;
-	    if (toCheck.charAt(0) == '-') {
-	        if (length == 1) {
-	            return false;
-	        }
-	        i = 1;
-	    }
-	    for (; i < length; i++) {
-	        char c = toCheck.charAt(i);
-	        if (c < '0' || c > '9') {
-	            return false;
-	        }
-	    }
-	    return true;
-	}
-	
+		boolean isValidInteger = false;
+	      try
+	      {
+	         Integer.parseInt(toCheck);
+	 
+	         // s is a valid integer
+	         System.out.println("It's an int");
+	         isValidInteger = true;
+	      }
+	      catch (NumberFormatException ex)
+	      {
+	         // s is not an integer
+	      }
+	      System.out.println("It's not an int");
+	      return isValidInteger;
+   }
 }
