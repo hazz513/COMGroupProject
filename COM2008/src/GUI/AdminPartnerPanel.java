@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
+public class AdminPartnerPanel  extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -4615865294577288857L;
 	
 	/*
@@ -20,13 +20,12 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 	Frame frame;
 	
 	JComboBox<String> optionSelection = new JComboBox<String>();
-	JComboBox<Department> removeOption = new JComboBox<Department>();
+	JComboBox<Department> departments = new JComboBox<Department>();
+	JComboBox<Degree> degrees = new JComboBox<Degree>();
+	JComboBox<Partner> removeOption = new JComboBox<Partner>();
 	
-	private JTextField depCode = new JTextField(3);
-	private JTextField depName = new JTextField(30);
-	
-	private JLabel depCLabel = new JLabel("Department Code: ");
-	private JLabel depCName = new JLabel("Department Name: ");
+	private JLabel depLabel = new JLabel("Department to Link: ");
+	private JLabel degLabel = new JLabel("Degree to Link ");
 	
 	private JButton remove = new JButton("Remove");
 	private JButton confirm = new JButton("Add");
@@ -36,7 +35,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 	/*
 	 * Constructor to create the needed Panel
 	 */
-	public AdminDepartmentsPanel(Frame frame) {
+	public AdminPartnerPanel(Frame frame) {
 		this.frame = frame;
 		confirm.addActionListener(this);
 		cancel.addActionListener(this);
@@ -44,20 +43,31 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		getInput.addActionListener(this);
 		initializePanel();
 		// create dropdown menu to select an option
-		optionSelection.addItem("Add a Department");
-		optionSelection.addItem("Remove a Department");
+		optionSelection.addItem("Add a Link");
+		optionSelection.addItem("Remove a Link");
 	}
 	
 	/*
-	 * Construct UI for adding an account
+	 * Construct UI for adding the Links
 	 */
 	public void addAccount() {
 		removeAll();
 		setLayout(new FlowLayout());
-		add(depCLabel);
-		add(depCode);
-		add(depCName);
-		add(depName);
+		
+		ArrayList<Department> dep = Department.getAllFromDB();
+		for (Department current: dep) {
+			departments.addItem(current);
+		}
+		
+		ArrayList<Degree> deg = Degree.getAllFromDB();
+		for (Degree current: deg) {
+			degrees.addItem(current);
+		}
+		
+		add(depLabel);
+		add(departments);
+		add(degLabel);
+		add(degrees);
 		add(confirm);
 		add(cancel);
 		
@@ -70,9 +80,9 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 	public void removeAccount() {
 		removeAll();
 		setLayout(new FlowLayout());
-		//Gets list of all accounts and adds to dropdown
-		ArrayList<Department> users = Department.getAllFromDB();
-		for (Department current: users) {
+		//Gets list of all partners for a drop down menu
+		ArrayList<Partner> links = Partner.getAllFromDB();
+		for (Partner current: links) {
 			removeOption.addItem(current);
 		}
 		// limit height
@@ -97,7 +107,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		removeAll();
 		setLayout(new FlowLayout());
 		// styling and title
-		setBorder(BorderFactory.createTitledBorder("Add or Remove a Department"));
+		setBorder(BorderFactory.createTitledBorder("Add or Remove a link between Degree & Department"));
 		
 		// set vertical layout
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -107,7 +117,6 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		add(optionSelection);
 		
 		// add button to initiate process
-		
 		
 		add(getInput);
 		frame.revalidate();
@@ -123,10 +132,10 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		// on button click
 		if (command.equals("Confirm Option")) {
 			// assign student from dropdown
-			if (optionSelection.getSelectedItem() == "Add a Department") {
+			if (optionSelection.getSelectedItem() == "Add a Link") {
 				addAccount();
 			}
-			else if (optionSelection.getSelectedItem() == "Remove a Department") {
+			else if (optionSelection.getSelectedItem() == "Remove a Link") {
 				removeAccount();
 			}
 		}
@@ -136,55 +145,22 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		}
 		//Removes a selected user from the database
 		else if (command.equals("Remove")) {
-			Department toRemove = (Department)removeOption.getSelectedItem();
-			Admin.removeDepartment(toRemove);
-			JOptionPane.showMessageDialog(null, "The user has been Removed");
+			Partner toRemove = (Partner)removeOption.getSelectedItem();
+			Admin.removePartner(toRemove);
+			JOptionPane.showMessageDialog(null, "The two are no longer Linked");
 			removeOption.removeAllItems();
 			removeAccount();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
-			String code = depCode.getText();
-			String name = depName.getText();
-			if (((code.length()==3) && checkOnlyLetters(code)) && (checkSize(50,name.length()))){
-				Department Dep = new Department(code,name);
-				if (Admin.addDepartment(Dep)){
-					JOptionPane.showMessageDialog(null, "The new user has been added");
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "An error has occurred");
-				}
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Invalid character length or Character Type");
-			}
+			Department depToLink = (Department)departments.getSelectedItem();
+			Degree degToLink = (Degree)degrees.getSelectedItem();
+			Partner toAdd = new Partner(degToLink,depToLink);
+			Admin.addPartner(toAdd);
+			JOptionPane.showMessageDialog(null, "The two are now Linked");
+			removeOption.removeAllItems();
+			addAccount();
 		}
-	}
-	
-	/*
-	 * Checks inputs and responds if they are valid
-	 * @return = boolean
-	 */
-	public boolean checkSize(int max, int length) {
-		if ((length > max ) || (length == 0)) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	/*
-	 * Checks if the string is an integer of varying length
-	 * @return = boolean
-	 */
-	public boolean checkOnlyLetters(String toCheck) {
-	    int length = toCheck.length();
-	    for (int i = 0; i<length; i++) {
-	        if ((Character.isLetter(toCheck.charAt(i)) == false)) {
-	        	return false;
-	        }
-	    }
-	    return true;
 	}
 	
 }

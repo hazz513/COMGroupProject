@@ -35,12 +35,17 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 	private JButton remove = new JButton("Remove");
 	private JButton confirm = new JButton("Add");
 	private JButton cancel = new JButton("Cancel");
-	
+	private JButton getInput = new JButton("Confirm Option");
+
 	/*
 	 * Constructor
 	 */
 	public AdminAccountsPanel(Frame frame) {
 		this.frame = frame;
+		cancel.addActionListener(this);
+		confirm.addActionListener(this);
+		remove.addActionListener(this);
+		getInput.addActionListener(this);
 		initializePanel();
 		// create dropdown menu to select an option
 		optionSelection.addItem("Add an Account");
@@ -61,13 +66,7 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 		add(authLevel);
 		add(regLabel);
 		add(registration);
-		
-		
-		confirm.addActionListener(this);
 		add(confirm);
-		
-		
-		cancel.addActionListener(this);
 		add(cancel);
 		
 		frame.revalidate();
@@ -91,10 +90,7 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 		removeOption.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		add(removeOption);
-		
-		remove.addActionListener(this);
 		add(remove);
-		cancel.addActionListener(this);
 		add(cancel);
 		
 		frame.revalidate();
@@ -119,8 +115,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 		add(optionSelection);
 		
 		// add button to initiate process
-		JButton getInput = new JButton("Confirm Option");
-		getInput.addActionListener(this);
 		
 		add(getInput);
 		frame.revalidate();
@@ -153,7 +147,7 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 			Admin.removeAccounts(toRemove);
 			JOptionPane.showMessageDialog(null, "The user has been Removed");
 			removeOption.removeAllItems();
-			initializePanel();
+			removeAccount();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
@@ -169,7 +163,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 						Authentication newUser = new Authentication(userID,pass,auth,regist);
 						if (Admin.addAccounts(newUser)){
 							JOptionPane.showMessageDialog(null, "The new user has been added");
-							initializePanel();
 						}
 						else {
 							JOptionPane.showMessageDialog(null, "An error has occurred");
@@ -185,7 +178,6 @@ public class AdminAccountsPanel  extends JPanel implements ActionListener{
 					Authentication newUser = new Authentication(userID,pass,auth);
 					if (Admin.addAccountsNoReg(newUser)){
 						JOptionPane.showMessageDialog(null, "The new user has been added");
-						initializePanel();
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "An error has occurred");

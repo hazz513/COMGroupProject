@@ -2,7 +2,9 @@ package dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Partner {
 	
@@ -14,7 +16,8 @@ public class Partner {
 	
 	private Degree degree;
 	private Department department;
-	
+	private String deg;
+	private String dep;
 	/*
 	 * Partner 
 	 * @param degree = Degree Object
@@ -23,6 +26,12 @@ public class Partner {
 	public Partner(Degree degree, Department department) {
 		this.degree = degree;
 		this.department = department;
+		this.deg = degree.getCode();
+		this.dep = department.getDepCode();
+	}
+	public Partner(String degree, String department) {
+		this.deg = degree;
+		this.dep = department;
 	}
 	
 	//Get Functions
@@ -31,6 +40,10 @@ public class Partner {
 	}
 	public Department getDepartment() {
 		return department;
+	}
+	
+	public String toString() {
+		return (this.deg + ". " + this.dep);
 	}
 	
 	//Database ----------------------------------------------------------------------------
@@ -47,8 +60,8 @@ public class Partner {
 			System.out.println(this.getDegree().getCode());
 			System.out.println(this.getDepartment().getDepCode());
 			int count = stmt.executeUpdate("INSERT INTO Partner VALUES ('" + 
-											this.getDegree().getCode() + "', '" +
-											this.getDepartment().getDepCode() + "');"
+											deg + "', '" +
+											dep + "');"
 											);
 			System.out.println("Changes made: " + count);
 			switch (count) {
@@ -73,8 +86,8 @@ public class Partner {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 			Statement stmt = con.createStatement();
 			int count = stmt.executeUpdate("DELETE FROM Partner WHERE " +
-										   "depCode = '" + this.department.getDepCode() + "' AND "+ 
-										   "degCode = '" + this.degree.getCode() + "';"
+										   "depCode = '" + dep + "' AND "+ 
+										   "degCode = '" + deg + "';"
 										   );
 			switch (count) {
 				case 0:
@@ -87,6 +100,30 @@ public class Partner {
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static ArrayList<Partner> getAllFromDB() {
+		ArrayList<Partner> partners = new ArrayList<Partner>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Partner;");
+			
+			// build list of students
+			while(rs.next()) {
+				Partner partner = new Partner(rs.getString("degCode"), rs.getString("depCode"));
+				partners.add(partner);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return List of departments
+		return partners;
 	}
 	
 	/*
