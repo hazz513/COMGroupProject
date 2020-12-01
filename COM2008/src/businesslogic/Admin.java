@@ -12,6 +12,7 @@ import dataaccess.Authentication;
 import dataaccess.Degree;
 import dataaccess.Module;
 import dataaccess.Department;
+import dataaccess.Partner;
 
 public class Admin {
 	
@@ -30,6 +31,15 @@ public class Admin {
 			}
 		}
 		return true;
+	}
+	/*
+	 * Inserts a Single module into the data base
+	 * 
+	 * @Param Module - the module to add
+	 * @return boolean based on success
+	 */
+	public static boolean addSingleModule (Module modules) {
+		return modules.addToDB();
 	}
 	
 	
@@ -52,30 +62,22 @@ public class Admin {
 		return true;
 	}
 	
+	public static boolean addSingleApproval (Approval approvals) {
+		return approvals.addToDB();
+	}
+	
 	/* inserts degree courses into database
 	 * 
 	 * @param degree - the degrees to be inserted
 	 * @return boolean based on success
 	 */
 	
-	public static boolean addDegreeCourses (Degree[] degrees) {
+	public static boolean addDegree (Degree degree) {
 		
-		for (Degree degree:degrees) {
-			if (degree.addToDB()) {
-	
-			}
-			else {
-			return false;
-		}
-		}
-		return true;
+		return degree.addToDB();
 	}
 	
-	
-	
-	
-	
-	
+
 	/*
 	 * inserts module into database
 	 * 
@@ -96,8 +98,24 @@ public class Admin {
 		return authentication.addAuthentication();
 	}
 	
+	/*
+	 * Inserts and creates a new login account with a Registration number
+	 * 
+	 * @param authentiaction - Instance of an account to be inserted
+	 * @return boolean based on success
+	 */
 	public static boolean addAccountsNoReg(Authentication authentication) {
 		return authentication.addAuthenticationNoReg();
+	}
+	
+	/*
+	 * Inserts a partner into the Database
+	 * 
+	 * @param partner- the partner to form
+	 * @return boolean based on success
+	 */
+	public static boolean addPartner (Partner partner) {
+		return partner.addPartner();
 	}
 	
 	/*
@@ -147,16 +165,18 @@ public class Admin {
 	 *  @return boolean based on success
 	 */
 	
-	public static boolean removeDegreeCourses (Degree[] degrees) {
-		for (Degree degree:degrees) {
-			if (degree.removeFromDB()) {
+	public static boolean removeDegree (Degree degree) {
+		return degree.removeFromDB();
+	}
 	
-			}
-			else {
-			return false;
-		}
-		}
-		return true;
+	/*
+	 * Removes a link from the database
+	 * 
+	 * @param Partner - the partner to remove
+	 * @return boolean based on success
+	 */
+	public static boolean removePartner (Partner partner) {
+		return partner.removePartner();
 	}
 	
 	

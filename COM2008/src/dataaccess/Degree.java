@@ -59,6 +59,12 @@ public class Degree {
 		this.leadDep = leadDep;
 	}
 	
+	public String toString() {
+		return (this.code + ". " + this.name + ". " + this.leadDep);
+	}
+	
+	//-----------------------------------------------------------------------------------------------------
+	//Database Begin
 	/*
 	 * generate unique degree code
 	 * 
@@ -246,6 +252,31 @@ public class Degree {
 		}
 	}
 	
+	public static ArrayList<Degree> getAllFromDB() {
+		ArrayList<Degree> degrees = new ArrayList<Degree>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree;");
+			
+			// build list of Degrees
+			while(rs.next()) {
+				Degree degree = new Degree(rs.getString("degCode"), rs.getString("degName"),rs.getString("leadDep"));
+				degrees.add(degree);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return List of degrees
+		return degrees;
+	}
+	
+	
 	/*
 	 * get a degree from database
 	 * 
@@ -340,36 +371,6 @@ public class Degree {
 		return highest;
 	}
 	
-	/*
-	 * get all degrees from DB
-	 */
-	public static ArrayList<Degree> getAllFromDB(){
-		ArrayList<Degree> degrees = new ArrayList<Degree>();
-		
-		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
-			Statement stmt = con.createStatement();
-			
-			// get all the degrees matching code
-			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree;");
-			
-			// build list of students
-			while(rs.next()) {
-				Degree degree = new Degree(rs.getString("degCode"), rs.getString("degName"), rs.getString("leadDep"));
-				degrees.add(degree);
-			}
-		}
-		
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return degrees;
-		
-	}
-	
-	public String toString() {
-		return (this.code + " " + this.name + " " +
-				this.leadDep );
-	}
 	
 	
 	public static void main(String[] args) {

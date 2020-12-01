@@ -121,7 +121,7 @@ public class Department {
 			ex.printStackTrace();
 		}
 		
-		// return List of students
+		// return List of departments
 		return departments;
 	}
 	
