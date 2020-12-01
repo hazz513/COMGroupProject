@@ -182,10 +182,8 @@ public class Student {
 		String fore = forename;
 		String at = "@";
 		String com = ".com";
-		//int n = (int)(Math.random()*100);
 		String email = "";
 		
-		//ArrayList<Student> students = new ArrayList<Student>();
 		int count = 0;
 		
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
@@ -206,16 +204,42 @@ public class Student {
 				email = fore.charAt(0)+"."+sur+Integer.toString(count+1)+at+"fake"+com ;
 			}
 			
+			
 		}
+		
 		catch(Exception ex){
 			ex.printStackTrace();
+			
 		}
-		//String num = Integer.toString(n);
-		
-		
-		
 		return email ;
 		
+	}
+	/*
+	 * checks if the input registration number matches with one in database
+	 * 
+	 * @param integer (registration number)
+	 * 
+	 * @return boolean
+	 */
+	public static boolean regNumChecker(int regNum) {
+		Boolean bool = false;
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
+			Statement stmt = con.createStatement();
+			
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Student WHERE " + 
+					  "registration = '" + regNum +"'");
+			
+			if(rs.next()) {
+				bool = true;
+			}
+			else {
+				bool = false;
+			}
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return bool ;
 	}
 	
 	/*
