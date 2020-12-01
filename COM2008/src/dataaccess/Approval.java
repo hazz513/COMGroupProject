@@ -25,6 +25,9 @@ public class Approval {
 	private int core;
 	private int credits;
 	private char level;
+	private String modCode;
+	private String degCode;
+	
 	
 	/*
 	 * Constructor
@@ -38,6 +41,16 @@ public class Approval {
 	public Approval(Degree degree, Module module, int core, int credits, char level) {
 		this.module = module;
 		this.degree = degree;
+		this.core = core;
+		this.credits = credits;
+		this.level = level;
+		this.modCode = module.getCode();
+		this.degCode = degree.getCode();
+	}
+	
+	public Approval(String degree, String module, int core, int credits, char level) {
+		this.modCode = module;
+		this.degCode = degree;
 		this.core = core;
 		this.credits = credits;
 		this.level = level;
@@ -59,6 +72,16 @@ public class Approval {
 	public char getLevel() {
 		return level;
 	}
+	public String getModCode() {
+		return modCode;
+	}
+	public String getDegCode() {
+		return degCode;
+	}
+	
+	public String toString() {
+		return (this.degCode + ", " + this.modCode + ", " + this.core + ", " + this.level);
+	}
 	
 	// database ---------------------------------------------------------------------------
 	
@@ -72,8 +95,8 @@ public class Approval {
 			Statement stmt = con.createStatement();
 			// insert approval
 			int count = stmt.executeUpdate("INSERT INTO Approval VALUES ('" + 
-											this.getDegree().getCode() + "', '" +
-											this.getModule().getCode() + "', '" +
+											this.getDegCode() + "', '" +
+											this.getModCode() + "', '" +
 											this.getCore() + "', '" +
 											this.getCredits() + "', '" +
 											this.getLevel() + "');"
@@ -103,8 +126,8 @@ public class Approval {
 			Statement stmt = con.createStatement();
 			// delete approval
 			int count = stmt.executeUpdate("DELETE FROM Approval WHERE " + 
-										   "degCode = '" + this.degree.getCode() + "' AND " + 
-										   "modCode = '" + this.module.getCode() + "';"
+										   "degCode = '" + this.getDegCode() + "' AND " + 
+										   "modCode = '" + this.getModCode() + "';"
 										  );
 			// check that changes were made
 			//System.out.println("changes made: " + count);
@@ -157,6 +180,31 @@ public class Approval {
 		// return first(and only) approval
 		return approvals.get(0);
 	}
+	
+	public static ArrayList<Approval> getAllFromDB() {
+		ArrayList<Approval> approvals = new ArrayList<Approval>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Approval;");
+			
+			// build list of students
+			while(rs.next()) {
+				Approval approval = new Approval(rs.getString("degCode"), rs.getString("modCode"), rs.getInt("core"), rs.getInt("credits"), rs.getString("level").charAt(0));
+				approvals.add(approval);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return List of departments
+		return approvals;
+	}
+	
 	
 	public static void main(String[] args) {
 		//test

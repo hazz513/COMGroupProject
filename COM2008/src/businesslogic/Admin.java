@@ -62,6 +62,10 @@ public class Admin {
 		return true;
 	}
 	
+	public static boolean addSingleApproval (Approval approvals) {
+		return approvals.addToDB();
+	}
+	
 	/* inserts degree courses into database
 	 * 
 	 * @param degree - the degrees to be inserted

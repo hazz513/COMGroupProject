@@ -31,12 +31,17 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 	private JButton remove = new JButton("Remove");
 	private JButton confirm = new JButton("Add");
 	private JButton cancel = new JButton("Cancel");
+	private JButton getInput = new JButton("Confirm Option");
 	
 	/*
 	 * Constructor to create the needed Panel
 	 */
 	public AdminDepartmentsPanel(Frame frame) {
 		this.frame = frame;
+		confirm.addActionListener(this);
+		cancel.addActionListener(this);
+		remove.addActionListener(this);
+		getInput.addActionListener(this);
 		initializePanel();
 		// create dropdown menu to select an option
 		optionSelection.addItem("Add a Department");
@@ -53,13 +58,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		add(depCode);
 		add(depCName);
 		add(depName);
-		
-		
-		confirm.addActionListener(this);
 		add(confirm);
-		
-		
-		cancel.addActionListener(this);
 		add(cancel);
 		
 		frame.revalidate();
@@ -83,10 +82,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		removeOption.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		add(removeOption);
-		
-		remove.addActionListener(this);
 		add(remove);
-		cancel.addActionListener(this);
 		add(cancel);
 		
 		frame.revalidate();
@@ -111,8 +107,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		add(optionSelection);
 		
 		// add button to initiate process
-		JButton getInput = new JButton("Confirm Option");
-		getInput.addActionListener(this);
+		
 		
 		add(getInput);
 		frame.revalidate();

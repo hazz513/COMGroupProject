@@ -47,9 +47,9 @@ public class Module {
 	}
 	
 	//To String Function
-		public String toString() {
-			return (this.code + ", " + this.name);
-		}
+	public String toString() {
+		return (this.code + ", " + this.name);
+	}
 	
 	// database ---------------------------------------------------------------------------
 	

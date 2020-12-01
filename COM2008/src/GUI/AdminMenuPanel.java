@@ -63,27 +63,17 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 		String command = event.getActionCommand();
 		// open relevant panel for each selection
 		// first re-initialize frame too erase previous panel
-		if (command.equals("logout")) {
+		if (command.equals("Logout")) {
 			frame.loadLogin();
 		}
-		/*
-		else if (command.equals("add/remove modules")) {
+		else if (command.equals("Add/Remove Approvals")) {
 			resetAdminPanel();
 			// add task panel
-			adminPanel.add(new AdminModulesPanel(frame), BorderLayout.CENTER);
+			adminPanel.add(new AdminApprovalsPanel(frame));
 			// re display
 			frame.revalidate();
 			frame.repaint();
 		}
-		else if (command.equals("add/remove approvals")) {
-			resetAdminPanel();
-			// add task panel
-			adminPanel.add(new AdminApprovalsPanel(frame), BorderLayout.CENTER);
-			// re display
-			frame.revalidate();
-			frame.repaint();
-		}
-		*/
 		else if (command.equals("Add/Remove Modules")) {
 			resetAdminPanel();
 			// add task panel

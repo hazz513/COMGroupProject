@@ -33,12 +33,16 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 	private JButton remove = new JButton("Remove");
 	private JButton confirm = new JButton("Add");
 	private JButton cancel = new JButton("Cancel");
-	
+	private JButton getInput = new JButton("Confirm Option");
 	/*
 	 * Constructor to create the needed Panel
 	 */
 	public AdminDegreesPanel(Frame frame) {
 		this.frame = frame;
+		confirm.addActionListener(this);
+		cancel.addActionListener(this);
+		remove.addActionListener(this);
+		getInput.addActionListener(this);
 		initializePanel();
 		// create dropdown menu to select an option
 		optionSelection.addItem("Add a Degree");
@@ -57,13 +61,7 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 		add(name);
 		add(degLeadDep);
 		add(leadDep);
-		
-		
-		confirm.addActionListener(this);
 		add(confirm);
-		
-		
-		cancel.addActionListener(this);
 		add(cancel);
 		
 		frame.revalidate();
@@ -87,10 +85,7 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 		removeOption.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		add(removeOption);
-		
-		remove.addActionListener(this);
 		add(remove);
-		cancel.addActionListener(this);
 		add(cancel);
 		
 		frame.revalidate();
@@ -115,9 +110,6 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 		add(optionSelection);
 		
 		// add button to initiate process
-		JButton getInput = new JButton("Confirm Option");
-		getInput.addActionListener(this);
-		
 		add(getInput);
 		frame.revalidate();
 		frame.repaint();
@@ -149,7 +141,6 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 			Admin.removeDegree(toRemove);
 			JOptionPane.showMessageDialog(null, "The Degree has been removed");
 			removeOption.removeAllItems();
-			initializePanel();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
@@ -161,7 +152,6 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 				Degree Deg = new Degree(dCode,dName,dLeadDep);
 				if (Admin.addDegree(Deg)){
 					JOptionPane.showMessageDialog(null, "The new Degree has been added");
-					initializePanel();
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "An error has occurred");
