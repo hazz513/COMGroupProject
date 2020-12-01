@@ -11,20 +11,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CheckDegreePanel extends JPanel implements ActionListener{
+public class TeacherDegreePanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 2198856093172424855L;
 	
 	Frame frame;
 	
+	// student dropdown selection
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
 	
-	public CheckDegreePanel(Frame frame) {
+	public TeacherDegreePanel(Frame frame) {
 		this.frame = frame;
 		// styling and title
 		setBorder(BorderFactory.createTitledBorder("Calculate Student's Degree Class"));
-		
-		// set vertical layout
-		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// create dropdown menu to select student
 		ArrayList<Student> students = Student.getAllFromDB();

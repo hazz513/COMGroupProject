@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class TeacherPanel extends JPanel implements ActionListener{
+public class TeacherPanel extends JPanel{
 	private static final long serialVersionUID = -7560348159386808134L;
 	
 	Frame frame;
@@ -20,13 +20,10 @@ public class TeacherPanel extends JPanel implements ActionListener{
 		add(sideMenu, BorderLayout.WEST);
 	}
 	
+	/*
+	 * initializes the teacherPanel
+	 */
 	public void initialize() {
 		setLayout(new BorderLayout());
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 }

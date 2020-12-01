@@ -4,14 +4,13 @@ import java.awt.*;
 import javax.swing.*;
 
 import GUI.Frame;
-import businesslogic.Teacher;
 import dataaccess.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class AllStudentStatPanel extends JPanel implements ActionListener{
+public class TeacherStatPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 4725247563857811450L;
 	
 	Frame frame;
@@ -19,7 +18,7 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
 	JButton viewStatus = new JButton("view status");
 	
-	public AllStudentStatPanel(Frame frame) {
+	public TeacherStatPanel(Frame frame) {
 		this.frame = frame;
 		// styling and title
 		setBorder(BorderFactory.createTitledBorder("Check Student Status"));
@@ -98,14 +97,15 @@ public class AllStudentStatPanel extends JPanel implements ActionListener{
 						}
 					}
 					else {
-						add(new JLabel("No modules found for the study period: " + period.getLabel() + "."));
+						add(new JLabel("ERROR: No modules found for the study period: " + period.getLabel() + "."));
 					}
 				}
 			}
 			else {
-				add(new JLabel("No study periods found."));
+				add(new JLabel("ERROR: No study periods found."));
 			}
 			
+			// refresh
 			frame.revalidate();
 			frame.repaint();
 		}

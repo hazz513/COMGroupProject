@@ -263,6 +263,10 @@ public class StudyPeriod {
 			}
 		}
 		
+		public String toString() {
+			return ("Perod: " + this.label + ", starting: " + this.startDate);
+		}
+		
 		/*
 		 * Testing functions. 
 		 * Invalid and won't work until the Table Student is populated
