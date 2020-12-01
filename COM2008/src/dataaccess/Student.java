@@ -398,6 +398,8 @@ public class Student {
 		//System.out.println(George.addStudent());
 		//System.out.println(George.removeStudent());
 		//System.out.println(emailGenerator("jane","doe"));
+		//Student student = Student.retrieveFromDB(1234567);
+		//System.out.println(student.getDegreeClass());
 	}
 	
 }
