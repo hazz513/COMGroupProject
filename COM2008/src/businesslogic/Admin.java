@@ -58,24 +58,12 @@ public class Admin {
 	 * @return boolean based on success
 	 */
 	
-	public static boolean addDegreeCourses (Degree[] degrees) {
+	public static boolean addDegree (Degree degree) {
 		
-		for (Degree degree:degrees) {
-			if (degree.addToDB()) {
-	
-			}
-			else {
-			return false;
-		}
-		}
-		return true;
+		return degree.addToDB();
 	}
 	
-	
-	
-	
-	
-	
+
 	/*
 	 * inserts module into database
 	 * 
@@ -147,16 +135,8 @@ public class Admin {
 	 *  @return boolean based on success
 	 */
 	
-	public static boolean removeDegreeCourses (Degree[] degrees) {
-		for (Degree degree:degrees) {
-			if (degree.removeFromDB()) {
-	
-			}
-			else {
-			return false;
-		}
-		}
-		return true;
+	public static boolean removeDegree (Degree degree) {
+		return degree.removeFromDB();
 	}
 	
 	

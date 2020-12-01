@@ -246,6 +246,31 @@ public class Degree {
 		}
 	}
 	
+	public static ArrayList<Degree> getAllFromDB() {
+		ArrayList<Degree> degrees = new ArrayList<Degree>();
+		
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			
+			// get all the degrees matching code
+			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree;");
+			
+			// build list of students
+			while(rs.next()) {
+				Degree degree = new Degree(rs.getString("code"), rs.getString("name"),rs.getString("leadDep"));
+				degrees.add(degree);
+			}
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// return List of degrees
+		return degrees;
+	}
+	
+	
 	/*
 	 * get a degree from database
 	 * 

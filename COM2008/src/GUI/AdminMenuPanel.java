@@ -108,6 +108,13 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
+		else if (command.equals("add/remove degree courses")) {
+			resetAdminPanel();
+			//add task panel
+			adminPanel.add(new AdminDegreesPanel(frame));
+			frame.revalidate();
+			frame.repaint();
+		}
 	}
 	
 	public void resetAdminPanel() {
