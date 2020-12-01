@@ -135,7 +135,7 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 			if (optionSelection.getSelectedItem() == "Add a Degree") {
 				addAccount();
 			}
-			else if (optionSelection.getSelectedItem() == "Remove a Degreet") {
+			else if (optionSelection.getSelectedItem() == "Remove a Degree") {
 				removeAccount();
 			}
 		}
@@ -202,5 +202,23 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 	    System.out.println("True" + toCheck);
 	    return true;
 	}
+	
+	public boolean checkInt(String toCheck) {
+		boolean isValidInteger = false;
+	      try
+	      {
+	         Integer.parseInt(toCheck);
+	 
+	         // s is a valid integer
+	         System.out.println("It's an int");
+	         isValidInteger = true;
+	      }
+	      catch (NumberFormatException ex)
+	      {
+	         // s is not an integer
+	      }
+	      System.out.println("It's not an int");
+	      return isValidInteger;
+   }
 	
 }

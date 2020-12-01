@@ -59,6 +59,12 @@ public class Degree {
 		this.leadDep = leadDep;
 	}
 	
+	public String toString() {
+		return (this.code + ". " + this.name + ". " + this.leadDep);
+	}
+	
+	//-----------------------------------------------------------------------------------------------------
+	//Database Begin
 	/*
 	 * generate unique degree code
 	 * 
@@ -255,9 +261,9 @@ public class Degree {
 			// get all the degrees matching code
 			ResultSet rs =  stmt.executeQuery("SELECT * FROM Degree;");
 			
-			// build list of students
+			// build list of Degrees
 			while(rs.next()) {
-				Degree degree = new Degree(rs.getString("code"), rs.getString("name"),rs.getString("leadDep"));
+				Degree degree = new Degree(rs.getString("degCode"), rs.getString("degName"),rs.getString("leadDep"));
 				degrees.add(degree);
 			}
 		}
