@@ -61,6 +61,8 @@ public class RemoveStudent extends JPanel implements ActionListener {
 		
 	}
 	
+	
+	
 	public void clearFields() {
 		registrationNum.setText(null);
 	}
@@ -72,7 +74,7 @@ public class RemoveStudent extends JPanel implements ActionListener {
 		if (command.equals("Delete Student")) {
 			int reg = Integer.parseInt(registrationNum.getText());
 			//need to work on error when the regNo is wrong
-			if (Student.retrieveFromDB(reg) != null) {
+			if (Student.regNumChecker(reg)) {
 				Student student = new Student(reg,"xx","axv","xrt","fake@fakes.com");
 				if(student.removeStudent()) {
 					JOptionPane.showMessageDialog(null, "Sucessfully removed this student");
