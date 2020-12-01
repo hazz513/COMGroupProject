@@ -214,7 +214,7 @@ public class Registrar {
 		//StudyPeriod s = StudyPeriod.retrieveFromDB('A',9876543);
 		//System.out.println(checkStudentReg(s));
 		
-		Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
+		Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com", "Cool Tutor Person");
 		StudyPeriod Test = new StudyPeriod('A', "2020-11-19","2021-11-19", George);
 		Module fp = new Module("COM2108", "Functional Programming");
 		Degree se = new Degree("COMP00", "MEng Software Engineering with a Year in Industry", "COM");			

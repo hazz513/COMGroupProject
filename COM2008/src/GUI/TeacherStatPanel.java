@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import GUI.Frame;
+import businesslogic.Teacher;
 import dataaccess.*;
 
 import java.awt.event.ActionEvent;

@@ -21,6 +21,9 @@ public class Student {
 	private String surname;
 	private String forename;
 	private String email;
+	private String personalTutor;
+	private Double overallGrade;
+	private Teacher.DegreeClass degreeClass;
 	
 	/*
 	 * Constructor
@@ -28,15 +31,17 @@ public class Student {
 	 * @param registration = Registration Number
 	 * @param title = Title of 
 	 * @param surname = Surname
-	 * @param forename = forename
+	 * @param forename = Forename
 	 * @param email = Email
+	 * @param tutor = Personal Tutor
 	 */
-	public Student(int registration, String title, String surname, String forename, String email) {
+	public Student(int registration, String title, String surname, String forename, String email, String tutor) {
 		this.registration = registration;
 		this.title = title;
 		this.surname = surname;
 		this.forename = forename;
 		this.email = email;
+		this.personalTutor = tutor;
 	}
 	
 	// get methods
@@ -55,6 +60,15 @@ public class Student {
 	public String getEmail( ) {
 		return email;
 	}
+	public String getPersonalTutor() {
+		return personalTutor;
+	}
+	public double getOverallGrade() {
+		return overallGrade;
+	}
+	public Teacher.DegreeClass getDegreeClass() {
+		return degreeClass;
+	}
 	//set methods
 	public void setRegistration(int registration) {
 		this.registration = registration;
@@ -71,23 +85,47 @@ public class Student {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public void setPersonalTutor(String tutor) {
+		this.personalTutor = tutor;
+	}
+	public void setOverallGrade(double grade) {
+		this.overallGrade = grade;
+	}
+	public void setDegreeClass(Teacher.DegreeClass degreeClass) {
+		this.degreeClass = degreeClass;
+	}
 	
 	// database ---------------------------------------------------------------------------
 	
 	/*
-	 * Adds a student to the database
+	 * Adds a student to the database, if the student does not have the
+	 * overall grade and degree class, they will be ignored
 	 * @return returns a boolean output
 	 */
 	public boolean addStudent() {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 			Statement stmt = con.createStatement();
-			int count = stmt.executeUpdate("INSERT INTO Student VALUE ('" + 
+			int count = 0;
+			if (this.overallGrade != null && this.degreeClass != null) {
+				count = stmt.executeUpdate("INSERT INTO Student VALUE ('" + 
+											this.getRegistration() + "','" +
+											this.getTitle() + "','" +
+											this.getSurname() + "','" +
+											this.getForename() + "','" +
+											this.getEmail() + "','" +
+											this.getOverallGrade()  + "','" +
+											this.getDegreeClass().ordinal() + "');"
+											);
+			}
+			else {
+				count = stmt.executeUpdate("INSERT INTO Student (registration, title, surname, forename, email) VALUES ('" + 
 											this.getRegistration() + "','" +
 											this.getTitle() + "','" +
 											this.getSurname() + "','" +
 											this.getForename() + "','" +
 											this.getEmail() + "');"
 											);
+			}
 			System.out.println("Changes made: " + count);
 			switch (count) {
 				case 0:
@@ -145,7 +183,15 @@ public class Student {
 			
 			// build list of degrees
 			while(rs.next()) {
-				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"), rs.getString("forename"), rs.getString("email"));
+				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"),
+						  rs.getString("forename"), rs.getString("email"), rs.getString("personalTutor"));
+				
+				// if a valid degree class has been recorded, include the class and mean grade
+				if (rs.getInt("degreeClass") > 0 && rs.getInt("degreeClass") <= 8) {
+					student.setOverallGrade(rs.getFloat("overallGrade"));
+					student.setDegreeClass(Teacher.DegreeClass.values()[rs.getInt("degreeClass")]);
+				}
+				
 				students.add(student);
 			}
 		}
@@ -310,7 +356,15 @@ public class Student {
 			
 			// build list of students
 			while(rs.next()) {
-				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"), rs.getString("forename"), rs.getString("email"));
+				Student student = new Student(rs.getInt("registration"), rs.getString("title"), rs.getString("surname"),
+						  rs.getString("forename"), rs.getString("email"), rs.getString("personalTutor"));
+				
+				// if a valid degree class has been recorded, include the class and mean grade
+				if (rs.getInt("degreeClass") > 0 && rs.getInt("degreeClass") <= 8) {
+					student.setOverallGrade(rs.getFloat("overallGrade"));
+					student.setDegreeClass(Teacher.DegreeClass.values()[rs.getInt("degreeClass")]);
+				}
+				
 				students.add(student);
 			}
 		}
