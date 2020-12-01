@@ -80,7 +80,7 @@ public class StudyPeriod {
 		public boolean addStudyPeriod () {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
-				int count = stmt.executeUpdate("INSERT INTO StudyPeriod VALUE ('" + 
+				int count = stmt.executeUpdate("INSERT INTO StudyPeriod (label,startDate,endDate,registration)VALUE ('" + 
 												this.getLabel() + "','" +
 												this.getStartDate() + "','" +
 												this.getEndDate() + "','" +
@@ -270,7 +270,7 @@ public class StudyPeriod {
 		 */
 		public static void main(String[] args) {
 			//Test Method
-			//Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
+			//Student George = new Student(1255214, "Mr", "Ashcro", "George","george@fake.com");
 			//System.out.println(George.addStudent());
 			//StudyPeriod Test = new StudyPeriod('a', "2020-11-19","2021-11-19", George);
 			//System.out.println(Test.addStudyPeriod());

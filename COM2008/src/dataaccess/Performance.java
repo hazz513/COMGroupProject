@@ -185,16 +185,16 @@ public class Performance {
 		 */
 		public static void main(String[] args) {
 			/*//test
-			Student George = new Student(1241214, "Mr", "Ashcroft", "George","george@fake.com");
+			Student George = new Student(12311214, "Mr", "Ahcroft", "George","george@fake.com");
 			System.out.println(George.addStudent());
 			
 			StudyPeriod Test = new StudyPeriod('a', "2020-11-19","2021-11-19", George);
 			System.out.println(Test.addStudyPeriod());
 			
-			Module fp = new Module("COM2108", "Functional Programming");
+			Module fp = new Module("COM2908", "Functional Programming");
 			System.out.println(fp.addToDB());
 			
-			Degree se = new Degree("COMP00", "MEng Software Engineering with a Year in Industry", "COM");
+			Degree se = new Degree("COMx00", "MEng Software Engineering with a Year in Industry", "COM");
 			System.out.println(se.addToDB());
 			
 			Approval fpse = new Approval(se, fp, 1, 10, '2');
@@ -205,9 +205,9 @@ public class Performance {
 			
 			Performance please = new Performance(Test, fpse, 45, 90);
 			System.out.println(please.addPerformance());
-			*/
-			//System.out.println(please.removePerformance());
 			
+			System.out.println(please.removePerformance());
+			*/
 			
 		}
 }

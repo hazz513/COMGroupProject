@@ -166,10 +166,17 @@ public class Student {
 	public static int regNumGenerator() {
 		ThreadLocalRandom random = ThreadLocalRandom.current();
 		long l= random.nextLong(10_000_000_000L, 100_000_000_000L);
-		
 		int i = (int)l;
+		int answer = Math.abs(i);
 		
-		return Math.abs(i);
+		while(regNumChecker(answer)) {
+			l = random.nextLong(10_000_000_000L, 100_000_000_000L);
+			i = (int)l;
+			answer = Math.abs(i);
+		}
+		
+		return answer ;
+		
 	}
 	
 	/*
