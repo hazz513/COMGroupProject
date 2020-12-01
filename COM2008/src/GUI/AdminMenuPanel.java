@@ -92,22 +92,15 @@ public class AdminMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
+		*/
 		else if (command.equals("add/remove departments")) {
 			resetAdminPanel();
 			// add task panel
 			adminPanel.add(new AdminDepartmentsPanel(frame));
-			// create scrollable pane with panel
-			JScrollPane scrollPane = new JScrollPane(panel);
-			// make pane vertically scrollable
-			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-			// add pane to frame
-			adminPanel.add(scrollPane, BorderLayout.CENTER);
-			//teacherPanel.add(panel, BorderLayout.CENTER);
-			// re display
 			frame.revalidate();
 			frame.repaint();
 		}
-		*/
+		
 		else if (command.equals("add/remove accounts")) {
 			resetAdminPanel();
 			// add task panel
