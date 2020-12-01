@@ -177,6 +177,10 @@ public class Performance {
 			}
 		}
 		
+		public String toString() {
+			return ("Module: " + this.getApproval().getModule().getName() + ", Level: " + this.getApproval().getLevel());
+		}
+		
 		
 		/*
 		 * Testing functions. 

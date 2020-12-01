@@ -21,6 +21,9 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		initialize();
 	}
 	
+	/*
+	 * sets layout, sets up buttons
+	 */
 	public void initialize() {
 		setLayout(new GridLayout(0, 1));
 		// initialise buttons
@@ -56,10 +59,25 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		if (command.equals("logout")) {
 			frame.loadLogin();
 		}
+		else if (command.equals("add/update grades")) {
+			resetTeacherPanel();
+			// add task panel
+			TeacherGradePanel panel = new TeacherGradePanel(frame);
+			// create scrollable pane with panel
+			JScrollPane scrollPane = new JScrollPane(panel);
+			// make pane vertically scrollable
+			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+			// add pane to frame
+			teacherPanel.add(scrollPane, BorderLayout.CENTER);
+			//teacherPanel.add(panel, BorderLayout.CENTER);
+			// re display
+			frame.revalidate();
+			frame.repaint();
+		}
 		else if (command.equals("calculate progression")) {
 			resetTeacherPanel();
 			// add task panel
-			teacherPanel.add(new CheckProgressionPanel(frame), BorderLayout.CENTER);
+			teacherPanel.add(new TeacherProgressionPanel(frame), BorderLayout.CENTER);
 			// re display
 			frame.revalidate();
 			frame.repaint();
@@ -67,7 +85,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		else if (command.equals("calculate degree class")) {
 			resetTeacherPanel();
 			// add task panel
-			teacherPanel.add(new CheckDegreePanel(frame), BorderLayout.CENTER);
+			teacherPanel.add(new TeacherDegreePanel(frame), BorderLayout.CENTER);
 			// re display
 			frame.revalidate();
 			frame.repaint();
@@ -75,7 +93,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		else if (command.equals("view student status")) {
 			resetTeacherPanel();
 			// add task panel
-			AllStudentStatPanel panel = new AllStudentStatPanel(frame);
+			TeacherStatPanel panel = new TeacherStatPanel(frame);
 			// create scrollable pane with panel
 			JScrollPane scrollPane = new JScrollPane(panel);
 			// make pane vertically scrollable
@@ -89,6 +107,11 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		}
 	}
 	
+	/*
+	 * removes everything from teacher panel and 
+	 * re-adds the left menu panel, to make room for a new panel
+	 * 
+	 */
 	public void resetTeacherPanel() {
 		// clearPanel
 		teacherPanel.removeAll();

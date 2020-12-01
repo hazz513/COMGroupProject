@@ -93,6 +93,7 @@ public class Frame extends JFrame{
 	}
 	
 	public static void main(String[] args) {
+		// try to use alternative look and feel for swing
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
@@ -101,7 +102,7 @@ public class Frame extends JFrame{
 		        }
 		    }
 		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
+		    // If Nimbus is not available, do nothing;
 		}
 		new Frame("the system");
 	}
