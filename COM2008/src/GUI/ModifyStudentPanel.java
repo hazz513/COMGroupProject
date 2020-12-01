@@ -6,7 +6,6 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
 
 import dataaccess.Student;
 
@@ -17,21 +16,21 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	Frame frame; 
 		
 	//Labels to identify the fields
-	private JLabel regLabel = new JLabel("Registration Number: ");
+	//private JLabel regLabel = new JLabel("Registration Number: ");
 	private JLabel titleLabel = new JLabel("Title: ");
 	private JLabel surnameLabel = new JLabel("Surname: ");
 	private JLabel forenameLabel = new JLabel("Forename: ");
-	private JLabel emailLabel = new JLabel("emailId: ");
+	//private JLabel emailLabel = new JLabel("email Id: ");
 	
 	//error message
-	private JLabel errorNum = new JLabel();
+	//private JLabel errorNum = new JLabel();
 	
 	//Fields for data entry
-	private JTextField registrationNum = new JTextField(10);
+	//private JTextField registrationNum = new JTextField(10);
 	private JTextField studentTitle = new JTextField(10);
 	private JTextField studentSurname = new JTextField(10);
 	private JTextField studentForename = new JTextField(10);
-	private JTextField emailId = new JTextField(10);
+	//private JTextField emailId = new JTextField(10);
 	
 	//button
 	private JButton registerButton = new JButton("Register");
@@ -47,24 +46,24 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	
 	public void init() {
 		//limiting the input length 
-		registrationNum.setDocument(new JTextFieldLimit(11) );
+		//registrationNum.setDocument(new JTextFieldLimit(11) );
 		studentTitle.setDocument(new JTextFieldLimit(45));
 		studentSurname.setDocument(new JTextFieldLimit(45));
 		studentForename.setDocument(new JTextFieldLimit(45));
-		emailId.setDocument(new JTextFieldLimit(45));
+		//emailId.setDocument(new JTextFieldLimit(45));
 		
 		
-		add(regLabel);
-		add(registrationNum);
-		add(errorNum);
+		//add(regLabel);
+		//add(registrationNum);
+		//add(errorNum);
 		add(titleLabel);
 		add(studentTitle);
 		add(surnameLabel);
 		add(studentSurname);
 		add(forenameLabel);
 		add(studentForename);
-		add(emailLabel);
-		add(emailId);
+		//add(emailLabel);
+		//add(emailId);
 		
 		
 		add(clearAllButton);
@@ -72,6 +71,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		clearAllButton.addActionListener(this);
 		registerButton.addActionListener(this);
 		
+		/*
 		//to let registrationNum only take integer inputs
 		registrationNum.addKeyListener(new KeyAdapter() {
 	         public void keyPressed(KeyEvent ke) {
@@ -87,7 +87,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	            	
 	            }
 	         }
-		});
+		});*/
 		
 		/*studentTitle.addKeyListener(new KeyAdapter() {
 	         public void keyPressed(KeyEvent ke) {
@@ -109,11 +109,11 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	}
 	
 	public void clearFields() {
-		registrationNum.setText(null);
+		//registrationNum.setText(null);
 		studentTitle.setText(null);
 		studentSurname.setText(null);
 		studentForename.setText(null);
-		emailId.setText(null);
+		//emailId.setText(null);
 	}
 	
 	@Override
@@ -122,21 +122,25 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		
 		if (command.equals("Register")) {
 			
-			if (!(registrationNum.getText()==null||registrationNum.getText().trim().isEmpty()||
-					studentTitle.getText()==null||studentTitle.getText().trim().isEmpty()||
+			if (!(	studentTitle.getText()==null||studentTitle.getText().trim().isEmpty()||
 					studentSurname.getText()==null||studentSurname.getText().trim().isEmpty()||	
-					studentForename.getText()==null||studentForename.getText().trim().isEmpty()||
-					emailId.getText()==null||emailId.getText().trim().isEmpty()))
+					studentForename.getText()==null||studentForename.getText().trim().isEmpty()))
 			{
-				int reg = Integer.parseInt(registrationNum.getText());
+				int reg = Student.regNumGenerator();
 				String title = studentTitle.getText();
 				String sur = studentSurname.getText();
 				String fore = studentForename.getText();
-				String email = emailId.getText();
+				String email = Student.emailGenerator(sur,fore);
 				Student student = new Student (reg,title,sur,fore,email);
-				student.addStudent();
-				JOptionPane.showMessageDialog(null, "New Student Registered");
+				if(student.addStudent()) {
+				JOptionPane.showMessageDialog(null, "New Student Registered"+"\n" + "Registration no: "+reg
+											 +"\n"+"Email Id: "+ email+"");
 				clearFields();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Duplicate Student Entry");
+					clearFields();
+				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Error in New Student Registration");

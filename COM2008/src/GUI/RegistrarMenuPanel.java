@@ -57,9 +57,12 @@ public class RegistrarMenuPanel extends JPanel implements ActionListener {
 			frame.repaint();
 			
 		}
-		else if (command.equals("Delete Student")) {
+		else if (command.equals("Remove Student")) {
 			resetRegistrarPanel();
-			
+			registrarPanel.add(new RemoveStudent(frame),BorderLayout.CENTER);
+			//re display
+			frame.revalidate();
+			frame.repaint();
 		}
 	}
 
