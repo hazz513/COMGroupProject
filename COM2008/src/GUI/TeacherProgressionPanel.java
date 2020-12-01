@@ -11,14 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CheckProgressionPanel  extends JPanel implements ActionListener{
+public class TeacherProgressionPanel  extends JPanel implements ActionListener{
 	private static final long serialVersionUID = -4615865294577288857L;
 	
 	Frame frame;
 	
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
 	
-	public CheckProgressionPanel(Frame frame) {
+	public TeacherProgressionPanel(Frame frame) {
 		this.frame = frame;
 		// styling and title
 		setBorder(BorderFactory.createTitledBorder("Calculate Student's Progression Status"));
