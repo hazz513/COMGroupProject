@@ -214,7 +214,7 @@ public class StudyPeriod {
 		 * 
 		 * @param grade -  the mean grade
 		 * 
-		 * @return boolean based one success
+		 * @return boolean based on success
 		 */
 		public boolean addMeanGrade(double grade) {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
@@ -241,7 +241,7 @@ public class StudyPeriod {
 		 * 
 		 * @param progression - the progression
 		 * 
-		 * @return boolean based one success
+		 * @return boolean based on success
 		 */
 		public boolean addProgression(Teacher.Progression progression) {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
