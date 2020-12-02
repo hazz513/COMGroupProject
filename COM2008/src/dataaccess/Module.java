@@ -219,8 +219,7 @@ public class Module {
 			newNumFormatted = "0" + newNumFormatted;
 		}
 		// return complete module code
-		return (depCode + newNumFormatted);
-		
+		return (depCode + newNumFormatted);	
 	}
 	
 	/*
