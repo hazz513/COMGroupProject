@@ -22,12 +22,13 @@ public class AdminModulesPanel  extends JPanel implements ActionListener{
 	
 	JComboBox<String> optionSelection = new JComboBox<String>();
 	JComboBox<Module> removeOption = new JComboBox<Module>();
+	JComboBox<Department> allDepartments = new JComboBox<Department>();
 	
-	private JTextField modCode = new JTextField(7);
+
 	private JTextField modName = new JTextField(25);
-	
-	private JLabel modCLabel = new JLabel("Module Code: ");
-	private JLabel modNLabel = new JLabel("Department Name: ");
+
+	private JLabel modNLabel = new JLabel("Module Name: ");
+	private JLabel associatedDep = new JLabel("Associated Department: ");
 	
 	private JButton remove = new JButton("Remove");
 	private JButton confirm = new JButton("Add");
@@ -55,10 +56,16 @@ public class AdminModulesPanel  extends JPanel implements ActionListener{
 	public void addAccount() {
 		removeAll();
 		setLayout(new FlowLayout());
-		add(modCLabel);
-		add(modCode);
+		
+		ArrayList<Department> departments = Department.getAllFromDB();
+		for (Department current : departments) {
+			allDepartments.addItem(current);
+		}
+		
 		add(modNLabel);
 		add(modName);
+		add(associatedDep);
+		add(allDepartments);
 		add(confirm);
 		add(cancel);
 		
@@ -143,7 +150,9 @@ public class AdminModulesPanel  extends JPanel implements ActionListener{
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
-			String code = modCode.getText();
+			Department department = (Department)allDepartments.getSelectedItem();
+			String dLeadDep = (department.getDepCode()).toUpperCase();
+			String code = (Module.generateModuleCode(dLeadDep)).toUpperCase();
 			String name = modName.getText();
 			String halfCode1 = code.substring(0,3);
 			String halfCode2 = code.substring(3);

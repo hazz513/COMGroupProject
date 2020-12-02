@@ -21,14 +21,14 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 	
 	JComboBox<String> optionSelection = new JComboBox<String>();
 	JComboBox<Degree> removeOption = new JComboBox<Degree>();
+	JComboBox<Department> allDepartments = new JComboBox<Department>();
 	
-	private JTextField code = new JTextField(6);
+	private JTextField studyLevel = new JTextField(1);
 	private JTextField name = new JTextField(35);
-	private JTextField leadDep = new JTextField(3);
 	
-	private JLabel degCode = new JLabel("Degree Code: ");
+	private JLabel level = new JLabel("Level of Study (U or P): ");
 	private JLabel degName = new JLabel("Degree Name: ");
-	private JLabel degLeadDep = new JLabel("Degree lead department");
+	private JLabel degLeadDep = new JLabel("Degree lead department: ");
 	
 	private JButton remove = new JButton("Remove");
 	private JButton confirm = new JButton("Add");
@@ -54,13 +54,24 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 	 */
 	public void addAccount() {
 		removeAll();
+		
+		ArrayList<Department> departments = Department.getAllFromDB();
+		for (Department current : departments) {
+			allDepartments.addItem(current);
+		}
+		// limit height
+		allDepartments.setMaximumSize(new Dimension(100000, (int)remove.getMaximumSize().getHeight()));
+		
+		// alignment
+		allDepartments.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
 		setLayout(new FlowLayout());
-		add(degCode);
-		add(code);
 		add(degName);
 		add(name);
 		add(degLeadDep);
-		add(leadDep);
+		add(allDepartments);
+		add(level);
+		add(studyLevel);
 		add(confirm);
 		add(cancel);
 		
@@ -141,14 +152,18 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 			Admin.removeDegree(toRemove);
 			JOptionPane.showMessageDialog(null, "The Degree has been removed");
 			removeOption.removeAllItems();
+			removeAccount();
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
-			String dCode = code.getText();
+			Department department = (Department)allDepartments.getSelectedItem();
+			String dLeadDep = (department.getDepCode()).toUpperCase();
+			String level = (studyLevel.getText()).toUpperCase();
+			System.out.println(level);
 			String dName = name.getText();
-			String dLeadDep = leadDep.getText();
+			String dCode = (Degree.generateDegreeCode(dLeadDep, level)).toUpperCase();
 			if (((dCode.length()==6)) && ((checkSize(50,dName.length()) &&
-					((dLeadDep.length()==3) && checkOnlyLetters(dLeadDep))))){
+					((dLeadDep.length()==3) && checkOnlyLetters(dLeadDep)) && (level.charAt(0) == 'U' || level.charAt(0) == 'P')))){
 				Degree Deg = new Degree(dCode,dName,dLeadDep);
 				if (Admin.addDegree(Deg)){
 					JOptionPane.showMessageDialog(null, "The new Degree has been added");
