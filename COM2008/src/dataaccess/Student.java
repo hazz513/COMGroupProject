@@ -390,6 +390,58 @@ public class Student {
 	}
 	
 	/*
+	 * set overall grade
+	 * 
+	 * @param grade -  the overall grade
+	 * 
+	 * @return boolean based on success
+	 */
+	public boolean addOverallGrade(double grade) {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			int count = stmt.executeUpdate("UPDATE Student SET overallGrade = '" + grade + 
+					"'WHERE registration = '" + this.registration + "';"
+					);
+			switch(count) {
+			case 0:
+				return false;
+			default:
+				return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	/*
+	 * set degree class
+	 * 
+	 * @param degreeClass - the degree class
+	 * 
+	 * @return boolean based on success
+	 */
+	public boolean addDegreeClass(Teacher.DegreeClass degreeClass) {
+		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)) {
+			Statement stmt = con.createStatement();
+			int count = stmt.executeUpdate("UPDATE Student SET degreeClass = '" + degreeClass.ordinal() + 
+					"'WHERE registration = '" + this.registration + "';"
+					);
+			switch(count) {
+			case 0:
+				return false;
+			default:
+				return true;
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	/*
 	 * Testing method 
 	 */
 	public static void main(String[] args) {
@@ -398,8 +450,11 @@ public class Student {
 		//System.out.println(George.addStudent());
 		//System.out.println(George.removeStudent());
 		//System.out.println(emailGenerator("jane","doe"));
+		
 		//Student student = Student.retrieveFromDB(1234567);
-		//System.out.println(student.getDegreeClass());
+		//System.out.println(student.getOverallGrade());
+		//student.addOverallGrade(56.7);
+		//student.addDegreeClass(Teacher.DegreeClass.FIRST_CLASS);
 	}
 	
 }
