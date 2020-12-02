@@ -223,6 +223,7 @@ public class Registrar {
 		ArrayList<String> listOfNonCoreModules = modStringListing(OptModulesDetails(gatherOptModules(please),please));
 		int changes = addNonCoreModules(gatherOptModules(please),please);
 		System.out.println(changes + " edits have been made.");
+		
 	}
 
 }

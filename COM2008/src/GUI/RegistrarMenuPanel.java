@@ -33,11 +33,14 @@ public class RegistrarMenuPanel extends JPanel implements ActionListener {
 		JButton deleteStudent = new JButton("Remove Student");
 		deleteStudent.addActionListener(this);
 		
+		JButton creditCheck = new JButton("Check Credits");
+		creditCheck.addActionListener(this);
 		
 		//add buttons to panel
 		add(logout);
 		add(modifyStudent);
 		add(deleteStudent);
+		add(creditCheck);
 	}
 
 	@Override
@@ -64,6 +67,14 @@ public class RegistrarMenuPanel extends JPanel implements ActionListener {
 			frame.revalidate();
 			frame.repaint();
 		}
+		else if (command.equals("Check Credits")) {
+			resetRegistrarPanel();
+			registrarPanel.add(new ModuleCreditCheckPanel(frame),BorderLayout.CENTER);
+			//re display
+			frame.revalidate();
+			frame.repaint();
+		}
+		
 	}
 
 	public void resetRegistrarPanel() {

@@ -157,9 +157,11 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 				String email = Student.emailGenerator(sur,fore);
 				String sDate =startDate.getText();
 				String eDate = endDate.getText();
-				Student student = new Student (reg,title,sur,fore,email);
+				Student student = new Student (reg,title,sur,fore,email,"Tutor men");
+				Degree degree = (Degree)degreeSelection.getSelectedItem();
 								
 				if(student.addStudent()) {
+					/*
 					Degree degree = (Degree)degreeSelection.getSelectedItem();
 					ArrayList<Approval> cores = degree.getCores('1');
 					StudyPeriod studyPeriod = new StudyPeriod('A',sDate,eDate,student);
@@ -174,6 +176,12 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 					for(Performance i: p) {
 						i.addPerformance();
 					}
+					*/
+					System.out.println(student.getRegistration());
+					System.out.println(degree.getCode());
+					System.out.println(eDate);
+					System.out.println(sDate);
+					System.out.println(Registrar.registerStudent(student,sDate,eDate,degree));
 					
 					clearFields();
 					JOptionPane.showMessageDialog(null, "New Student Registered"+"\n" + "Registration no: "+reg
