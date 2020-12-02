@@ -9,6 +9,7 @@ import dataaccess.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class TeacherStatPanel extends JPanel implements ActionListener{
@@ -68,6 +69,9 @@ public class TeacherStatPanel extends JPanel implements ActionListener{
 			// get all study periods
 			ArrayList<StudyPeriod> periods = student.getPeriods();
 			
+			// format to 1 dp
+			DecimalFormat df = new DecimalFormat("###.#");
+			
 			if (periods.size() > 0) {
 				// boolean to make sure degree info is only printed the first time
 				boolean firstPeriod = true;
@@ -80,13 +84,22 @@ public class TeacherStatPanel extends JPanel implements ActionListener{
 							Degree degree = performances.get(0).getApproval().getDegree();
 							add(new JLabel("Degree: " + degree.getName()));
 							// mark degree info as printed
-							firstPeriod = false;
+							firstPeriod = false;	
+						}
+						
+						// display overall information
+						add(new JLabel("Personal Tutor: " + student.getPersonalTutor()));
+						// if student's degree class has been calculated display it
+						if (student.getDegreeClass() != null) {
+							// format to 1 dp
+							add(new JLabel("Overall Grade: " + df.format(student.getOverallGrade())));
+							add(new JLabel("Degree Class: " + student.getDegreeClass()));
 						}
 						
 						add(new JLabel("---| Period: " + period.getLabel() + ", Level: " + performances.get(0).getLevel()));
 						// if period has progression calculated, display it and mean grade
 						if (period.getProgression() != null) {
-							add(new JLabel("-------| Grade Average: " + period.getMeanGrade()));
+							add(new JLabel("-------| Grade Average: " + df.format(period.getMeanGrade())));
 							add(new JLabel("-------| Progression: " + period.getProgression()));
 						}
 						for (Performance performance: performances) {

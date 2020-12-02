@@ -58,12 +58,17 @@ public class TeacherDegreePanel extends JPanel implements ActionListener{
 				periods.sort(new Teacher.StudyPeriodComparator());
 				StudyPeriod period = periods.get(periods.size()-1);
 				// get the progression for it
-				Teacher.Progression progression = Teacher.progression(period);
+				Teacher.Progression progression = period.getProgression();
 				// get degree class for it
 				Teacher.DegreeClass degreeClass = Teacher.getDegreeClass(student, progression);
+				
+				// add results to database
+				student.addOverallGrade(Teacher.degreeMeanGrade(Teacher.compileGrades(student)));
+				student.addDegreeClass(Teacher.getDegreeClass(student, progression));
+				
 				// output to user
 				if (degreeClass == Teacher.DegreeClass.INVALID) {
-					message = ("the student is not ready to end course");
+					message = ("the student is not ready to end course. The grade and progression status may not have been calculated yet.");
 				}
 				else {
 					message = ("the degree class is: " + degreeClass);

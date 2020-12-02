@@ -324,7 +324,7 @@ public class Teacher {
 	 * @return true passing, false otherwise
 	 */
 	public static boolean passedMean(ArrayList<Performance> performances) {
-		int mean = meanGrade(performances);
+		double mean = meanGrade(performances);
 		// use appropriate level threshold
 		if (performances.get(0).getLevel() == '4') {
 			if (mean < LEVEL_4_PASS) {
@@ -388,14 +388,14 @@ public class Teacher {
 	 * 
 	 * @return the mean value
 	 */
-	public static int meanGrade(ArrayList<Performance> performances) {
+	public static double meanGrade(ArrayList<Performance> performances) {
 		// get grades for all performances
 		int weightedSum = 0;
 		int weightedDivisor = 0;
 		// for each performance use highest grade
 		for (int i = 0; i < performances.size(); i++) {
 			int credits = performances.get(i).getApproval().getCredits();
-			weightedSum += getCountedGrade(performances.get(i)) * credits;
+			weightedSum += (float)getCountedGrade(performances.get(i)) * credits;
 			weightedDivisor += credits;
 		}
 		
