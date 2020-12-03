@@ -176,13 +176,13 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 				*/
 				
 				if( 
-					startDate.getText().length()==9 && endDate.getText().length()==9 && checkInt(startDate.getText().substring(0,1)) &&
-					checkInt(startDate.getText().substring(9,10))&&
+					startDate.getText().length()==10 && endDate.getText().length()==10 && checkInt(startDate.getText().substring(0,1))&&
 					checkInt(startDate.getText().substring(0,4)) && checkInt(startDate.getText().substring(5,7))&&
 					checkInt(startDate.getText().substring(8,10))&& checkInt(endDate.getText().substring(0,4))&&
 					checkInt(endDate.getText().substring(5,7))&& checkInt(endDate.getText().substring(8,10))&& 
 					startDate.getText().charAt(4)=='-'&& startDate.getText().charAt(7)=='-' && 
-					endDate.getText().charAt(4)=='-'&& endDate.getText().charAt(7)=='-') 
+					endDate.getText().charAt(4)=='-'&& endDate.getText().charAt(7)=='-' && Integer.parseInt(endDate.getText().substring(0,4))-
+							Integer.parseInt(startDate.getText().substring(0,4))== 1) 
 				{
 				
 					int reg = Student.regNumGenerator();
