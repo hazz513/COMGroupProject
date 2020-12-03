@@ -438,12 +438,40 @@ public class Teacher {
 		newLabel+=1;
 		ArrayList<Performance> pastPerformances = studyPeriod.getPerformances();
 		Degree degree = pastPerformances.get(0).getApproval().getDegree();
+		// the levels that the degree offers
+		ArrayList<Character> degreeLevels = degree.getLevels();
+		// derive the final level of the degree
+		char highestLevel = '0';
+		for (char level: degreeLevels) {
+			if (level < 'A' && level > highestLevel) {
+				highestLevel = level;
+			}
+		}
 		
 		char level = studyPeriod.getLevel();
 		
 		
 		if (progressMethod == Progression.PROGRESS) {
-			level+=1;
+			// deal with placement years
+			if (degree.getName().contains("with a Year in Industry")) {
+				System.out.println("dealing with placement student");
+				// if the student is progressing to the second last year then create placement year
+				if (level == (degreeLevels.size() - 2)) {
+					level = 'P';
+				}
+				// if the student is progressing from the placement year then create last year
+				else if (level == 'P') {
+					level = highestLevel;
+				}
+				// increment level
+				else {
+					level+=1;
+				}
+			}
+			// simply increment otherwise
+			else {
+				level+=1;
+			}
 		}
 		else if (progressMethod == Progression.REPEAT) {}
 		else {
