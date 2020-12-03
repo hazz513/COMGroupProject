@@ -2,8 +2,6 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 import javax.swing.*;
 
 import dataaccess.Student;
@@ -14,14 +12,13 @@ public class RemoveStudent extends JPanel implements ActionListener {
 	Frame frame; 
 	
 	//Labels to identify the fields
-	private JLabel regLabel = new JLabel("Students: ");
+	private JLabel regLabel = new JLabel("Registration Number: ");
 	
 	//error message
 	private JLabel errorNum = new JLabel();
 	
 	//Fields for data entry
-	//private JTextField registrationNum = new JTextField(10);
-	JComboBox<Student> studentSelection = new JComboBox<Student>();
+	private JTextField registrationNum = new JTextField(10);
 	
 	//button
 	private JButton deleteButton = new JButton("Delete Student");
@@ -35,24 +32,19 @@ public class RemoveStudent extends JPanel implements ActionListener {
 	
 	public void init() {
 		//limiting the input length 
-		//registrationNum.setDocument(new JTextFieldLimit(11));
-		ArrayList<Student> students = Student.getAllFromDB();
-		for (Student i : students) {
-			studentSelection.addItem(i);
-		}
+		registrationNum.setDocument(new JTextFieldLimit(11));
 		
-		studentSelection.setMaximumSize(new Dimension(100000, (int)deleteButton.getMaximumSize().getHeight()));
-		studentSelection.setAlignmentX(Component.LEFT_ALIGNMENT);
+		registrationNum.setMaximumSize(new Dimension(100000, (int)deleteButton.getMaximumSize().getHeight()));
+		registrationNum.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		add(regLabel);
-		add(studentSelection);
-		//add(errorNum);
+		add(registrationNum);
+		add(errorNum);
 		
 		add(deleteButton);
 		deleteButton.addActionListener(this);
 		
 		//to let registrationNum only take integer inputs
-		/*
 		registrationNum.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent ke) {
 				String value = registrationNum.getText();
@@ -69,35 +61,39 @@ public class RemoveStudent extends JPanel implements ActionListener {
 			    }
 			}
 		});
-		*/
 		
 	}
 	
 	
-	/*
+	
 	public void clearFields() {
 		registrationNum.setText(null);
 	}
-	*/
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		
 		if (command.equals("Delete Student")) {
-			Student student = (Student)studentSelection.getSelectedItem();
+			int reg = Integer.parseInt(registrationNum.getText());
 			//need to work on error when the regNo is wrong
-			
+			if (Student.regNumChecker(reg)) {
+				Student student = new Student(reg,"xx","axv","xrt","fake@fakes.com","tutor man");
 				if(student.removeStudent()) {
 					JOptionPane.showMessageDialog(null, "Sucessfully removed this student");
-					//clearFields();
+					clearFields();
 					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Error ocurred, try again");
-					//clearFields();
+					clearFields();
 				}
 				
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "No Student with this registration");
+				clearFields();
+			}
 			
 		}
 		

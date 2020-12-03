@@ -151,22 +151,51 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 					startDate.getText()==null||startDate.getText().trim().isEmpty()||
 					endDate.getText()==null||endDate.getText().trim().isEmpty()))
 			{
-				String sDateCheck = startDate.getText().substring(0,4);
+				/*
+				String sYear = startDate.getText().substring(0,4);
+				String mYear = startDate.getText().substring(5,7);
+				String dYear = startDate.getText().substring(8,10);
 				
-				//String eDateCheck = endDate.getText().substring(0,3)+endDate.getText().substring(5,6)+endDate.getText().substring(7,8);
-				System.out.println(sDateCheck);
+				String sYear1 = endDate.getText().substring(0,4);
+				String mYear1 = endDate.getText().substring(5,7);
+				String dYear1 = endDate.getText().substring(8,10);
 				
-				int reg = Student.regNumGenerator();
-				String title = studentTitle.getText();
-				String sur = studentSurname.getText();
-				String fore = studentForename.getText();
-				String email = Student.emailGenerator(sur,fore);
-				String sDate =startDate.getText();
-				String eDate = endDate.getText();
-				Student student = new Student (reg,title,sur,fore,email,"Tutor men");
-				Degree degree = (Degree)degreeSelection.getSelectedItem();
+				String tDate = sYear +""+mYear+""+dYear;
+				String tDate1 = sYear1 +""+mYear1+""+dYear1;
+				
+				char dash1 = startDate.getText().charAt(4);
+				char dash2 = startDate.getText().charAt(7);
+				
+				
+				System.out.println(sYear);
+				System.out.println(dash1);
+				System.out.println(mYear);
+				System.out.println(dash2);
+				System.out.println(dYear);
+				System.out.println(tDate);
+				*/
+				
+				if( 
+					startDate.getText().length()==9 && endDate.getText().length()==9 && checkInt(startDate.getText().substring(0,1)) &&
+					checkInt(startDate.getText().substring(9,10))&&
+					checkInt(startDate.getText().substring(0,4)) && checkInt(startDate.getText().substring(5,7))&&
+					checkInt(startDate.getText().substring(8,10))&& checkInt(endDate.getText().substring(0,4))&&
+					checkInt(endDate.getText().substring(5,7))&& checkInt(endDate.getText().substring(8,10))&& 
+					startDate.getText().charAt(4)=='-'&& startDate.getText().charAt(7)=='-' && 
+					endDate.getText().charAt(4)=='-'&& endDate.getText().charAt(7)=='-') 
+				{
+				
+					int reg = Student.regNumGenerator();
+					String title = studentTitle.getText();
+					String sur = studentSurname.getText();
+					String fore = studentForename.getText();
+					String email = Student.emailGenerator(sur,fore);
+					String sDate =startDate.getText();
+					String eDate = endDate.getText();
+					Student student = new Student (reg,title,sur,fore,email,"Tutor men");
+					Degree degree = (Degree)degreeSelection.getSelectedItem();
 								
-				if(student.addStudent()) {
+					if(student.addStudent()) {
 					/*
 					Degree degree = (Degree)degreeSelection.getSelectedItem();
 					ArrayList<Approval> cores = degree.getCores('1');
@@ -183,18 +212,23 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 						i.addPerformance();
 					}
 					*/
-					System.out.println(student.getRegistration());
-					System.out.println(degree.getCode());
-					System.out.println(eDate);
-					System.out.println(sDate);
-					System.out.println(Registrar.registerStudent(student,sDate,eDate,degree));
+						System.out.println(student.getRegistration());
+						System.out.println(degree.getCode());
+						System.out.println(eDate);
+						System.out.println(sDate);
+						System.out.println(Registrar.registerStudent(student,sDate,eDate,degree));
 					
-					clearFields();
-					JOptionPane.showMessageDialog(null, "New Student Registered"+"\n" + "Registration no: "+reg
+						clearFields();
+						JOptionPane.showMessageDialog(null, "New Student Registered"+"\n" + "Registration no: "+reg
 							 +"\n"+"Email Id: "+ email+"\n");
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Incorrect Student Entry");
+						clearFields();
+					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Incorrect Student Entry");
+					JOptionPane.showMessageDialog(null, "Incorrect Date Entry");
 					clearFields();
 				}
 			}
@@ -222,16 +256,16 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	         Integer.parseInt(toCheck);
 	 
 	         // s is a valid integer
-	         System.out.println("It's an int");
+	        // System.out.println("It's an int");
 	         isValidInteger = true;
 	      }
 	      catch (NumberFormatException ex)
 	      {
 	         // s is not an integer
+	    	// System.out.println("It's not an int");
 	      }
-	      System.out.println("It's not an int");
+	      
 	      return isValidInteger;
    }
-
-		
+			
 }
