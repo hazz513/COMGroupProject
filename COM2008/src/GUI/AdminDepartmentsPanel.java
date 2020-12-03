@@ -138,7 +138,7 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		else if (command.equals("Remove")) {
 			Department toRemove = (Department)removeOption.getSelectedItem();
 			Admin.removeDepartment(toRemove);
-			JOptionPane.showMessageDialog(null, "The user has been Removed");
+			JOptionPane.showMessageDialog(null, "The Department has been Removed");
 			removeOption.removeAllItems();
 			removeAccount();
 		}

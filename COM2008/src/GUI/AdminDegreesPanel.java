@@ -22,6 +22,7 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 	JComboBox<String> optionSelection = new JComboBox<String>();
 	JComboBox<Degree> removeOption = new JComboBox<Degree>();
 	JComboBox<Department> allDepartments = new JComboBox<Department>();
+	JCheckBox yearInIndust = new JCheckBox("Is this a year in Industry?");
 	
 	private JTextField studyLevel = new JTextField(1);
 	private JTextField name = new JTextField(35);
@@ -72,9 +73,9 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 		add(allDepartments);
 		add(level);
 		add(studyLevel);
+		add(yearInIndust);
 		add(confirm);
 		add(cancel);
-		
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -162,8 +163,13 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 			System.out.println(level);
 			String dName = name.getText();
 			String dCode = (Degree.generateDegreeCode(dLeadDep, level)).toUpperCase();
+			
 			if (((dCode.length()==6)) && ((checkSize(50,dName.length()) &&
 					((dLeadDep.length()==3) && checkOnlyLetters(dLeadDep)) && (level.charAt(0) == 'U' || level.charAt(0) == 'P')))){
+				
+				if (yearInIndust.isSelected()) {
+					dName = dName + " with a Year in Industry";
+				}
 				Degree Deg = new Degree(dCode,dName,dLeadDep);
 				if (Admin.addDegree(Deg)){
 					JOptionPane.showMessageDialog(null, "The new Degree has been added");
