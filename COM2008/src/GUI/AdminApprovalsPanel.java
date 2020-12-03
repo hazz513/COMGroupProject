@@ -24,11 +24,11 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 	JComboBox<Approval> removeOption = new JComboBox<Approval>();
 	JComboBox<Degree> degrees = new JComboBox<Degree>();
 	JComboBox<Module> modules = new JComboBox<Module>();
+	JComboBox<String> level = new JComboBox<String>();
 	
 	
 	private JTextField core = new JTextField(1);
 	private JTextField credits = new JTextField(11);
-	private JTextField level = new JTextField(1);
 	
 	private JLabel coreLabel = new JLabel("Is the module Core (0 or 1): ");
 	private JLabel creditLabel = new JLabel("Credit Value: ");
@@ -55,6 +55,11 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 		// create dropdown menu to select an option
 		optionSelection.addItem("Add an Approval");
 		optionSelection.addItem("Remove an Approval");
+		level.addItem("1");
+		level.addItem("2");
+		level.addItem("3");
+		level.addItem("4");
+		level.addItem("P");
 	}
 	
 	/*
@@ -177,7 +182,7 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 		//Adds a user into the database
 		else if (command.equals("Add")) {
 			String cor = core.getText();
-			String lev = level.getText();
+			String lev = (String)level.getSelectedItem();
 			String cred = credits.getText();
 			Module modToLink = (Module)modules.getSelectedItem();
 			Degree degToLink = (Degree)degrees.getSelectedItem();
