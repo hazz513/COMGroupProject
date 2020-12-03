@@ -140,7 +140,7 @@ public class AdminModulesPanel  extends JPanel implements ActionListener{
 			removeOption.removeAllItems();
 			initializePanel();
 		}
-		//Removes a selected user from the database
+		//Removes a selected module from the database
 		else if (command.equals("Remove")) {
 			Module toRemove = (Module)removeOption.getSelectedItem();
 			Admin.removeModule(toRemove);
@@ -148,7 +148,7 @@ public class AdminModulesPanel  extends JPanel implements ActionListener{
 			removeOption.removeAllItems();
 			removeAccount();
 		}
-		//Adds a user into the database
+		//Adds a module into the database
 		else if (command.equals("Add")) {
 			Department department = (Department)allDepartments.getSelectedItem();
 			String dLeadDep = (department.getDepCode()).toUpperCase();

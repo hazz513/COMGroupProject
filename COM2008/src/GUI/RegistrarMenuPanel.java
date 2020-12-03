@@ -24,7 +24,7 @@ public class RegistrarMenuPanel extends JPanel implements ActionListener {
 	public void initialize() {
 		setLayout(new GridLayout(0, 1));
 		//Initialise buttons
-		JButton logout = new JButton("logout");
+		JButton logout = new JButton("Logout");
 		logout.addActionListener(this);
 		
 		JButton modifyStudent = new JButton("Add New Student");
@@ -56,7 +56,7 @@ public class RegistrarMenuPanel extends JPanel implements ActionListener {
 		String command = event.getActionCommand();
 		// open relevant panel for each selection
 		// first re-initialize frame too erase previous panel
-		if (command.equals("logout")) {
+		if (command.equals("Logout")) {
 			frame.loadLogin();
 		}
 		else if(command.equals("Add New Student")) {

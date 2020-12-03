@@ -85,8 +85,8 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 		removeAll();
 		setLayout(new FlowLayout());
 		//Gets list of all accounts and adds to dropdown
-		ArrayList<Degree> users = Degree.getAllFromDB();
-		for (Degree current: users) {
+		ArrayList<Degree> degrees = Degree.getAllFromDB();
+		for (Degree current: degrees) {
 			removeOption.addItem(current);
 		}
 		// limit height
@@ -146,7 +146,7 @@ public class AdminDegreesPanel  extends JPanel implements ActionListener{
 			removeOption.removeAllItems();
 			initializePanel();
 		}
-		//Removes a selected user from the database
+		//Removes a selected degree from the database
 		else if (command.equals("Remove")) {
 			Degree toRemove = (Degree)removeOption.getSelectedItem();
 			Admin.removeDegree(toRemove);

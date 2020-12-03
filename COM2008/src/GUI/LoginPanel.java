@@ -21,10 +21,12 @@ public class LoginPanel extends JPanel implements ActionListener{
 	private JLabel userLabel = new JLabel("User login: ");
 	private JLabel passLabel = new JLabel("Password: ");
 	
-	private JButton loginButton = new JButton("login");
+	private JButton loginButton = new JButton("Login");
+	/*
 	private JButton teacher = new JButton("Launch Teacher");
 	private JButton registrar = new JButton("Launch Registrar");
 	private JButton admin = new JButton("Launch Admin");
+	*/
 	
 	public LoginPanel(Frame frame) {
 		this.frame = frame;
@@ -40,7 +42,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		
-		if (command.equals("login")) {
+		if (command.equals("Login")) {
 			String username = usernameField.getText();
 			 
 			String password = passwordField.getText();
@@ -74,6 +76,10 @@ public class LoginPanel extends JPanel implements ActionListener{
 				JOptionPane.showMessageDialog(null, "Invalid Authroization Level");
 			}
 		}
+		
+		/* teacher, registrar and admin testing
+		 * 
+		
 		else if (command.equals("Launch Teacher")) {
 			frame.loadTeacher();
 		}
@@ -83,6 +89,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 		else if (command.equals("Launch Admin")) {
 			frame.loadAdmin();
 		}
+		*/
 	}
 	
 	public void init() {
@@ -91,14 +98,18 @@ public class LoginPanel extends JPanel implements ActionListener{
 		add(passLabel);
 		add(passwordField);
 	
-		
+		add (new JPanel());
 		add(loginButton);
 		loginButton.addActionListener(this);
+		
+		/* teacher, registrar and admin testing
+		 * 
 		add(teacher);
 		teacher.addActionListener(this);
 		add(registrar);
 		registrar.addActionListener(this);
 		add(admin);
 		admin.addActionListener(this);
+		*/
 	}
 }

@@ -35,7 +35,7 @@ public class TeacherProgressionPanel  extends JPanel implements ActionListener{
 		add(studentSelection);
 		
 		// add button to initiate process
-		JButton getProgression = new JButton("check progression");
+		JButton getProgression = new JButton("Check progression");
 		getProgression.addActionListener(this);
 		
 		add(getProgression);
@@ -48,7 +48,7 @@ public class TeacherProgressionPanel  extends JPanel implements ActionListener{
 		int progress = JOptionPane.NO_OPTION;
 		
 		// on button click
-		if (command.equals("check progression")) {
+		if (command.equals("Check progression")) {
 			// assign student from dropdown
 			Student student = (Student)studentSelection.getSelectedItem();
 			// default popup message
@@ -63,7 +63,7 @@ public class TeacherProgressionPanel  extends JPanel implements ActionListener{
 				StudyPeriod period = periods.get(periods.size()-1);
 				// get the progression for it
 				Teacher.Progression progression = Teacher.progression(period);
-				message = ("the progression status is: " + progression);
+				message = ("The progression status is: " + progression);
 				
 				// add results to database
 				period.addMeanGrade(Teacher.meanGrade(period.getPerformances()));

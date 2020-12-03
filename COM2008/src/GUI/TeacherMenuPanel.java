@@ -27,19 +27,19 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 	public void initialize() {
 		setLayout(new GridLayout(0, 1));
 		// initialise buttons
-		JButton logout = new JButton("logout");
+		JButton logout = new JButton("Logout");
 		logout.addActionListener(this);
 				
-		JButton modifyGrades = new JButton("add/update grades");
+		JButton modifyGrades = new JButton("Add/update grades");
 		modifyGrades.addActionListener(this);
 				
-		JButton checkProgression = new JButton("calculate progression");
+		JButton checkProgression = new JButton("Calculate progression");
 		checkProgression.addActionListener(this);
 				
-		JButton calculateDegree = new JButton("calculate degree class");
+		JButton calculateDegree = new JButton("Calculate degree class");
 		calculateDegree.addActionListener(this);
 				
-		JButton studentStat = new JButton("view student status");
+		JButton studentStat = new JButton("View student status");
 		studentStat.addActionListener(this);
 		
 		// add buttons to panel
@@ -56,10 +56,10 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 		String command = event.getActionCommand();
 		// open relevant panel for each selection
 		// first re-initialize frame too erase previous panel
-		if (command.equals("logout")) {
+		if (command.equals("Logout")) {
 			frame.loadLogin();
 		}
-		else if (command.equals("add/update grades")) {
+		else if (command.equals("Add/update grades")) {
 			resetTeacherPanel();
 			// add task panel
 			TeacherGradePanel panel = new TeacherGradePanel(frame);
@@ -74,7 +74,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
-		else if (command.equals("calculate progression")) {
+		else if (command.equals("Calculate progression")) {
 			resetTeacherPanel();
 			// add task panel
 			teacherPanel.add(new TeacherProgressionPanel(frame), BorderLayout.CENTER);
@@ -82,7 +82,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
-		else if (command.equals("calculate degree class")) {
+		else if (command.equals("Calculate degree class")) {
 			resetTeacherPanel();
 			// add task panel
 			teacherPanel.add(new TeacherDegreePanel(frame), BorderLayout.CENTER);
@@ -90,7 +90,7 @@ public class TeacherMenuPanel extends JPanel implements ActionListener{
 			frame.revalidate();
 			frame.repaint();
 		}
-		else if (command.equals("view student status")) {
+		else if (command.equals("View student status")) {
 			resetTeacherPanel();
 			// add task panel
 			TeacherStatPanel panel = new TeacherStatPanel(frame);

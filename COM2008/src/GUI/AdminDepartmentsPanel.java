@@ -71,8 +71,8 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 		removeAll();
 		setLayout(new FlowLayout());
 		//Gets list of all accounts and adds to dropdown
-		ArrayList<Department> users = Department.getAllFromDB();
-		for (Department current: users) {
+		ArrayList<Department> departments = Department.getAllFromDB();
+		for (Department current: departments) {
 			removeOption.addItem(current);
 		}
 		// limit height
@@ -134,22 +134,22 @@ public class AdminDepartmentsPanel  extends JPanel implements ActionListener{
 			removeOption.removeAllItems();
 			initializePanel();
 		}
-		//Removes a selected user from the database
+		//Removes a selected department from the database
 		else if (command.equals("Remove")) {
 			Department toRemove = (Department)removeOption.getSelectedItem();
 			Admin.removeDepartment(toRemove);
-			JOptionPane.showMessageDialog(null, "The user has been Removed");
+			JOptionPane.showMessageDialog(null, "The Department has been Removed");
 			removeOption.removeAllItems();
 			removeAccount();
 		}
-		//Adds a user into the database
+		//Adds a department into the database
 		else if (command.equals("Add")) {
 			String code = depCode.getText();
 			String name = depName.getText();
 			if (((code.length()==3) && checkOnlyLetters(code)) && (checkSize(50,name.length()))){
 				Department Dep = new Department(code,name);
 				if (Admin.addDepartment(Dep)){
-					JOptionPane.showMessageDialog(null, "The new user has been added");
+					JOptionPane.showMessageDialog(null, "The new Department has been added");
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "An error has occurred");

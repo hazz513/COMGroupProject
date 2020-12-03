@@ -18,7 +18,7 @@ public class TeacherStatPanel extends JPanel implements ActionListener{
 	Frame frame;
 	
 	JComboBox<Student> studentSelection = new JComboBox<Student>();
-	JButton viewStatus = new JButton("view status");
+	JButton viewStatus = new JButton("View status");
 	
 	public TeacherStatPanel(Frame frame) {
 		this.frame = frame;

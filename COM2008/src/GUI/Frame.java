@@ -23,7 +23,6 @@ public class Frame extends JFrame{
 		contentPane.add(loginPanel, BorderLayout.CENTER);
 		// exit program on closing window
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
 		setVisible(true);
 		
 	}
@@ -104,6 +103,6 @@ public class Frame extends JFrame{
 		} catch (Exception e) {
 		    // If Nimbus is not available, do nothing;
 		}
-		new Frame("the system");
+		new Frame("University Login");
 	}
 }

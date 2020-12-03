@@ -166,7 +166,7 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 			removeOption.removeAllItems();
 			initializePanel();
 		}
-		//Removes a selected user from the database
+		//Removes a selected approval from the database
 		else if (command.equals("Remove")) {
 			Approval toRemove = (Approval)removeOption.getSelectedItem();
 			Admin.removeApproval(toRemove);
@@ -174,7 +174,7 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 			removeOption.removeAllItems();
 			removeAccount();
 		}
-		//Adds a user into the database
+		//Adds an approval into the database
 		else if (command.equals("Add")) {
 			String cor = core.getText();
 			String lev = level.getText();

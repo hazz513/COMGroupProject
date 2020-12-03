@@ -34,7 +34,7 @@ public class TeacherDegreePanel extends JPanel implements ActionListener{
 		add(studentSelection);
 		
 		// add button to initiate process
-		JButton getDegreeClass = new JButton("calculate degree class");
+		JButton getDegreeClass = new JButton("Calculate degree class");
 		getDegreeClass.addActionListener(this);
 		
 		add(getDegreeClass);
@@ -44,7 +44,7 @@ public class TeacherDegreePanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		
-		if (command == "calculate degree class") {
+		if (command == "Calculate degree class") {
 			// assign student from dropdown
 			Student student = (Student)studentSelection.getSelectedItem();
 			// default error message
@@ -68,10 +68,10 @@ public class TeacherDegreePanel extends JPanel implements ActionListener{
 				
 				// output to user
 				if (degreeClass == Teacher.DegreeClass.INVALID) {
-					message = ("the student is not ready to end course. The grade and progression status may not have been calculated yet.");
+					message = ("The student is not ready to end course. The grade and progression status may not have been calculated yet.");
 				}
 				else {
-					message = ("the degree class is: " + degreeClass);
+					message = ("The degree class is: " + degreeClass);
 				}
 				
 			}
