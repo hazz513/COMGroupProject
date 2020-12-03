@@ -146,7 +146,7 @@ public class Registrar {
 		if (degreeType.charAt(3)=='U')
 			totalCredit = 120;
 		else
-			totalCredit = 160;
+			totalCredit = 180;
 		
 		
 		for(Performance i: list) {

@@ -27,7 +27,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	private JLabel endDateLabel = new JLabel("End Date: ");
 	
 	//error message
-	//private JLabel errorNum = new JLabel();
+	private JLabel errorNum = new JLabel("Date Format YYYY-MM-DD");
 	
 	//Fields for data entry
 	//private JTextField registrationNum = new JTextField(10);
@@ -79,6 +79,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		add(degreeSelection);
 		//add(leadDepLabel);
 		//add(leadDep);
+		add(errorNum);
 		add(startDateLabel);
 		add(startDate);
 		add(endDateLabel);
@@ -150,6 +151,11 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 					startDate.getText()==null||startDate.getText().trim().isEmpty()||
 					endDate.getText()==null||endDate.getText().trim().isEmpty()))
 			{
+				String sDateCheck = startDate.getText().substring(0,4);
+				
+				//String eDateCheck = endDate.getText().substring(0,3)+endDate.getText().substring(5,6)+endDate.getText().substring(7,8);
+				System.out.println(sDateCheck);
+				
 				int reg = Student.regNumGenerator();
 				String title = studentTitle.getText();
 				String sur = studentSurname.getText();
@@ -205,6 +211,27 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		
 	
 	}
+	/*
+	 * Checks if the string is an integer of varying length
+	 * @return = boolean
+	 */
+	public boolean checkInt(String toCheck) {
+		boolean isValidInteger = false;
+	      try
+	      {
+	         Integer.parseInt(toCheck);
+	 
+	         // s is a valid integer
+	         System.out.println("It's an int");
+	         isValidInteger = true;
+	      }
+	      catch (NumberFormatException ex)
+	      {
+	         // s is not an integer
+	      }
+	      System.out.println("It's not an int");
+	      return isValidInteger;
+   }
 
 		
 }
