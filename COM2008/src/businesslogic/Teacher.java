@@ -455,8 +455,15 @@ public class Teacher {
 			// deal with placement years
 			if (degree.getName().contains("with a Year in Industry")) {
 				System.out.println("dealing with placement student");
+				System.out.println("The Degree Level Size:" + degreeLevels.size());
+				System.out.println("The current Level" + level);
 				// if the student is progressing to the second last year then create placement year
-				if (level == (degreeLevels.size() - 2)) {
+				char compare = (char)((degreeLevels.size() -2) + 48);
+				if (level == compare) {
+					
+					System.out.println("The Degree Level Size:" + degreeLevels.size());
+					System.out.println("The current Level" + level);
+			
 					level = 'P';
 				}
 				// if the student is progressing from the placement year then create last year
