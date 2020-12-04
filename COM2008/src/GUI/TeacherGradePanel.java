@@ -23,8 +23,8 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 	StudyPeriod currentPeriod;
 	JComboBox<Performance> performanceSelection = new JComboBox<Performance>();
 	// buttons
-	JButton showPeriods = new JButton("Show study periods");
-	JButton showPerformances = new JButton("Show modules");
+	JButton showPeriods = new JButton("Show/Refresh study periods");
+	JButton showPerformances = new JButton("Show/Refresh modules");
 	JButton updateGrade = new JButton("Add/Update grade");
 	JButton updateResitGrade = new JButton("Add/Update resit grade");
 	// grade entry fields
@@ -116,7 +116,7 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		
-		if (command.equals("Show study periods")) {
+		if (command.equals("Show/Refresh study periods")) {
 			Student selectedStudent = (Student)studentSelection.getSelectedItem();
 			// if the same option is being selected, do nothing
 			if (selectedStudent != null && currentStudent != null && selectedStudent == currentStudent) {
@@ -153,7 +153,7 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 				frame.repaint();
 			}
 		}
-		else if (command.equals("Show modules")) {
+	    else if (command.equals("Show/Refresh modules")) {
 			StudyPeriod selectedPeriod = (StudyPeriod)periodSelection.getSelectedItem();
 			// if the same option is being selected, do nothing
 			if (selectedPeriod != null && currentPeriod != null && selectedPeriod == currentPeriod) {
@@ -195,16 +195,23 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 				frame.repaint();
 			}
 		}
-		else if (command.equals("Add/Update grade")) {
+	    else if (command.equals("Add/Update grade")) {
 			// retrieve performance
 			Performance performance = (Performance)performanceSelection.getSelectedItem();
 			// check if valid int
 			System.out.println("The performance" + performance);
 			String entry = gradeEntry.getText();
+			
 			if (entry.matches("[0-9]+")) {
 				// update/add grade
 				performance.setGrade(Integer.parseInt(entry));
-				performance.updateGrades();
+				// feedback based on success
+				if (performance.updateGrades()) {
+					JOptionPane.showMessageDialog(null, "The grade was added succesfully.");
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "ERROR: the grade could not be modified.");
+				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "ERROR: Invalid entry.");
@@ -218,7 +225,13 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 			if (entry.matches("[0-9]+")) {
 				// update/add grade
 				performance.setResitGrade(Integer.parseInt(entry));
-				performance.updateResitGrades();
+				// feedback based on success
+				if (performance.updateResitGrades()) {
+					JOptionPane.showMessageDialog(null, "The grade was added succesfully.");
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "ERROR: the grade could not be modified.");
+				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "ERROR: Invalid entry.");
