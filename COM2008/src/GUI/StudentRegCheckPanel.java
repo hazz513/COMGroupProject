@@ -121,6 +121,9 @@ public class StudentRegCheckPanel extends JPanel implements ActionListener {
 					else if(totalCredits >0) {
 						JOptionPane.showMessageDialog(null, "Student has "+ Math.abs(totalCredits) +" more credits than required to register ");
 					}
+					else {
+						JOptionPane.showMessageDialog(null, "An error has occured");
+					}
 				}
 				
 			}
