@@ -64,6 +64,7 @@ public class ModuleCreditCheckPanel extends JPanel implements ActionListener {
 	                //System.out.println("Selected Item  = " + selected);
 	                ArrayList<StudyPeriod> periods = selected.getPeriods();
 	                ArrayList<Character> label= new ArrayList<Character>();
+	                label.clear();
 	                for(StudyPeriod i: periods) {
 	                	label.add(i.getLabel());
 	                }
@@ -101,17 +102,21 @@ public class ModuleCreditCheckPanel extends JPanel implements ActionListener {
 				
 				if(totalCredits ==0) {
 					JOptionPane.showMessageDialog(null, "Student has "+tCredit+" credits");
+					labelSelection.removeAllItems();
 				}
 				else if(totalCredits>0) {
 					JOptionPane.showMessageDialog(null, "Student needs "+totalCredits +" more credits to register ");
+					labelSelection.removeAllItems();
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Student has "+ Math.abs(totalCredits) +" more credits than required to register ");
+					labelSelection.removeAllItems();
 				}
 				
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "No label entered!");
+				labelSelection.removeAllItems();
 			}
 		}
 		
