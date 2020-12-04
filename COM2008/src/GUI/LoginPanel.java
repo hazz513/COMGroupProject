@@ -22,10 +22,13 @@ public class LoginPanel extends JPanel implements ActionListener{
 	private JLabel passLabel = new JLabel("Password: ");
 	
 	private JButton loginButton = new JButton("login");
+	
+	//UNCOMMENT HERE FOR EASY TESTING
+	/*
 	private JButton teacher = new JButton("Launch Teacher");
 	private JButton registrar = new JButton("Launch Registrar");
 	private JButton admin = new JButton("Launch Admin");
-	
+	*/
 	public LoginPanel(Frame frame) {
 		this.frame = frame;
 		setLayout(new GridLayout(0, 2));
@@ -94,11 +97,14 @@ public class LoginPanel extends JPanel implements ActionListener{
 		
 		add(loginButton);
 		loginButton.addActionListener(this);
+		//UNCOMMENT HERE FOR EASY TESTING
+		/*
 		add(teacher);
 		teacher.addActionListener(this);
 		add(registrar);
 		registrar.addActionListener(this);
 		add(admin);
 		admin.addActionListener(this);
+		*/
 	}
 }
