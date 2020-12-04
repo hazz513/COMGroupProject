@@ -25,9 +25,10 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	private JLabel degreeCodeLabel = new JLabel("Degree: ");
 	private JLabel startDateLabel = new JLabel("Start Date: ");
 	private JLabel endDateLabel = new JLabel("End Date: ");
-	
+	private JLabel tutorLabel = new JLabel("Perosnal Tutor: ");
 	//error message
 	private JLabel errorNum = new JLabel("Date Format YYYY-MM-DD");
+	private JLabel empty = new JLabel(" ");
 	
 	//Fields for data entry
 	//private JTextField registrationNum = new JTextField(10);
@@ -39,6 +40,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 	//private JTextField leadDep = new JTextField(10);
 	private JTextField startDate = new JTextField(10);
 	private JTextField endDate = new JTextField(10);
+	private JTextField personalTutor = new JTextField(10);
 	
 	//button
 	private JButton registerButton = new JButton("Register");
@@ -59,6 +61,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		studentForename.setDocument(new JTextFieldLimit(45));
 		startDate.setDocument(new JTextFieldLimit(10));
 		endDate.setDocument(new JTextFieldLimit(10) );
+		personalTutor.setDocument(new JTextFieldLimit(45));
 		//degreeCode.setDocument(new JTextFieldLimit(6));
 		//leadDep.setDocument(new JTextFieldLimit(3));
 		
@@ -84,11 +87,15 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		add(startDate);
 		add(endDateLabel);
 		add(endDate);
+		add(tutorLabel);
+		add(personalTutor);
+		//add(empty);
 		
 		
 		
-		add(clearAllButton);
 		add(registerButton);
+		//add(empty);
+		add(clearAllButton);
 		clearAllButton.addActionListener(this);
 		registerButton.addActionListener(this);
 		
@@ -135,6 +142,7 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 		studentForename.setText(null);
 		startDate.setText(null);
 		endDate.setText(null);
+		personalTutor.setText(null);
 		//degreeCode.setText(null);
 		//leadDep.setText(null);
 	}
@@ -149,7 +157,8 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 					studentSurname.getText()==null||studentSurname.getText().trim().isEmpty()||	
 					studentForename.getText()==null||studentForename.getText().trim().isEmpty()||
 					startDate.getText()==null||startDate.getText().trim().isEmpty()||
-					endDate.getText()==null||endDate.getText().trim().isEmpty()))
+					endDate.getText()==null||endDate.getText().trim().isEmpty()||
+					personalTutor.getText()==null||personalTutor.getText().trim().isEmpty()))
 			{
 				/*
 				String sYear = startDate.getText().substring(0,4);
@@ -192,7 +201,8 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 					String email = Student.emailGenerator(sur,fore);
 					String sDate =startDate.getText();
 					String eDate = endDate.getText();
-					Student student = new Student (reg,title,sur,fore,email,"Tutor men");
+					String tutor = personalTutor.getText();
+					Student student = new Student (reg,title,sur,fore,email,tutor);
 					Degree degree = (Degree)degreeSelection.getSelectedItem();
 								
 					if(student.addStudent()) {

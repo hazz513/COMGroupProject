@@ -96,7 +96,7 @@ public class ModuleCreditCheckPanel extends JPanel implements ActionListener {
 				if (degreeType.charAt(3)=='U')
 					tCredit = 120;
 				else
-					tCredit = 160;
+					tCredit = 180;
 				
 				
 				if(totalCredits ==0) {
