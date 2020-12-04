@@ -76,7 +76,7 @@ public class Authentication {
 		this.password = password;
 		
 		this.authLevel = 1;
-		this.student = student;
+		this.regNum = student.getRegistration();
 	}
 	
 	
@@ -127,11 +127,12 @@ public class Authentication {
 	public boolean addAuthentication () {
 		try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 			Statement stmt = con.createStatement();
+			System.out.println(this.regNum);
 			int count = stmt.executeUpdate("INSERT INTO Authentication VALUE ('" + 
-											this.getUserID() + "','" +
-											this.getPassword() + "','" +
-											this.getAuthLevel() + "','" +
-											this.getReg() + "');"
+											this.userID + "','" +
+											this.password + "','" +
+											this.authLevel + "','" +
+											this.regNum + "');"
 											);
 			System.out.println("Changes made: " + count);
 			switch (count) {

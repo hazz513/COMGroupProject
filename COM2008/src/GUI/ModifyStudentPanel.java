@@ -204,7 +204,6 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 					String tutor = personalTutor.getText();
 					Student student = new Student (reg,title,sur,fore,email,tutor);
 					Degree degree = (Degree)degreeSelection.getSelectedItem();
-								
 					if(student.addStudent()) {
 					/*
 					Degree degree = (Degree)degreeSelection.getSelectedItem();
@@ -227,6 +226,8 @@ public class ModifyStudentPanel extends JPanel implements ActionListener {
 						System.out.println(eDate);
 						System.out.println(sDate);
 						System.out.println(Registrar.registerStudent(student,sDate,eDate,degree));
+						Authentication newUser = new Authentication(student);
+						newUser.addAuthentication();
 					
 						clearFields();
 						JOptionPane.showMessageDialog(null, "New Student Registered"+"\n" + "Registration no: "+reg
