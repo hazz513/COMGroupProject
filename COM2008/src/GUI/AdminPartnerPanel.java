@@ -158,7 +158,8 @@ public class AdminPartnerPanel  extends JPanel implements ActionListener{
 			Partner toAdd = new Partner(degToLink,depToLink);
 			Admin.addPartner(toAdd);
 			JOptionPane.showMessageDialog(null, "The two are now Linked");
-			removeOption.removeAllItems();
+			departments.removeAllItems();
+			degrees.removeAllItems();
 			addAccount();
 		}
 	}

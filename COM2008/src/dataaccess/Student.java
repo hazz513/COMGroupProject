@@ -118,12 +118,13 @@ public class Student {
 											);
 			}
 			else {
-				count = stmt.executeUpdate("INSERT INTO Student (registration, title, surname, forename, email) VALUES ('" + 
+				count = stmt.executeUpdate("INSERT INTO Student (registration, title, surname, forename, email,PersonalTutor) VALUES ('" + 
 											this.getRegistration() + "','" +
 											this.getTitle() + "','" +
 											this.getSurname() + "','" +
 											this.getForename() + "','" +
-											this.getEmail() + "');"
+											this.getEmail() + "','" +
+											this.getPersonalTutor()+ "');"
 											);
 			}
 			System.out.println("Changes made: " + count);

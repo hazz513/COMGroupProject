@@ -199,6 +199,7 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 			// retrieve performance
 			Performance performance = (Performance)performanceSelection.getSelectedItem();
 			// check if valid int
+			System.out.println("The performance" + performance);
 			String entry = gradeEntry.getText();
 			
 			if (entry.matches("[0-9]+")) {
@@ -223,7 +224,7 @@ public class TeacherGradePanel extends JPanel implements ActionListener{
 			String entry = resitGradeEntry.getText();
 			if (entry.matches("[0-9]+")) {
 				// update/add grade
-				performance.setGrade(Integer.parseInt(entry));
+				performance.setResitGrade(Integer.parseInt(entry));
 				// feedback based on success
 				if (performance.updateResitGrades()) {
 					JOptionPane.showMessageDialog(null, "The grade was added succesfully.");

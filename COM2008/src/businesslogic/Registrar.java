@@ -192,7 +192,42 @@ public class Registrar {
 		
 		if (chosenCoreMod.size()==actualCoreMod.size() && creditChecker(studyPeriod)==0 && 
 			actualModCode.containsAll(chosenModCode) && chosenModCode.containsAll(actualModCode) ) {
-			return true;
+			/*
+			//all opt module in the given degree
+			ArrayList<Approval> optApproval = degree.getNonCores(actualCoreMod.get(0).getLevel());
+			ArrayList<String> optModules = new ArrayList<String>();
+			for (Approval i: optApproval) {
+				optModules.add(i.getModule().getCode());
+			}
+			
+			
+			//opt module chosen by student
+			ArrayList<Performance> performances =  studyPeriod.getPerformances();
+			ArrayList<String> optModulesChosen = new ArrayList<String>();
+			 ArrayList<String> optModulesChosenCopy = optModulesChosen;
+			
+			 for(Performance i: performances) {
+            	 if(i.getApproval().getCore()==0) {
+            		 optModulesChosen.add(i.getApproval().getModule().getCode());
+            		 optModulesChosenCopy.add(i.getApproval().getModule().getCode());
+            	 }
+            	 else {
+            		 System.out.println("CoreMod removed");
+            	 }
+             }
+			 System.out.println(optModulesChosen);
+			 System.out.println(optModules);
+			
+			 if(optModulesChosen.retainAll(optModules)) {
+				 return true;
+			 }
+			 else {
+				 return false;
+			 }
+			 */
+			 return true;
+			
+			
 		}	
 		else
 			return false;

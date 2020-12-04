@@ -135,7 +135,8 @@ public class Performance {
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("UPDATE Performance SET grade= '" + this.getGrade() + 
-						"'WHERE registration= '" + this.studyPeriod.getStudent().getRegistration() + "';"
+						"'WHERE registration= '" + this.studyPeriod.getStudent().getRegistration() + "' AND "+ 
+						"modCode= '" + this.getApproval().getModule().getCode()+"';"
 												);
 				System.out.println("Changes made: " + count);
 				switch (count) {
@@ -157,11 +158,14 @@ public class Performance {
 		 * @Return a Boolean function 
 		 */
 		public boolean updateResitGrades() {
+			System.out.println("Resit Grade value: "+ this.getResitGrade());
 			try (Connection con = DriverManager.getConnection(DB, DB_USER_NAME, DB_PASSWORD)){
 				Statement stmt = con.createStatement();
 				int count = stmt.executeUpdate("UPDATE Performance SET resitGrade= '" + this.getResitGrade() + 
-						"'WHERE registration= '" + this.studyPeriod.getStudent().getRegistration() + "';"
+						"'WHERE registration= '" + this.studyPeriod.getStudent().getRegistration() + "' AND "+ 
+						"modCode= '" + this.getApproval().getModule().getCode()+"';"
 												);
+				
 				System.out.println("Changes made: " + count);
 				switch (count) {
 					case 0:
