@@ -68,7 +68,8 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 	public void addAccount() {
 		removeAll();
 		setLayout(new FlowLayout());
-		
+		degrees.removeAllItems();
+		modules.removeAllItems();
 		ArrayList<Degree> deg = Degree.getAllFromDB();
 		for (Degree current: deg) {
 			degrees.addItem(current);
@@ -169,6 +170,8 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 		}
 		else if (command.equals("Cancel")) {
 			removeOption.removeAllItems();
+			degrees.removeAllItems();
+			modules.removeAllItems();
 			initializePanel();
 		}
 		//Removes a selected user from the database
