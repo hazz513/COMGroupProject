@@ -20,6 +20,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		// initialize panel
 		this.frame = frame;
 		initialize(registration);
+		
 		frame.revalidate();
 		frame.repaint();
 

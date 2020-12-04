@@ -61,9 +61,12 @@ public class Frame extends JFrame{
 	public void loadStudent(int registration) {
 		Container contentPane = getContentPane();
 		contentPane.removeAll();
-		
+		JScrollPane scrollPane = new JScrollPane(contentPane);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
 		StudentPanel studentPanel = new StudentPanel(this,registration);
 		contentPane.add(studentPanel);
+		studentPanel.add(scrollPane, BorderLayout.CENTER);
 		revalidate();
 		repaint();
 	}
