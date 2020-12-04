@@ -102,8 +102,8 @@ public class Frame extends JFrame{
 		        }
 		    }
 		} catch (Exception e) {
-		    // If Nimbus is not available, do nothing;
+			// If Nimbus is not available, do nothing;
 		}
-		new Frame("the system");
+		new Frame("COM 2008/3008 University Management System");
 	}
 }

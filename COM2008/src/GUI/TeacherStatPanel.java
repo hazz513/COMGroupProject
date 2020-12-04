@@ -85,10 +85,10 @@ public class TeacherStatPanel extends JPanel implements ActionListener{
 							add(new JLabel("Degree: " + degree.getName()));
 							// mark degree info as printed
 							firstPeriod = false;	
+							// display personal tutor
+							add(new JLabel("Personal Tutor: " + student.getPersonalTutor()));
 						}
 						
-						// display overall information
-						add(new JLabel("Personal Tutor: " + student.getPersonalTutor()));
 						// if student's degree class has been calculated display it
 						if (student.getDegreeClass() != null) {
 							// format to 1 dp
