@@ -25,12 +25,9 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 	JComboBox<Degree> degrees = new JComboBox<Degree>();
 	JComboBox<Module> modules = new JComboBox<Module>();
 	JComboBox<String> level = new JComboBox<String>();
+	JCheckBox core = new JCheckBox("Is this a Core Module?");
 	
-	
-	private JTextField core = new JTextField(1);
 	private JTextField credits = new JTextField(11);
-	
-	private JLabel coreLabel = new JLabel("Is the module Core (0 or 1): ");
 	private JLabel creditLabel = new JLabel("Credit Value: ");
 	private JLabel levelLabel = new JLabel("What level of study is the module at: ");
 	private JLabel degreeLabel = new JLabel("Select a Degree to Link: ");
@@ -86,7 +83,6 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 		add(modules);
 		add(levelLabel);
 		add(level);
-		add(coreLabel);
 		add(core);
 		add(creditLabel);
 		add(credits);
@@ -184,7 +180,15 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 		}
 		//Adds a user into the database
 		else if (command.equals("Add")) {
-			String cor = core.getText();
+			
+			String cor = "holder";
+			if (core.isSelected()) {
+				cor = "1";
+			}
+			else {
+				cor = "0";
+			}
+			
 			String lev = (String)level.getSelectedItem();
 			String cred = credits.getText();
 			Module modToLink = (Module)modules.getSelectedItem();
@@ -192,6 +196,7 @@ public class AdminApprovalsPanel  extends JPanel implements ActionListener{
 			
 			if ( (cor.length()==1 && checkInt(cor)) && (lev.length()==1) && (checkSize(11,cred.length()) && checkInt(cred)) ){
 				int corInt = Integer.parseInt(cor);
+				System.out.println("Core integer = "+corInt);
 				if (corInt == 1 || corInt == 0) {
 					int credInt = Integer.parseInt(cred);
 					Approval appToAdd = new Approval(degToLink,modToLink,corInt,credInt,lev.charAt(0));

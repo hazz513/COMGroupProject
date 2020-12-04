@@ -267,13 +267,15 @@ public class Teacher {
 		boolean conceded = false;
 		// sum credits for all modules apart from dissertation
 		for (Performance performance: performances) {
+			System.out.println("Loops: " + performance);
 			int margin = passMargin(performance);
 			// if it is a dissertation only check if it was passed
 			if (performance.getApproval().getCredits() == 60) {
 				if (margin < 0) {
 					dissertationPassed = false;
 				}
-				performances.remove(performance);
+				//performances.remove(performance);
+				
 			}
 			// allow one failure otherwise withing 10%
 			else if (margin >= -10 && margin < 0 && !conceded) {
